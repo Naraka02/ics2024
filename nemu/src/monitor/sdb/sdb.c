@@ -47,15 +47,36 @@ static int cmd_c(char *args) {
   return 0;
 }
 
-
 static int cmd_q(char *args) {
   nemu_state.state = NEMU_QUIT;
   return -1;
 }
 
 static int cmd_ci(char *args) {
-  cpu_exec(args == NULL ? 1 : (uint64_t)(args[0] - '0') );
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  uint64_t N;
+  int valid;
+
+  if (arg == NULL) {
+    /* no argument given */
+	N = 1;
+  }
+  else {
+	valid = sscanf(args, "%lu", &N);
+	if(valid == 1) {
+	  cpu_exec(N);
+	} else {
+	  /* not a number */
+	  printf("Invalid argument, please enter a number.");
+	}
+  }
+
   return 0;	
+}
+
+static int cmd_info(char *args) {
+  return 0;
 }
 
 static int cmd_help(char *args);
@@ -68,7 +89,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "Step program N(default by 1) times", cmd_ci},
+  { "si", "Step program N(default by 1) times", cmd_ci },
+  { "info", "Print status of registers or watchpoints", cmd_info }, 
   /* TODO: Add more commands */
 
 };
