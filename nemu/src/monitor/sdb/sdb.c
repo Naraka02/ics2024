@@ -60,7 +60,7 @@ static int cmd_ci(char *args) {
 
   if (arg == NULL) {
     /* no argument given */
-	N = 1;
+	cpu_exec(1);
   }
   else {
 	valid = sscanf(args, "%lu", &N);
@@ -68,7 +68,7 @@ static int cmd_ci(char *args) {
 	  cpu_exec(N);
 	} else {
 	  /* not a number */
-	  printf("Invalid argument, please enter a number.");
+	  printf("Invalid argument, please enter a number.\n");
 	}
   }
 
