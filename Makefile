@@ -1,5 +1,6 @@
 STUID = 231250124
 STUNAME = 赖涵
+TOKEN = b9axDWUJ
 
 # DO NOT modify the following code!!!
 
