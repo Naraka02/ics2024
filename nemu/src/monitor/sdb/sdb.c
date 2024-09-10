@@ -56,7 +56,7 @@ static int cmd_ci(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   uint64_t N;
-  int valid;
+  int valid,i;
 
   if (arg == NULL) {
     /* no argument given */
@@ -64,6 +64,12 @@ static int cmd_ci(char *args) {
   }
   else {
 	valid = sscanf(arg, "%lu", &N);
+	for(i = 0 ;arg[i] != '\0' ; i++) {
+		if(arg[i] < '0' || arg[i] > '9') {
+			valid = 0;
+			break;
+		}
+	}
 	if(valid == 1) {
 	  cpu_exec(N);
 	} else {
