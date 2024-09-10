@@ -63,7 +63,7 @@ static int cmd_ci(char *args) {
 	cpu_exec(1);
   }
   else {
-	valid = sscanf(args, "%lu", &N);
+	valid = sscanf(arg, "%lu", &N);
 	if(valid == 1) {
 	  cpu_exec(N);
 	} else {
