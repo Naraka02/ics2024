@@ -36,16 +36,16 @@ static struct rule {
 	 * Pay attention to the precedence level of different rules.
 	 */
 
-	{" +", TK_NOTYPE},														// spaces
-	{"\\+", '+'},																	// plus
-	{"==", TK_EQ},																// equal
-	{"\\d+-\\d+", TK_MINUS},				// minus
-	{"(^|[\\(\\+\\-\\*/])-\\d+", TK_NEG},					// negative
-	{"\\*", '*'},																	// multiply
-	{"\\/", '/'},																	// divide
-	{"[0-9]+", TK_INT},															// integer
-	{"\\(", '('},																	// left bracket
-	{"\\)", ')'},																	// right bracket
+	{" +", TK_NOTYPE},			// spaces
+	{"\\+", '+'},						// plus
+	{"==", TK_EQ},					// equal
+	{"-", TK_MINUS},				// minus
+	{"-", TK_NEG},					// negative
+	{"\\*", '*'},						// multiply
+	{"\\/", '/'},						// divide
+	{"[0-9]+", TK_INT},			// integer
+	{"\\(", '('},						// left bracket
+	{"\\)", ')'},							// right bracket
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -120,14 +120,15 @@ static bool make_token(char *e) {
 						break;	
 					case TK_EQ:
 						tokens[nr_token].type = TK_EQ;
-							nr_token++;
-						break;
-					case TK_MINUS:
-						tokens[nr_token].type = TK_MINUS;
 						nr_token++;
 						break;
+					case TK_MINUS:
 					case TK_NEG:
-						tokens[nr_token].type = TK_NEG;
+						if(nr_token == 0 || tokens[nr_token-1].type != TK_INT){
+							tokens[nr_token].type = TK_NEG;
+						} else {
+							tokens[nr_token].type = TK_MINUS;
+						}
 						nr_token++;
 						break;
 					case TK_INT:
