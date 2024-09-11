@@ -221,6 +221,9 @@ word_t eval(int start, int end, bool *success) {
 			*success = false;
 			return 0;
 		}
+		if(tokens[main_op_pos].type == TK_NEG){
+			return -eval(start + 1, end, success);
+		}
 		val1 = eval(start, main_op_pos - 1, success);
 		val2 = eval(main_op_pos + 1, end, success);
 
@@ -229,7 +232,6 @@ word_t eval(int start, int end, bool *success) {
 			case TK_MINUS: return val1 - val2; break;
 			case '*': return val1 * val2; break;
 			case '/': return val1 / val2; break;
-			case TK_NEG: return -eval(start + 1, end, success); break;
 			default: *success = false; return 0; break;
 		}
 	}
