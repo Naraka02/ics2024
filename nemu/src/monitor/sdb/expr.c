@@ -40,7 +40,7 @@ static struct rule {
 	{"\\+", '+'},																	// plus
 	{"==", TK_EQ},																// equal
 	{"(\\d\\s*)-(\\s*\\d)", TK_MINUS},				// minus
-	{"(?<=^|[\\(\\+\\-\\*/])-", TK_NEG},					// negative
+	{"(^|[\\(\\+\\-\\*/])-", TK_NEG},					// negative
 	{"\\*", '*'},																	// multiply
 	{"\\/", '/'},																	// divide
 	{"\\d+", TK_INT},															// integer
