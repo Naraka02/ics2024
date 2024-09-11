@@ -60,22 +60,21 @@ static int cmd_ci(char *args) {
 
   if (arg == NULL) {
     /* no argument given */
-	cpu_exec(1);
-  }
-  else {
-	valid = sscanf(arg, "%lu", &N);
-	for(i = 0 ;arg[i] != '\0' ; i++) {
-		if(arg[i] < '0' || arg[i] > '9') {
-			valid = 0;
-			break;
+		cpu_exec(1);
+  } else {
+		valid = sscanf(arg, "%lu", &N);
+		for(i = 0 ;arg[i] != '\0' ; i++) {
+			if(arg[i] < '0' || arg[i] > '9') {
+				valid = 0;
+				break;
+			}
 		}
-	}
-	if(valid == 1) {
-	  cpu_exec(N);
-	} else {
-	  /* not a number */
-	  printf("Invalid argument, please enter a number.\n");
-	}
+		if(valid == 1) {
+	  	cpu_exec(N);
+		} else {
+	  	/* not a number */
+	  	printf("Invalid argument, please enter a number.\n");
+		}
   }
 
   return 0;	
@@ -94,6 +93,30 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_x(char *args) {
+	char *arg1 = strtok(NULL, " ");
+	char *arg2 = strtok(NULL, " ");
+	
+	if(arg1 == NULL || arg2 == NULL) {
+		printf("Please enter two vaild arguments.");
+	} else {
+		
+	}
+	
+	return 0;
+}
+
+static int cmd_p(char *args) {
+	bool success = true;
+	word_t result = expr(args, &success);
+	if(success == false){
+		printf("Bad expression.");
+	} else{
+		printf("%s = %u", args, result);
+	}
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -106,6 +129,8 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Step program N(default by 1) times", cmd_ci },
   { "info", "Print status of registers or watchpoints", cmd_info }, 
+	{ "x", "Examine memory", cmd_x},
+	{ "p", "Calculate the expression", cmd_p},
   /* TODO: Add more commands */
 
 };
