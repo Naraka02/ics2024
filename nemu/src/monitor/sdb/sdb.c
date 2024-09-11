@@ -112,7 +112,7 @@ static int cmd_p(char *args) {
 	if(success == false){
 		printf("Bad expression.\n");
 	} else{
-		printf("%s = %u", args, result);
+		printf("%s = %u\n", args, result);
 	}
 	return 0;
 }
