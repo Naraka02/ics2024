@@ -39,7 +39,7 @@ static struct rule {
 	{" +", TK_NOTYPE},														// spaces
 	{"\\+", '+'},																	// plus
 	{"==", TK_EQ},																// equal
-	{"(\\d\\s*)-(?=\\s*\\d)", TK_MINUS},				// minus
+	{"(\\d\\s*)-(\\s*\\d)", TK_MINUS},				// minus
 	{"(?<=^|[\\(\\+\\-\\*/])-", TK_NEG},					// negative
 	{"\\*", '*'},																	// multiply
 	{"\\/", '/'},																	// divide
