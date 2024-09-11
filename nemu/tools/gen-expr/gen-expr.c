@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
 #include <assert.h>
 #include <string.h>
 
@@ -31,19 +32,32 @@ static char *code_format =
 "  return 0; "
 "}";
 static int expr_len;
+static char ops[] = {'+', '-', '*', '/'};
+char last_op;
+
+uint32_t choose(uint32_t n) {
+	return rand() % n;
+}
 
 static void gen_rand_expr() {
-	switch (choose(3)) {
-		case 0: buf[expr_len++] = choose(10) + '0'; break;
+	if (expr_len > 100){ 
+		buf[expr_len++] = choose(9) + '1';
+		return;
+	}
+	switch (choose(4)) {
+		case 0: 
+			if (last_op == '/') {
+				buf[expr_len++] = choose(9) + '1';
+			} else {
+				buf[expr_len++] = choose(10) + '0';
+			}
+			break;
 		case 1: buf[expr_len++] = '('; gen_rand_expr(); buf[expr_len++] = ')';break;
+		case 2: buf[expr_len++] = ' ';
 		default: 
 			gen_rand_expr(); 
-			switch (choose(4)) {
-				case 0: buff[expr_len++] = '+';
-				case 1: buff[expr_len++] = '-';
-				case 2: buff[expr_len++] = '*';
-				default: buff[expr_len++] = '/';
-			}
+			buf[expr_len++]= ops[choose(4)];
+			last_op = buf[expr_len - 1];
 			gen_rand_expr();
 			break;
 		}
@@ -58,7 +72,7 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
-		memset(buff, 0, sizeof(buff));
+		memset(buf, 0, sizeof(buf));
 		expr_len = 0;
     gen_rand_expr();
 
