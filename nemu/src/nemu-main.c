@@ -19,6 +19,7 @@ void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
+extern word_t expr(char *e, bool *success);
 
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
@@ -30,6 +31,15 @@ int main(int argc, char *argv[]) {
 
   /* Start engine. */
   engine_start();
-
+	FILE *fp;
+	fp = fopen("input", "r");
+	word_t res;
+	bool success=true;
+	char str[100010], expr_str[100010];
+	for(int i = 0;i < 1000; i++){
+		fgets(str,100010,fp);
+		sscanf(str,"%u %s", &res, expr_str);
+	 	assert(res == expr( expr_str, &success));
+	}
   return is_exit_status_bad();
 }
