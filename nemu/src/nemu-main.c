@@ -30,16 +30,7 @@ int main(int argc, char *argv[]) {
 #endif
 
   /* Start engine. */
-	FILE *fp;
-	fp = fopen("input", "r");
-	word_t res;
-	bool success=true;
-	char str[100010], expr_str[100010];
-	for(int i = 0;i < 1000; i++){
-		fgets(str,100010,fp);
-		sscanf(str,"%u %s", &res, expr_str);
-	 	assert(res == expr( expr_str, &success));
-	}
   engine_start();
+
   return is_exit_status_bad();
 }
