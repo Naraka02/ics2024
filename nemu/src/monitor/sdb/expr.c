@@ -39,8 +39,8 @@ static struct rule {
 	{" +", TK_NOTYPE},														// spaces
 	{"\\+", '+'},																	// plus
 	{"==", TK_EQ},																// equal
-	{"(\\d\\s*)-(\\s*\\d)", TK_MINUS},				// minus
-	{"(^|[\\(\\+\\-\\*/])-", TK_NEG},					// negative
+	{"\\d+\\s*-\\s*\\d+", TK_MINUS},				// minus
+	{"(^|[\\(\\+\\-\\*/])-\\d+", TK_NEG},					// negative
 	{"\\*", '*'},																	// multiply
 	{"\\/", '/'},																	// divide
 	{"[0-9]+", TK_INT},															// integer
