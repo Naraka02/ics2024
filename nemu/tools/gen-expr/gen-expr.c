@@ -33,34 +33,45 @@ static char *code_format =
 "}";
 static int expr_len;
 static char ops[] = {'+', '-', '*', '/'};
-char last_op;
 
 uint32_t choose(uint32_t n) {
 	return rand() % n;
 }
 
 static void gen_rand_expr() {
-	if (expr_len > 100){ 
-		buf[expr_len++] = choose(9) + '1';
-		return;
-	}
-	switch (choose(4)) {
-		case 0: 
-			if (last_op == '/') {
-				buf[expr_len++] = choose(9) + '1';
-			} else {
-				buf[expr_len++] = choose(10) + '0';
-			}
-			break;
-		case 1: buf[expr_len++] = '('; gen_rand_expr(); buf[expr_len++] = ')';break;
-		case 2: buf[expr_len++] = ' ';
-		default: 
-			gen_rand_expr(); 
-			buf[expr_len++]= ops[choose(4)];
-			last_op = buf[expr_len - 1];
-			gen_rand_expr();
-			break;
-		}
+  if (expr_len > 1000) {
+    buf[expr_len++] = choose(10) + '0';
+    return;
+  }
+
+  for (int i = 0; i < choose(4); i++) {
+    buf[expr_len++] = ' ';
+  }
+
+  switch (choose(3)) {
+    case 0:
+      int randInt = choose(INT8_MAX);
+      sprintf(buf + expr_len, "%u", randInt);
+      while (randInt > 0) {
+        expr_len++;
+        randInt /= 10;
+      }
+      break;
+    case 1:
+      buf[expr_len++] = '(';
+      gen_rand_expr();
+      buf[expr_len++] = ')';
+      break;
+    default:
+      gen_rand_expr();
+      buf[expr_len++] = ops[choose(4)];
+      gen_rand_expr();
+      break;
+  }
+
+  for (int i = 0; i < choose(4); i++) {
+    buf[expr_len++] = ' ';
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -72,9 +83,9 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
-		memset(buf, 0, sizeof(buf));
 		expr_len = 0;
     gen_rand_expr();
+    buf[expr_len] = '\0';
 
     sprintf(code_buf, code_format, buf);
 
