@@ -91,8 +91,8 @@ static bool make_token(char *e) {
 				char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
 
-				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-						i, rules[i].regex, position, substr_len, substr_len, substr_start);
+				//Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+				//		i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
 				position += substr_len;
 
@@ -199,7 +199,6 @@ word_t eval(int start, int end, bool *success) {
 		int main_op_pos = -1;
 		word_t val1, val2;
 		for (int i = start; i <= end; i++){
-      printf("%d %d %d\n",start,end,nr_token);
 			switch (tokens[i].type) {
 				case '+':
 				case TK_MINUS:
@@ -207,7 +206,6 @@ word_t eval(int start, int end, bool *success) {
 					break;
 				case '*':
 				case '/':
-          printf("%d",i);
 					if( main_op_pos == -1) {
 						main_op_pos = i;
 					} else if( tokens[i].type != '+' && tokens[i].type != TK_MINUS) {
@@ -223,7 +221,6 @@ word_t eval(int start, int end, bool *success) {
 					break;
 				}
 		}
-    printf("%d\n",main_op_pos);
 		if(main_op_pos == -1) {
 			*success = false;
 			return 0;

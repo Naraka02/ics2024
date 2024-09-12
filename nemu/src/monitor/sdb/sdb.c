@@ -207,13 +207,18 @@ void test_regex() {
   char input_str[1005], input_expr[1005];
   int result;
   bool success = true;
+  bool test_pass = true;
   while (fgets(input_str, 1005, fp) != NULL) {
     sscanf(input_str, "%d %[^\n]", &result, input_expr);
     word_t expr_res = expr(input_expr, &success);
     if (result != expr_res) {
+      test_pass = false;
       printf("Wrong result.\n%s != %u\n", input_expr, expr_res);
       printf("%s = %d\n", input_expr, result);
     }
+  }
+  if (test_pass) {
+    printf("regex test passed\n");
   }
 }
 
