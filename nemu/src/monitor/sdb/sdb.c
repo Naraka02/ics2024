@@ -212,6 +212,7 @@ void test_regex() {
     word_t expr_res = expr(input_expr, &success);
     if (result != expr_res) {
       printf("Wrong result.\n%s != %u\n", input_expr, expr_res);
+      printf("%s = %d\n", input_expr, result);
     }
   }
 }
