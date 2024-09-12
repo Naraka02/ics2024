@@ -208,7 +208,7 @@ void test_regex() {
   int result;
   bool success = true;
   while (fgets(input_str, 1005, fp) != NULL) {
-    sscanf(input_str, "%d %s", &result, input_expr);
+    sscanf(input_str, "%d %[^\n]", &result, input_expr);
     word_t expr_res = expr(input_expr, &success);
     if (result != expr_res) {
       printf("Wrong result.\n%s != %u\n", input_expr, expr_res);
