@@ -110,6 +110,10 @@ static bool make_token(char *e) {
 						tokens[nr_token].type = '*';
 						nr_token++;
 						break;
+          case '/':
+            tokens[nr_token].type = '/';
+            nr_token++;
+            break;
 					case '(':
 						tokens[nr_token].type = '(';
 						nr_token++;
@@ -117,7 +121,7 @@ static bool make_token(char *e) {
 					case ')':
 						tokens[nr_token].type = ')';
 						nr_token++;
-						break;	
+						break;
 					case TK_EQ:
 						tokens[nr_token].type = TK_EQ;
 						nr_token++;
@@ -140,7 +144,7 @@ static bool make_token(char *e) {
 						strcpy(tokens[nr_token].str, substr_start);
 						nr_token++;
 						break;
-					default: 
+					default:
 						break;
 				}
 
