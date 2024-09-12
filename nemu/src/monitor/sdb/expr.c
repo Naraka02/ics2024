@@ -137,6 +137,7 @@ static bool make_token(char *e) {
 							printf("too large integer at position %d\n%s\n%*.s^\n", position, e, position, "");
 							return false;
 						}
+            printf("%s\n", tokens[nr_token].str);
 						strncpy(tokens[nr_token].str, substr_start, substr_len);
             printf("%s %d\n",substr_start, substr_len);
             printf("%s\n", tokens[nr_token].str);
