@@ -195,6 +195,7 @@ word_t eval(int start, int end, bool *success) {
 		int main_op_pos = -1;
 		word_t val1, val2;
 		for (int i = start; i < end; i++){
+      printf("%d",tokens[i].type);
 			switch (tokens[i].type) {
 				case '+':
 				case TK_MINUS:
