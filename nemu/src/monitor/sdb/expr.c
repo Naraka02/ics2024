@@ -238,7 +238,13 @@ word_t eval(int start, int end, bool *success) {
 			case '+': return val1 + val2; break;
 			case TK_MINUS: return val1 - val2; break;
 			case '*': return val1 * val2; break;
-			case '/': return val1 / val2; break;
+			case '/': 
+        if (val2 == 0) {
+          *success = false;
+          return 0;
+        }
+        return val1 / val2;
+        break;
 			default: *success = false; return 0; break;
 		}
 	}
