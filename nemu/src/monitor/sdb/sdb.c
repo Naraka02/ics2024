@@ -206,6 +206,8 @@ void test_regex() {
   FILE *fp = fopen("../../../tools/gen-expr/input", "r");
   char input_str[1005], input_expr[1005];
   int result;
+  int valid = fp == NULL;
+  printf("%d",valid);
   bool success = true;
   while (fgets(input_str, 1005, fp) != NULL) {
     sscanf(input_str, "%d %s", &result, input_expr);
