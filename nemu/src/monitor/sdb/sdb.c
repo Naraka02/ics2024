@@ -202,9 +202,24 @@ void sdb_mainloop() {
   }
 }
 
+void test_regex() {
+  FILE *fp = fopen("../../../tools/gen-expr/input", "r");
+  char input_str[1005], input_expr[1005];
+  int result;
+  bool success = true;
+  while (fgets(input_str, 1005, fp) != NULL) {
+    sscanf(input_str, "%d %s", &result, input_expr);
+    if (result != expr(input_expr, &success)) {
+      printf("Wrong result.\n%s\n", input_expr);
+    }
+  }
+}
+
 void init_sdb() {
   /* Compile the regular expressions. */
   init_regex();
+
+  test_regex();
 
   /* Initialize the watchpoint pool. */
   init_wp_pool();
