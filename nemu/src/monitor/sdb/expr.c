@@ -202,6 +202,7 @@ word_t eval(int start, int end, bool *success) {
 					break;
 				case '*':
 				case '/':
+          printf("%d",i);
 					if( main_op_pos == -1) {
 						main_op_pos = i;
 					} else if( tokens[i].type != '+' && tokens[i].type != TK_MINUS) {
