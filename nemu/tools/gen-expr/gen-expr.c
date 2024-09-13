@@ -39,7 +39,7 @@ uint32_t choose(uint32_t n) {
 }
 
 static void gen_rand_expr() {
-  if (expr_len > 1000) {
+  if (expr_len > 10) {
     buf[expr_len++] = choose(10) + '0';
     return;
   }
@@ -50,7 +50,7 @@ static void gen_rand_expr() {
 
   switch (choose(3)) {
     case 0:
-      int randInt = choose(INT8_MAX);
+      unsigned randInt = choose(INT8_MAX);
       sprintf(buf + expr_len, "%u", randInt);
       while (randInt > 0) {
         expr_len++;
