@@ -225,6 +225,7 @@ word_t eval(int start, int end, bool *success) {
 			*success = false;
 			return 0;
 		}
+    printf("%d\n", main_op_pos);
 		if(tokens[main_op_pos].type == TK_NEG){
 			return -eval(start + 1, end, success);
 		}

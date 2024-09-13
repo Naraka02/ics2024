@@ -226,6 +226,7 @@ void init_sdb() {
   /* Compile the regular expressions. */
   init_regex();
 
+  /* Test the expressions. */
   test_regex();
 
   /* Initialize the watchpoint pool. */
