@@ -128,7 +128,8 @@ static bool make_token(char *e) {
 						break;
 					case TK_MINUS:
 					case TK_NEG:
-						if(nr_token == 0 || tokens[nr_token-1].type != TK_INT){
+						if(nr_token == 0 || 
+              ( tokens[nr_token - 1].type != TK_INT && tokens[nr_token - 1] .type != ')')) {
 							tokens[nr_token].type = TK_NEG;
 						} else {
 							tokens[nr_token].type = TK_MINUS;
