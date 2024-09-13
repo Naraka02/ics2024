@@ -214,7 +214,7 @@ void test_regex() {
     if (result != expr_res) {
       test_pass = false;
       printf("Wrong result.\n%s != %u\n", input_expr, expr_res);
-      printf("%s = %d\n", input_expr, result);
+      printf("%s = %u\n", input_expr, result);
     }
   }
   if (test_pass) {
