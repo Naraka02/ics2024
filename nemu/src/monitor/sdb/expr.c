@@ -231,6 +231,7 @@ word_t eval(int start, int end, bool *success) {
 		}
 		val1 = eval(start, main_op_pos - 1, success);
 		val2 = eval(main_op_pos + 1, end, success);
+    printf("%u %u\n",val1,val2);
 
 		switch (tokens[main_op_pos].type){
 			case '+': return val1 + val2; break;
