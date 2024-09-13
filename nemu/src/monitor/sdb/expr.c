@@ -43,7 +43,7 @@ static struct rule {
 	{"\\-", TK_NEG},					// negative
 	{"\\*", '*'},						// multiply
 	{"\\/", '/'},						// divide
-	{"[0-9]+", TK_INT},			// integer
+	{"[0-9]+u?", TK_INT},			// integer
 	{"\\(", '('},						// left bracket
 	{"\\)", ')'},							// right bracket
 };
