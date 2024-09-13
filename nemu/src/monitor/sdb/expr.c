@@ -200,7 +200,17 @@ word_t eval(int start, int end, bool *success) {
 	} else {
 		int main_op_pos = -1;
 		word_t val1, val2;
-		for (int i = start; i <= end; i++){
+    int in_parentheses = 0; // 0 when not in parentheses
+		for (int i = start; i <= end; i++) {
+      if (tokens[i].type == '(') {
+        in_parentheses++;
+        continue;
+      } else if (tokens[i].type == ')') {
+        in_parentheses--;
+        continue;
+      } else if (in_parentheses == 0) {
+        continue;
+      }
 			switch (tokens[i].type) {
 				case '+':
 				case TK_MINUS:
