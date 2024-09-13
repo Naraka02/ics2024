@@ -222,7 +222,7 @@ word_t eval(int start, int end, bool *success) {
 				case '/':
 					if( main_op_pos == -1) {
 						main_op_pos = i;
-					} else if( tokens[i].type != '+' && tokens[i].type != TK_MINUS) {
+					} else if( tokens[main_op_pos].type != '+' && tokens[main_op_pos].type != TK_MINUS) {
 						main_op_pos = i;
 					}
 					break;
