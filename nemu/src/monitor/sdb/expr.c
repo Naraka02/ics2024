@@ -184,7 +184,6 @@ bool check_parentheses(int start, int end) {
 }
 
 word_t eval(int start, int end, bool *success) {
-  printf("start = %d, end = %d\n",start,end);
 	if(start > end) {
 		/* Bad expression */
 		*success = false;
@@ -202,7 +201,6 @@ word_t eval(int start, int end, bool *success) {
 		word_t val1, val2;
     int in_parentheses = 0; // 0 when not in parentheses
 		for (int i = start; i <= end; i++) {
-      printf("type = %d, main_op_pos = %d\n",tokens[i].type,main_op_pos);
       if (tokens[i].type == '(') {
         in_parentheses++;
         continue;
@@ -239,13 +237,11 @@ word_t eval(int start, int end, bool *success) {
 			*success = false;
 			return 0;
 		}
-    printf("%d %d\n", main_op_pos, tokens[main_op_pos].type);
 		if(tokens[main_op_pos].type == TK_NEG){
 			return -eval(start + 1, end, success);
 		}
 		val1 = eval(start, main_op_pos - 1, success);
 		val2 = eval(main_op_pos + 1, end, success);
-    printf("%u %u\n",val1,val2);
 
 		switch (tokens[main_op_pos].type){
 			case '+': return val1 + val2; break;
