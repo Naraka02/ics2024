@@ -192,6 +192,7 @@ word_t eval(int start, int end, bool *success) {
 		/* Single integer token */
 		word_t result;
 		sscanf(tokens[start].str, "%u", &result);
+    printf("%u\n",result);
 		return result;
 	} else if(check_parentheses(start, end) == true) {
 		/* throw away the parentheses */
