@@ -205,11 +205,11 @@ void sdb_mainloop() {
 void test_regex() {
   FILE *fp = fopen("/home/naraka02/ics2024/nemu/tools/gen-expr/input", "r");
   char input_str[1005], input_expr[1005];
-  int result;
+  word_t result;
   bool success = true;
   bool test_pass = true;
   while (fgets(input_str, 1005, fp) != NULL) {
-    sscanf(input_str, "%d %[^\n]", &result, input_expr);
+    sscanf(input_str, "%u %[^\n]", &result, input_expr);
     word_t expr_res = expr(input_expr, &success);
     if (result != expr_res) {
       test_pass = false;
