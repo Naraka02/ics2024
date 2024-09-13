@@ -41,6 +41,7 @@ uint32_t choose(uint32_t n) {
 static void gen_rand_expr() {
   if (expr_len > 10) {
     buf[expr_len++] = choose(10) + '0';
+    buf[expr_len++] = 'u';
     return;
   }
 
@@ -50,12 +51,13 @@ static void gen_rand_expr() {
 
   switch (choose(3)) {
     case 0:
-      unsigned randInt = choose(INT8_MAX);
+      unsigned randInt = choose(INT8_MAX) + 1;
       sprintf(buf + expr_len, "%u", randInt);
       while (randInt > 0) {
         expr_len++;
         randInt /= 10;
       }
+      buf[expr_len++] = 'u';
       break;
     case 1:
       buf[expr_len++] = '(';
@@ -94,7 +96,7 @@ int main(int argc, char *argv[]) {
     fputs(code_buf, fp);
     fclose(fp);
 
-    int ret = system("gcc /tmp/.code.c -Wall -Werror -o /tmp/.expr");
+    int ret = system("gcc /tmp/.code.c -Wno-div-by-zero -o /tmp/.expr");
     if (ret != 0) continue;
 
     fp = popen("/tmp/.expr", "r");
