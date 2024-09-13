@@ -202,6 +202,7 @@ word_t eval(int start, int end, bool *success) {
 		word_t val1, val2;
     int in_parentheses = 0; // 0 when not in parentheses
 		for (int i = start; i <= end; i++) {
+      printf("type = %d, main_op_pos = %d",tokens[i].type,main_op_pos);
       if (tokens[i].type == '(') {
         in_parentheses++;
         continue;
