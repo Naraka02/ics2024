@@ -208,9 +208,10 @@ word_t eval(int start, int end, bool *success) {
       } else if (tokens[i].type == ')') {
         in_parentheses--;
         continue;
-      } else if (in_parentheses == 0) {
+      } else if (in_parentheses > 0) {
         continue;
       }
+
 			switch (tokens[i].type) {
 				case '+':
 				case TK_MINUS:
