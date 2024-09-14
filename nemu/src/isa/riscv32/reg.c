@@ -22,14 +22,34 @@ const char *regs[] = {
   "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
+const int NR_REGS = sizeof(regs) / sizeof(char *);
 
 void isa_reg_display() {
-  printf("%-15s 0x%x\n", "pc", cpu.pc);
-  for(int i = 0; i < 32; i++) {
-		printf("%-15s 0x%x\n", regs[i], cpu.gpr[i]);
+  int i;
+  for (i = 0; i < NR_REGS; i++) {
+    if ( i == 1 || i == 2 || i == 3 || i == 8 || i == 9) {
+		  printf("%-10s\t0x%-10x\t0x%x\n", regs[i], cpu.gpr[i], cpu.gpr[i]);
+    } else {
+      printf("%-10s\t0x%-10x\t%u\n", regs[i], cpu.gpr[i], cpu.gpr[i]);
+    }
   }
+	printf("%-10s\t0x%-10x\t0x%x\n", "pc", cpu.gpr[i], cpu.gpr[i]);
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
+  int i;
+
+  if (strcmp(s, "pc") == 0) {
+    return cpu.pc;
+  }
+  for (i = 0; i < NR_REGS; i++) {
+    if (strcmp(s + 1, regs[i]) == 0) {
+      return cpu.gpr[i];
+    }
+  }
+
+  if (i == NR_REGS) {
+    *success = false;
+  }
   return 0;
 }
