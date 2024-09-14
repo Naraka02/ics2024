@@ -182,7 +182,6 @@ word_t eval(int start, int end, bool *success) {
 		  sscanf(tokens[start].str, "%u", &result);
     } else if(tokens[start].type == TK_HEX) {
       sscanf(tokens[start].str, "%x", &result);
-      printf("%s\n", tokens[start].str);
     }
 		return result;
 	} else if(check_parentheses(start, end) == true) {
