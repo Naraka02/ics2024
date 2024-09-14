@@ -45,7 +45,7 @@ static struct rule {
   {"-", '-'},				          // minus or negative
   {"\\*", '*'},						    // multiply or deref
 	{"\\/", '/'},						    // divide
-  {"\\$[0-9a-zA-Z\\$]+", TK_REG},  //register
+  {"\\$[\\S]+", TK_REG},  //register
   {"0x[0-9a-fA-F]+", TK_HEX}, // hex number
 	{"[0-9]+u?", TK_INT},			  // integer
 	{"\\(", '('},						    // left bracket
@@ -128,7 +128,6 @@ static bool make_token(char *e) {
 						break;
           case TK_REG:
             tokens[nr_token].type = rules[i].token_type;
-            printf("%s\n",substr_start);
             strcpy(tokens[nr_token].str, substr_start);
             nr_token++;
             break;
