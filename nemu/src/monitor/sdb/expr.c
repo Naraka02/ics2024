@@ -49,7 +49,7 @@ static struct rule {
 	{"[0-9]+u?", TK_INT},			  // integer
 	{"\\(", '('},						    // left bracket
 	{"\\)", ')'},							  // right bracket
-  {"$[0-9a-zA-Z]+", TK_REG},  //register 
+  {"\\$[0-9a-zA-Z]+", TK_REG},  //register 
 };
 
 #define NR_REGEX ARRLEN(rules)
