@@ -231,6 +231,7 @@ word_t eval(int start, int end, bool *success) {
 					break;
 				}
 		}
+    printf("%d\n", main_op_pos);
 		if(main_op_pos == -1) {
 			*success = false;
 			return 0;
