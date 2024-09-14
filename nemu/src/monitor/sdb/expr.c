@@ -171,7 +171,6 @@ bool check_parentheses(int start, int end) {
 }
 
 word_t eval(int start, int end, bool *success) {
-  printf("%d %d\n",start,end);
 	if(start > end) {
 		/* Bad expression */
 		*success = false;
@@ -231,7 +230,6 @@ word_t eval(int start, int end, bool *success) {
 					break;
 				}
 		}
-    printf("%d\n", tokens[main_op_pos].type);
 		if(main_op_pos == -1) {
 			*success = false;
 			return 0;
