@@ -19,10 +19,13 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+#include <memory/vaddr.h>
+
+#define TOKEN_SIZE 10005
 
 enum {
-	TK_NOTYPE = 256, TK_EQ, TK_MINUS,
-	TK_NEG, TK_INT
+	TK_NOTYPE = 256, TK_EQ, TK_NEG,
+  TK_INT, TK_HEX, TK_REG, TK_DEREF,
 		/* TODO: Add more token types */
 
 };
@@ -36,16 +39,17 @@ static struct rule {
 	 * Pay attention to the precedence level of different rules.
 	 */
 
-	{" +", TK_NOTYPE},			// spaces
-	{"\\+", '+'},						// plus
-	{"==", TK_EQ},					// equal
-	{"\\-", TK_MINUS},				// minus
-	{"\\-", TK_NEG},					// negative
-	{"\\*", '*'},						// multiply
-	{"\\/", '/'},						// divide
-	{"[0-9]+u?", TK_INT},			// integer
-	{"\\(", '('},						// left bracket
-	{"\\)", ')'},							// right bracket
+  {" +", TK_NOTYPE},          // spaces
+  {"\\+", '+'},						    // plus
+  {"==", TK_EQ},					    // equal
+  {"-", '-'},				          // minus or negative
+  {"\\*", '*'},						    // multiply or deref
+	{"\\/", '/'},						    // divide
+	{"[0-9]+u?", TK_INT},			  // integer
+	{"\\(", '('},						    // left bracket
+	{"\\)", ')'},							  // right bracket
+  {"0x[0-9a-fA-F]+", TK_HEX}, // hex number
+  {"$[0-9a-zA-Z]+", TK_REG},  //register 
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -74,7 +78,7 @@ typedef struct token {
 	char str[32];
 } Token;
 
-static Token tokens[10005] __attribute__((used)) = {};
+static Token tokens[TOKEN_SIZE] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -102,42 +106,19 @@ static bool make_token(char *e) {
 				 */
 
 				switch (rules[i].token_type) {
-					case '+': 
-						tokens[nr_token].type = '+';
-						nr_token++;
-						break;
+					case '+':
+          case '-':
 					case '*':
-						tokens[nr_token].type = '*';
-						nr_token++;
-						break;
           case '/':
-            tokens[nr_token].type = '/';
-            nr_token++;
-            break;
 					case '(':
-						tokens[nr_token].type = '(';
-						nr_token++;
-						break;
 					case ')':
-						tokens[nr_token].type = ')';
-						nr_token++;
-						break;
 					case TK_EQ:
-						tokens[nr_token].type = TK_EQ;
-						nr_token++;
-						break;
-					case TK_MINUS:
-					case TK_NEG:
-						if(nr_token == 0 || 
-              ( tokens[nr_token - 1].type != TK_INT && tokens[nr_token - 1] .type != ')')) {
-							tokens[nr_token].type = TK_NEG;
-						} else {
-							tokens[nr_token].type = TK_MINUS;
-						}
+            tokens[nr_token].type = rules[i].token_type;
 						nr_token++;
 						break;
 					case TK_INT:
-						tokens[nr_token].type = TK_INT;
+          case TK_HEX:
+						tokens[nr_token].type = rules[i].token_type;
 						if(substr_len > 31) {
 							printf("too large integer at position %d\n%s\n%*.s^\n", position, e, position, "");
 							return false;
@@ -145,6 +126,11 @@ static bool make_token(char *e) {
 						strcpy(tokens[nr_token].str, substr_start);
 						nr_token++;
 						break;
+          case TK_REG:
+            tokens[nr_token].type = rules[i].token_type;
+            strcpy(tokens[nr_token].str, substr_start);
+            nr_token++;
+            break;
 					default:
 						break;
 				}
@@ -158,6 +144,7 @@ static bool make_token(char *e) {
 			return false;
 		}
 	}
+
 
 	return true;
 }
@@ -191,7 +178,11 @@ word_t eval(int start, int end, bool *success) {
 	} else if (start == end) {
 		/* Single integer token */
 		word_t result;
-		sscanf(tokens[start].str, "%u", &result);
+    if(tokens[start].type == TK_INT) {
+		  sscanf(tokens[start].str, "%u", &result);
+    } else if(tokens[start].type == TK_HEX) {
+      sscanf(tokens[start].str, "%u", &result);
+    }
 		return result;
 	} else if(check_parentheses(start, end) == true) {
 		/* throw away the parentheses */
@@ -201,31 +192,32 @@ word_t eval(int start, int end, bool *success) {
 		word_t val1, val2;
     int in_parentheses = 0; // 0 when not in parentheses
 		for (int i = start; i <= end; i++) {
-      if (tokens[i].type == '(') {
+      if(tokens[i].type == '(') {
         in_parentheses++;
         continue;
-      } else if (tokens[i].type == ')') {
+      } else if(tokens[i].type == ')') {
         in_parentheses--;
         continue;
-      } else if (in_parentheses > 0) {
+      } else if(in_parentheses > 0) {
         continue;
       }
 
 			switch (tokens[i].type) {
 				case '+':
-				case TK_MINUS:
+				case '-':
 					main_op_pos = i;
 					break;
 				case '*':
 				case '/':
-					if( main_op_pos == -1) {
+					if(main_op_pos == -1) {
 						main_op_pos = i;
-					} else if( tokens[main_op_pos].type != '+' && tokens[main_op_pos].type != TK_MINUS) {
+					} else if(tokens[main_op_pos].type != '+' && tokens[main_op_pos].type != '-') {
 						main_op_pos = i;
 					}
 					break;
 				case TK_NEG:
-					if( main_op_pos == -1) {
+        case TK_DEREF:
+					if(main_op_pos == -1) {
 						main_op_pos = i;
 					}
 					break;
@@ -237,15 +229,20 @@ word_t eval(int start, int end, bool *success) {
 			*success = false;
 			return 0;
 		}
-		if(tokens[main_op_pos].type == TK_NEG){
+
+		if(tokens[main_op_pos].type == TK_NEG) {
 			return -eval(start + 1, end, success);
 		}
+    if(tokens[main_op_pos].type == TK_DEREF) {
+      return vaddr_read(eval(start + 1, end, success), 4);
+    } 
+
 		val1 = eval(start, main_op_pos - 1, success);
 		val2 = eval(main_op_pos + 1, end, success);
 
 		switch (tokens[main_op_pos].type){
 			case '+': return val1 + val2; break;
-			case TK_MINUS: return val1 - val2; break;
+			case '-': return val1 - val2; break;
 			case '*': return val1 * val2; break;
 			case '/': 
         if (val2 == 0) {
@@ -264,6 +261,24 @@ word_t expr(char *e, bool *success) {
 		*success = false;
 		return 0;
 	}
+
+  int i;
+  for(i = 0; i < nr_token; i++){
+    if(tokens[i].type == '-') {
+      if(i == 0 || tokens[i - 1].type == '+' || tokens[i - 1].type == '-'
+                || tokens[i - 1].type == '*' || tokens[i - 1].type == '/' 
+                || tokens[i - 1].type == '(') {
+        tokens[i].type = TK_NEG;
+      }
+    }
+    if(tokens[i].type == '*') {
+      if(i == 0 || tokens[i - 1].type == '+' || tokens[i - 1].type == '-'
+                || tokens[i - 1].type == '*' || tokens[i - 1].type == '/' 
+                || tokens[i - 1].type == '(') {
+        tokens[i].type = TK_DEREF;
+      }
+    }
+  }
 
 	/* TODO: Insert codes to evaluate the expression. */
 	return eval(0, nr_token - 1, success);
