@@ -118,7 +118,7 @@ static int cmd_x(char *args) {
         }
         result = vaddr_read(address + 4 * i, 4);
         printf("0x%08x\t", result);
-        if(i % 4 == 3) {
+        if(i % 4 == 3 || i == N - 1) {
           printf("\n");
         }
       }
