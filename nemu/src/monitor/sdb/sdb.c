@@ -103,6 +103,7 @@ static int cmd_x(char *args) {
 	} else {
 	  word_t N, address, result;
     bool success = true;
+    int i;
 
     if ( sscanf(arg1, "%u", &N) != 1) { 
       success = false;
@@ -111,8 +112,17 @@ static int cmd_x(char *args) {
     if (success == false) {
       printf("Bad expression.\n");
     } else {
-      result = vaddr_read(address, 4);
-      printf("0x%x:\t0x%x\n", address, result);
+      for (i = 0; i < N; i++){
+        if (i % 4 == 0) {
+          printf("0x%08x:\t", address + 16 * (i / 4));
+        }
+        result = vaddr_read(address + 4 * i, 4);
+        printf("0x%08x\t", result);
+        if(i % 4 == 3) {
+          printf("\n");
+        }
+      }
+
     }
 	}
 	
