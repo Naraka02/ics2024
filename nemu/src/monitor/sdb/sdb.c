@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/vaddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -95,12 +96,24 @@ static int cmd_info(char *args) {
 
 static int cmd_x(char *args) {
 	char *arg1 = strtok(NULL, " ");
-	char *arg2 = strtok(NULL, " ");
+	char *arg2 = strtok(NULL, "\n");
 	
 	if(arg1 == NULL || arg2 == NULL) {
 		printf("Please enter two vaild arguments.");
 	} else {
-		
+	  word_t N, address, result;
+    bool success = true;
+
+    if ( sscanf(arg1, "%u", &N) != 0) {
+      success = false;
+    }
+    address = expr(arg2, &success);
+    if (success == false) {
+      printf("Bad expression.");
+    } else {
+      result = vaddr_read(address, N);
+      printf("0x%x:/t%u", address, result);
+    }
 	}
 	
 	return 0;
