@@ -109,7 +109,7 @@ static int cmd_x(char *args) {
     }
     address = expr(arg2, &success);
     if (success == false) {
-      printf("Bad expression.");
+      printf("Bad expression.\n");
     } else {
       result = vaddr_read(address, N);
       printf("0x%x:/t%u", address, result);
