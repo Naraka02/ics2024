@@ -111,7 +111,7 @@ static int cmd_x(char *args) {
     if (success == false) {
       printf("Bad expression.\n");
     } else {
-      result = vaddr_read(address, N);
+      result = vaddr_read(address, 4);
       printf("0x%x:\t0x%x\n", address, result);
     }
 	}
