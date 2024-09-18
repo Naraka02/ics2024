@@ -217,6 +217,7 @@ void test_regex() {
       printf("%s = %u\n", input_expr, result);
     }
   }
+  fclose(fp);
   if (test_pass) {
     printf("regex test passed\n");
   }
