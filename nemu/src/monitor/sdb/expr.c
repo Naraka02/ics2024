@@ -123,12 +123,12 @@ static bool make_token(char *e) {
 							printf("too large integer at position %d\n%s\n%*.s^\n", position, e, position, "");
 							return false;
 						}
-						strcpy(tokens[nr_token].str, substr_start);
+						strncpy(tokens[nr_token].str, substr_start, substr_len);
 						nr_token++;
 						break;
           case TK_REG:
             tokens[nr_token].type = rules[i].token_type;
-            strcpy(tokens[nr_token].str, substr_start);
+            strncpy(tokens[nr_token].str, substr_start, substr_len);
             printf("%s\n", tokens[nr_token].str);
             nr_token++;
             break;
