@@ -184,6 +184,7 @@ word_t eval(int start, int end, bool *success) {
       sscanf(tokens[start].str, "%x", &result);
     } else if(tokens[start].type == TK_REG) {
       result = isa_reg_str2val(tokens[start].str, success);
+      printf("%d\n",result);
       if(success == false) {
         printf("No such register.\n");
       }
