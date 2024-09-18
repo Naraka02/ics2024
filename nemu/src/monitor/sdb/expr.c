@@ -45,7 +45,7 @@ static struct rule {
   {"-", '-'},				          // minus or negative
   {"\\*", '*'},						    // multiply or deref
 	{"\\/", '/'},						    // divide
-  {"\\$[a-z0-9A-Z$]+", TK_REG},  //register
+  {"\\$[a-z0-9A-Z\\$]+", TK_REG},  //register
   {"0x[0-9a-fA-F]+", TK_HEX}, // hex number
 	{"[0-9]+u?", TK_INT},			  // integer
 	{"\\(", '('},						    // left bracket
