@@ -184,7 +184,6 @@ word_t eval(int start, int end, bool *success) {
       sscanf(tokens[start].str, "%x", &result);
     } else if(tokens[start].type == TK_REG) {
       result = isa_reg_str2val(tokens[start].str, success);
-      printf("%s\n",tokens[start].str);
       if(success == false) {
         printf("No such register.\n");
       }
@@ -263,6 +262,8 @@ word_t eval(int start, int end, bool *success) {
 }
 
 word_t expr(char *e, bool *success) {
+  memset(tokens, 0, TOKEN_SIZE * sizeof(Token));
+
 	if (!make_token(e)) {
 		*success = false;
 		return 0;
