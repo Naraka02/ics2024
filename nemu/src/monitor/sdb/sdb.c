@@ -104,7 +104,7 @@ static int cmd_x(char *args) {
 	  word_t N, address, result;
     bool success = true;
 
-    if ( sscanf(arg1, "%u", &N) != 0) {
+    if ( sscanf(arg1, "%u", &N) != 1) { 
       success = false;
     }
     address = expr(arg2, &success);
