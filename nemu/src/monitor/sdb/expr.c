@@ -127,9 +127,9 @@ static bool make_token(char *e) {
 						nr_token++;
 						break;
           case TK_REG:
-            printf("%s\n", substr_start);
             tokens[nr_token].type = rules[i].token_type;
             strcpy(tokens[nr_token].str, substr_start);
+            printf("%s\n", tokens[nr_token].str);
             nr_token++;
             break;
 					default:
