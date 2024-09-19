@@ -80,3 +80,6 @@ void free_wp(int NO) {
   }
 }
 
+void print_wp() {
+  
+}
