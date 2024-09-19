@@ -56,7 +56,7 @@ void new_wp(char *e) {
 
   WP *new_wp = free_;
   free_ = free_->next;
-  new_wp->next = head->next;
+  new_wp->next = head == NULL ? NULL : head->next;
   head = new_wp;
 
   new_wp->expr_str = e;
