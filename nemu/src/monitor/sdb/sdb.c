@@ -24,6 +24,8 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+void new_wp(char *e);
+void free_wp(int NO);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -122,7 +124,6 @@ static int cmd_x(char *args) {
           printf("\n");
         }
       }
-
     }
 	}
 	
@@ -132,12 +133,30 @@ static int cmd_x(char *args) {
 static int cmd_p(char *args) {
 	bool success = true;
 	word_t result = expr(args, &success);
-	if(success == false){
+	if (success == false) {
 		printf("Bad expression.\n");
 	} else{
 		printf("%s = %u\n", args, result);
 	}
 	return 0;
+}
+
+static int cmd_w(char *args) {
+  new_wp(args);
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  char *arg = strtok(NULL, " ");
+  int NO;
+
+  if (sscanf(arg, "%d", &NO) != 1) {
+    printf("Please enter NO of the watchpoint.\n");
+  } else {
+    free_wp(NO);
+  }
+
+  return 0;
 }
 
 static int cmd_help(char *args);
@@ -154,6 +173,8 @@ static struct {
   { "info", "Print status of registers or watchpoints", cmd_info }, 
 	{ "x", "Examine memory", cmd_x},
 	{ "p", "Calculate the expression", cmd_p},
+  { "w", "Set watchpoints", cmd_w},
+  { "d", "Delete watchpoints", cmd_d},
   /* TODO: Add more commands */
 
 };
