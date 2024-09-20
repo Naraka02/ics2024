@@ -42,9 +42,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 #ifdef CONFIG_WATCHPOINT
   if (check_wp() == 1) {
-    printf("%d\n",nemu_state.state);
     nemu_state.state = NEMU_STOP;
-    sdb_mainloop();
   }
 #endif
 }
