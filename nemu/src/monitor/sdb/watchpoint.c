@@ -60,7 +60,7 @@ void new_wp(char *e) {
   new_wp->next = head == NULL ? NULL : head->next;
   head = new_wp;
 
-  new_wp->expr_str = e;
+  strcpy(new_wp->expr_str, e);
   new_wp->val = expr_val;
 }
 
