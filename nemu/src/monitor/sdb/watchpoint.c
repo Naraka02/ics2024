@@ -48,7 +48,6 @@ void new_wp(char *e) {
     assert(0);
   }
   bool success = true;
-  Log("%s\n",e);
   word_t expr_val = expr(e, &success);
   if (success == false) {
     Log("Bad expression.");
