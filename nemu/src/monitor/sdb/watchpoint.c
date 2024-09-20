@@ -88,3 +88,16 @@ void print_wp() {
     cur = cur->next;
   }
 }
+
+int check_wp() {
+  WP *cur = head;
+  while (cur != NULL) {
+    bool success = true;
+    word_t new_val = expr(cur->expr_str, &success);
+    if (new_val != cur->val) {
+      return 1;
+    }
+  }
+  
+  return 0;
+}
