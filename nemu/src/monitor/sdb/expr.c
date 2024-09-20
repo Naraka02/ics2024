@@ -208,9 +208,14 @@ word_t eval(int start, int end, bool *success) {
       }
 
 			switch (tokens[i].type) {
+        case TK_EQ:
+          main_op_pos = i;
+          break;
 				case '+':
 				case '-':
-					main_op_pos = i;
+					if (main_op_pos == -1 || tokens[main_op_pos].type != TK_EQ) {
+            main_op_pos = i;
+          }
 					break;
 				case '*':
 				case '/':
@@ -249,6 +254,7 @@ word_t eval(int start, int end, bool *success) {
 			case '+': return val1 + val2; break;
 			case '-': return val1 - val2; break;
 			case '*': return val1 * val2; break;
+      case TK_EQ: return val1 == val2;break;
 			case '/': 
         if (val2 == 0) {
           *success = false;
