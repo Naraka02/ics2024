@@ -64,4 +64,4 @@ endif
 
 # Count total lines in .c and .h file.
 count:
-	find -name "*.[ch]" | xargs wc -l    
+	find -name "*.[ch]" | xargs cat | wc -l    
