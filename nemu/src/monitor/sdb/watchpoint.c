@@ -82,9 +82,9 @@ void free_wp(int NO) {
 
 void print_wp() {
   WP *cur = head;
-  printf("%-8s%-12s%-4s%-4s%-12s%s\n", "Num", "Type", "Disp", "Enb", "Address", "What");
+  printf("%-8s%-12s%-6s%-6s%-12s%s\n", "Num", "Type", "Disp", "Enb", "Address", "What");
   while (cur != NULL) {
-    printf("%-8d%-12s%-4s%-4s%-12x%s\n", cur->NO, "breakpoint", "keep", "y", 0, cur->expr_str);
+    printf("%-8d%-12s%-6s%-6s%-12x%s\n", cur->NO, "breakpoint", "keep", "y", 0, cur->expr_str);
     cur = cur->next;
   }
 }
