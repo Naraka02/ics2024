@@ -32,6 +32,7 @@ static bool g_print_step = false;
 
 void device_update();
 int check_wp();
+void sdb_mainloop();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -40,7 +41,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 #ifdef CONFIG_WATCHPOINT
-  check_wp();
+  if (check_wp() == 1) {
+    nemu_state.state = NEMU_STOP;
+    sdb_mainloop();
+  }
 #endif
 }
 

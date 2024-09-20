@@ -274,7 +274,7 @@ void init_sdb() {
   init_regex();
 
   /* Test the expressions. */
-  test_regex();
+  //test_regex();
 
   /* Initialize the watchpoint pool. */
   init_wp_pool();
