@@ -91,13 +91,19 @@ void print_wp() {
 
 int check_wp() {
   WP *cur = head;
+  int hit = 0;
   while (cur != NULL) {
     bool success = true;
     word_t new_val = expr(cur->expr_str, &success);
     if (new_val != cur->val) {
-      return 1;
+      hit = 1;
+      printf("\nWatchpoint %d: %s\n\n", cur->NO, cur->expr_str);
+      printf("Old value = %u\n", cur->val);
+      printf("New value = %u\n", new_val);
+      cur->val = new_val;
     }
+    cur = cur->next;
   }
   
-  return 0;
+  return hit;
 }
