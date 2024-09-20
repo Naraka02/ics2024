@@ -85,5 +85,6 @@ void print_wp() {
   printf("%4s%8s%2s%2s%8s%s\n", "Num", "Type", "Disp", "Enb", "Address", "What");
   while (cur != NULL) {
     printf("%4d%8s%2s%2s%8x%s\n", cur->NO, "breakpoint", "keep", "y", 0, cur->expr_str);
+    cur = cur->next;
   }
 }
