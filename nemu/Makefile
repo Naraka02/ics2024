@@ -63,5 +63,6 @@ include $(NEMU_HOME)/scripts/native.mk
 endif
 
 # Count total lines in .c and .h file.
+.PHONY:	count
 count:
 	find -name "*.[ch]" | xargs cat | wc -l    
