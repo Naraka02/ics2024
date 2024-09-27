@@ -139,6 +139,7 @@ static int cmd_p(char *args) {
 		printf("Bad expression.\n");
 	} else{
 		printf("%s = %u\n", args, result);
+    printf("0x%08x\n", result);
 	}
 	return 0;
 }
