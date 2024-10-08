@@ -37,16 +37,15 @@ int sprintf(char *out, const char *fmt, ...) {
               num_copy /= 10;
               num_len++;
             } while (num_copy);
-            buf[len + num_len] = '\0';
-            do {
-              buf[len + --num_len] = num % 10 + '0';
+            for (int i = 0; i < num_len; ++i) {
+              buf[len + num_len - i - 1] = num % 10 + '0';
               num /= 10;
-            } while (num);
+            }
             len += num_len;
             break;
           case 's':
             const char* str = va_arg(ap, const char*);
-            while (*str) {
+            while (*str != '\0') {
               buf[len++] = *str++;
             }
             break;
@@ -57,6 +56,8 @@ int sprintf(char *out, const char *fmt, ...) {
         break;
     }
   }
+
+  buf[len++] = '\0';
   memcpy(out, buf, len);
   va_end(ap);
 
