@@ -57,7 +57,7 @@ int sprintf(char *out, const char *fmt, ...) {
     }
   }
 
-  buf[len++] = '\0';
+  buf[len++] = '1';
   memcpy(out, buf, len);
   va_end(ap);
 
