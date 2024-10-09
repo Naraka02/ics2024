@@ -24,11 +24,14 @@
  * You can modify this value as you want.
  */
 #define MAX_INST_TO_PRINT 10
+#define IRINGBUF_SIZE 16
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
+static char iringbuf[IRINGBUF_SIZE][128];
+int iringbuf_idx = 0;
 
 void device_update();
 int check_wp();
@@ -43,6 +46,15 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_WATCHPOINT
   if (check_wp() == 1 && nemu_state.state != NEMU_END) {
     nemu_state.state = NEMU_STOP;
+  }
+#endif
+
+#ifdef CONFIG_IRINGBUF
+  strcpy(iringbuf[iringbuf_idx], _this->logbuf);
+  if (iringbuf_idx < IRINGBUF_SIZE - 1) {
+    iringbuf_idx++;
+  } else {
+    iringbuf_idx = 0;
   }
 #endif
 }
@@ -94,9 +106,22 @@ static void statistic() {
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
 }
 
+void iringbuf_display() {
+  for (int i = 0; i < IRINGBUF_SIZE; i++) {
+    if (strlen(iringbuf[i]) == 0) break;
+    if (i == (iringbuf_idx - 1 + IRINGBUF_SIZE) % IRINGBUF_SIZE) {
+      puts("--> ");
+    } else {
+      puts("    ");
+    }
+    puts(iringbuf[i]);
+  }
+}
+
 void assert_fail_msg() {
   isa_reg_display();
   statistic();
+  IFDEF(CONFIG_IRINGBUF, iringbuf_display());
 }
 
 /* Simulate how the CPU works. */
