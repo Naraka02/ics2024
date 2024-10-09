@@ -110,11 +110,10 @@ void iringbuf_display() {
   for (int i = 0; i < IRINGBUF_SIZE; i++) {
     if (strlen(iringbuf[i]) == 0) break;
     if (i == (iringbuf_idx - 1 + IRINGBUF_SIZE) % IRINGBUF_SIZE) {
-      puts("--> ");
+      printf("--> %s\n", iringbuf[i]);
     } else {
-      puts("    ");
+      printf("    %s\n", iringbuf[i]);
     }
-    puts(iringbuf[i]);
   }
 }
 
