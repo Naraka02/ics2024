@@ -46,6 +46,7 @@ void init_ftrace(const char *elf_file) {
   fread(symtab, sizeof(symtab), 1, fp);
 
   for (int i = 0; i < symtab_shdr.sh_size / sizeof(Elf32_Sym); i++) {
+    printf("symtab[%d].st_name = %d\n", i, symtab[i].st_name);
     if (ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
       char name[128];
       fseek(fp, strtab_shdr.sh_offset + symtab[i].st_name, SEEK_SET);
