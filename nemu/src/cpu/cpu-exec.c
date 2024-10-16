@@ -139,7 +139,7 @@ void ftrace_display() {
       for (int j = 0; j < depth; j++) {
         printf("  ");
       }
-      printf("re [%s]\n", ftrace_log[i].name);
+      printf("ret [%s]\n", ftrace_log[i].name);
       depth--;   
     }
   }
