@@ -53,12 +53,14 @@ void init_ftrace(const char *elf_file) {
     if (ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
       char name[128];
       fseek(fp, strtab_shdr.sh_offset + symtab[i].st_name, SEEK_SET);
-      fread(name, sizeof(name), 1, fp);
+      fscanf(fp, "%s", name);
       functab[functab_size].addr = symtab[i].st_value;
       functab[functab_size].name = strdup(name);
       functab_size++;
     }
   }
+  
+  fclose(fp);
  
   for (int i = 0; i < functab_size; i++) {
     Log("Function %s at 0x%08x", functab[i].name, functab[i].addr);
