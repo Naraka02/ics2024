@@ -54,7 +54,7 @@ void init_ftrace(const char *elf_file) {
       printf("%d\n", symtab[i].st_name);
       char name[128];
       fseek(fp, strtab_shdr.sh_offset + symtab[i].st_name, SEEK_SET);
-      fscanf(fp, "%s", name);
+      fread(name, 128, 1, fp);
       functab[functab_size].addr = symtab[i].st_value;
       functab[functab_size].name = strdup(name);
       functab_size++;
