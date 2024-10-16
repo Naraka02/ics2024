@@ -27,6 +27,7 @@ void init_wp_pool();
 void new_wp(char *e);
 void free_wp(int NO);
 void print_wp();
+void ftrace_display();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -162,6 +163,12 @@ static int cmd_d(char *args) {
   return 0;
 }
 
+static int cmd_f(char *args) {
+  printf("Function trace log:\n");
+  ftrace_display();
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -178,6 +185,7 @@ static struct {
 	{ "p", "Calculate the expression", cmd_p},
   { "w", "Set watchpoints", cmd_w},
   { "d", "Delete watchpoints", cmd_d},
+  { "f", "Print the function trace log", cmd_f},
   /* TODO: Add more commands */
 
 };
