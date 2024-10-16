@@ -41,8 +41,6 @@ void init_ftrace(const char *elf_file) {
     }
   }
 
-  Log("symtab_shdr.sh_offset = 0x%08x, symtab_shdr.sh_size = 0x%08x", symtab_shdr.sh_offset, symtab_shdr.sh_size);
-
   Assert(symtab_shdr.sh_size % sizeof(Elf32_Sym) == 0, "Invalid symtab size");
   Assert(strtab_shdr.sh_size > 0, "Invalid strtab size");
 
