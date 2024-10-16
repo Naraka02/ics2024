@@ -79,7 +79,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     ftrace_log[ftrace_log_idx].from_addr = _this->pc;
     ftrace_log[ftrace_log_idx].to_addr = dnpc;
     ftrace_log[ftrace_log_idx].is_call = false;
-    ftrace_log[ftrace_log_idx].name = get_func_name(dnpc);
+    ftrace_log[ftrace_log_idx].name = get_func_name(_this->pc);
     ftrace_log_idx++;
   }
   
