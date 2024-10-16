@@ -25,6 +25,7 @@
  */
 #define MAX_INST_TO_PRINT 10
 #define IRINGBUF_SIZE 16
+#define INST_NAME_OFFSET 24
 
 typedef struct {
   char *name;
@@ -38,11 +39,13 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 static char iringbuf[IRINGBUF_SIZE][128];
 int iringbuf_idx = 0;
+static func_log ftrace_log[1024];
 int ftrace_log_idx = 0;
 
 void device_update();
 int check_wp();
 void sdb_mainloop();
+char* get_func_name(word_t addr);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -66,6 +69,24 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_FTRACE
+  if (strncmp((_this->logbuf + INST_NAME_OFFSET), "jal", 3) == 0) {
+    ftrace_log[ftrace_log_idx].from_addr = _this->pc;
+    ftrace_log[ftrace_log_idx].to_addr = dnpc;
+    ftrace_log[ftrace_log_idx].is_call = true;
+    ftrace_log[ftrace_log_idx].name = get_func_name(dnpc);
+    ftrace_log_idx++;
+  }
+  if (strncmp((_this->logbuf + INST_NAME_OFFSET), "jalr", 4) == 0) {
+    ftrace_log[ftrace_log_idx].from_addr = _this->pc;
+    ftrace_log[ftrace_log_idx].to_addr = dnpc;
+    if (strncmp((_this->logbuf + INST_NAME_OFFSET + 8), "zero", 4) == 0) {
+      ftrace_log[ftrace_log_idx].is_call = false;
+    } else {
+      ftrace_log[ftrace_log_idx].is_call = true;
+    }
+    ftrace_log[ftrace_log_idx].name = get_func_name(dnpc);
+    ftrace_log_idx++;
+  }
 #endif
 }
 
@@ -107,6 +128,21 @@ static void execute(uint64_t n) {
   }
 }
 
+void ftrace_display() {
+  int depth = 0;
+  for (int i = 0; i < ftrace_log_idx; i++) {
+    if (ftrace_log[i].is_call) {
+      for (int j = 0; j < depth; j++) {
+        printf("  ");
+      }
+      printf("%s\n", ftrace_log[i].name);
+      depth++;
+    } else {
+      depth--;
+    }
+  }
+}
+
 static void statistic() {
   IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
 #define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%", "%'") PRIu64
@@ -114,6 +150,8 @@ static void statistic() {
   Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
   if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " inst/s", g_nr_guest_inst * 1000000 / g_timer);
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
+
+  IFDEF(CONFIG_FTRACE, ftrace_display());
 }
 
 void iringbuf_display() {

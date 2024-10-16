@@ -68,3 +68,12 @@ void init_ftrace(const char *elf_file) {
     Log("Function %s at 0x%08x", functab[i].name, functab[i].addr);
   }
 }
+
+char* get_func_name(word_t addr) {
+  for (int i = 0; i < functab_size; i++) {
+    if (addr >= functab[i].addr && addr < functab[i].addr + functab[i].size) {
+      return functab[i].name;
+    }
+  }
+  return "???";
+}
