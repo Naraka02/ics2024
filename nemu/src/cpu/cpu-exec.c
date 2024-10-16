@@ -69,24 +69,20 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_FTRACE
-  if (strncmp((_this->logbuf + INST_NAME_OFFSET), "jal ", 4) == 0) {
+  if (strncmp((_this->logbuf + INST_NAME_OFFSET), "jal", 3) == 0) {
     ftrace_log[ftrace_log_idx].from_addr = _this->pc;
     ftrace_log[ftrace_log_idx].to_addr = dnpc;
     ftrace_log[ftrace_log_idx].is_call = true;
     ftrace_log[ftrace_log_idx].name = get_func_name(dnpc);
     ftrace_log_idx++;
-  }
-  if (strncmp((_this->logbuf + INST_NAME_OFFSET), "jalr", 4) == 0) {
+  } else if (strncmp((_this->logbuf + INST_NAME_OFFSET), "ret", 3) == 0) {
     ftrace_log[ftrace_log_idx].from_addr = _this->pc;
     ftrace_log[ftrace_log_idx].to_addr = dnpc;
-    if (strncmp((_this->logbuf + INST_NAME_OFFSET + 8), "zero", 4) == 0) {
-      ftrace_log[ftrace_log_idx].is_call = false;
-    } else {
-      ftrace_log[ftrace_log_idx].is_call = true;
-    }
+    ftrace_log[ftrace_log_idx].is_call = false;
     ftrace_log[ftrace_log_idx].name = get_func_name(dnpc);
     ftrace_log_idx++;
   }
+  
 #endif
 }
 
