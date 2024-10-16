@@ -51,8 +51,9 @@ void init_ftrace(const char *elf_file) {
 
   for (int i = 0; i < symtab_shdr.sh_size / sizeof(Elf32_Sym); i++) {
     if (ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
+      printf("%d\n", symtab[i].st_name);
       char name[128];
-      fseek(fp, strtab_shdr.sh_offset + symtab[i].st_name + 1, SEEK_SET);
+      fseek(fp, strtab_shdr.sh_offset + symtab[i].st_name, SEEK_SET);
       fscanf(fp, "%s", name);
       functab[functab_size].addr = symtab[i].st_value;
       functab[functab_size].name = strdup(name);
