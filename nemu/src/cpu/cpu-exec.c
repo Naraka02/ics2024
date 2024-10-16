@@ -140,7 +140,6 @@ void ftrace_display() {
         printf("  ");
       }
       printf("ret [%s]\n", ftrace_log[i].name);
-      depth--;   
     }
   }
 }
