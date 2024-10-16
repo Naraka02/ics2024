@@ -36,7 +36,7 @@ void init_ftrace(const char *elf_file) {
     if (shdr[i].sh_type == SHT_SYMTAB) {
       symtab_shdr = shdr[i];
     }
-    if (shdr[i].sh_type == SHT_STRTAB) {
+    if (shdr[i].sh_type == SHT_STRTAB && i != ehdr.e_shstrndx) {
       strtab_shdr = shdr[i];
     }
   }
@@ -51,7 +51,6 @@ void init_ftrace(const char *elf_file) {
 
   for (int i = 0; i < symtab_shdr.sh_size / sizeof(Elf32_Sym); i++) {
     if (ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
-      printf("%d\n", symtab[i].st_name);
       char name[128];
       fseek(fp, strtab_shdr.sh_offset + symtab[i].st_name, SEEK_SET);
       fread(name, 128, 1, fp);
@@ -61,14 +60,6 @@ void init_ftrace(const char *elf_file) {
     }
   }
   
-  printf("strtab_shdr.sh_offset = %x\n", strtab_shdr.sh_offset);
-  printf("strtab_shdr.sh_size = %x\n", strtab_shdr.sh_size);
-
-  fseek(fp, strtab_shdr.sh_offset, SEEK_SET);
-  for (int i = 0; i < strtab_shdr.sh_size; i++) {
-    char c = fgetc(fp);
-    putchar(c);
-  }
   fclose(fp);
  
   for (int i = 0; i < functab_size; i++) {
