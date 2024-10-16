@@ -61,11 +61,11 @@ void init_ftrace(const char *elf_file) {
     }
   }
 
-  char strtab[strtab_shdr.sh_size];
-  fseek(fp, strtab_shdr.sh_offset + 64 * 8, SEEK_SET);
-  fread(strtab, sizeof(strtab), 1, fp);
-  printf("%s\n", strtab);
-
+  fseek(fp, strtab_shdr.sh_offset, SEEK_SET);
+  for (int i = 0; i < strtab_shdr.sh_size; i++) {
+    char c = fgetc(fp);
+    putchar(c);
+  }
   fclose(fp);
  
   for (int i = 0; i < functab_size; i++) {
