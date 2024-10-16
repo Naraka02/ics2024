@@ -26,12 +26,19 @@
 #define MAX_INST_TO_PRINT 10
 #define IRINGBUF_SIZE 16
 
+typedef struct {
+  char *name;
+  word_t from_addr, to_addr;
+  bool is_call;
+} func_log;
+
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 static char iringbuf[IRINGBUF_SIZE][128];
 int iringbuf_idx = 0;
+int ftrace_log_idx = 0;
 
 void device_update();
 int check_wp();
@@ -56,6 +63,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   } else {
     iringbuf_idx = 0;
   }
+#endif
+
+#ifdef CONFIG_FTRACE
 #endif
 }
 
@@ -83,6 +93,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
+  printf("%s\n", p);
 #endif
 }
 

@@ -5,6 +5,7 @@
 
 typedef struct {
   uint32_t addr;
+  uint32_t size;
   char *name;
 } func;
 
@@ -55,6 +56,7 @@ void init_ftrace(const char *elf_file) {
       fseek(fp, strtab_shdr.sh_offset + symtab[i].st_name, SEEK_SET);
       fread(name, 128, 1, fp);
       functab[functab_size].addr = symtab[i].st_value;
+      functab[functab_size].size = symtab[i].st_size;
       functab[functab_size].name = strdup(name);
       functab_size++;
     }
@@ -66,4 +68,3 @@ void init_ftrace(const char *elf_file) {
     Log("Function %s at 0x%08x", functab[i].name, functab[i].addr);
   }
 }
-
