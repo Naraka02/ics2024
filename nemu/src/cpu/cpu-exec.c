@@ -131,14 +131,20 @@ static void execute(uint64_t n) {
 void ftrace_display() {
   int depth = 0;
   for (int i = 0; i < ftrace_log_idx; i++) {
+    printf("0x%08x: ", ftrace_log[i].from_addr);
     if (ftrace_log[i].is_call) {
       for (int j = 0; j < depth; j++) {
         printf("  ");
       }
-      printf("%s\n", ftrace_log[i].name);
+      printf("call [%s@0x%08x]\n", ftrace_log[i].name, ftrace_log[i].to_addr);
       depth++;
     } else {
       depth--;
+      for (int j = 0; j < depth; j++) {
+        printf("  ");
+      }
+      printf("re [%s]\n", ftrace_log[i].name);
+      depth--;   
     }
   }
 }
