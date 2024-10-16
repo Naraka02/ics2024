@@ -69,7 +69,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_FTRACE
-  if (strncmp((_this->logbuf + INST_NAME_OFFSET), "jal", 3) == 0) {
+  if (strncmp((_this->logbuf + INST_NAME_OFFSET), "jal ", 4) == 0) {
     ftrace_log[ftrace_log_idx].from_addr = _this->pc;
     ftrace_log[ftrace_log_idx].to_addr = dnpc;
     ftrace_log[ftrace_log_idx].is_call = true;
