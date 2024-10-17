@@ -82,7 +82,6 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     ftrace_log[ftrace_log_idx].name = get_func_name(_this->pc);
     ftrace_log_idx++;
   }
-  
 #endif
 }
 
@@ -125,7 +124,6 @@ static void execute(uint64_t n) {
 }
 
 void ftrace_display() {
-#ifdef CONFIG_FTRACE
   int depth = 0;
   for (int i = 0; i < ftrace_log_idx; i++) {
     printf("0x%08x: ", ftrace_log[i].from_addr);
@@ -143,7 +141,6 @@ void ftrace_display() {
       printf("ret [%s]\n", ftrace_log[i].name);
     }
   }
-#endif
 }
 
 static void statistic() {
@@ -156,7 +153,6 @@ static void statistic() {
 }
 
 void iringbuf_display() {
-#ifdef CONFIG_IRINGBUF
   for (int i = 0; i < IRINGBUF_SIZE; i++) {
     if (strlen(iringbuf[i]) == 0) break;
     if (i == (iringbuf_idx - 1 + IRINGBUF_SIZE) % IRINGBUF_SIZE) {
@@ -165,7 +161,6 @@ void iringbuf_display() {
       printf("    %s\n", iringbuf[i]);
     }
   }
-#endif
 }
 
 void assert_fail_msg() {
