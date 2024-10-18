@@ -33,7 +33,7 @@ void init_ftrace(const char *elf_file) {
   fseek(fp, ehdr.e_shoff, SEEK_SET);
   fread(shdr, sizeof(shdr), 1, fp);
 
-  Elf32_Shdr symtab_shdr, strtab_shdr;
+  Elf32_Shdr symtab_shdr = {0}, strtab_shdr = {0};
   for (int i = 0; i < ehdr.e_shnum; i++) {
     if (shdr[i].sh_type == SHT_SYMTAB) {
       symtab_shdr = shdr[i];
