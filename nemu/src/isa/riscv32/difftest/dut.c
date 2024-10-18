@@ -19,9 +19,12 @@
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   bool success = false;
-  success = ref_r->pc == pc;
+  success = ref_r->pc == cpu.pc;
   for (int i = 0; i < MUXDEF(CONFIG_RVE, 16, 32); i++) {
     success = success && (ref_r->gpr[i] == gpr(i));
+  }
+  if (!success) {
+    Log("pc last at " FMT_WORD " ", pc);
   }
   return success;
 }
