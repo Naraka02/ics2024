@@ -12,6 +12,7 @@ typedef struct {
 func functab[FUNCTAB_SIZE];
 int functab_size = 0;
 
+#ifdef CONFIG_FTRACE
 void init_ftrace(const char *elf_file) {
   if (elf_file == NULL) {
     Log("No ELF file specified, skip initializing ftrace");
@@ -77,3 +78,4 @@ char* get_func_name(word_t addr) {
   }
   return "???";
 }
+#endif
