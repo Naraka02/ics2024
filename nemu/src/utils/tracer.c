@@ -1,7 +1,7 @@
 #include <common.h>
 #include <elf.h>
 
-#define FUNCTAB_SIZE 65536
+#define FUNCTAB_SIZE 1024
 
 typedef struct {
   uint32_t addr;

@@ -39,7 +39,7 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 static char iringbuf[IRINGBUF_SIZE][128];
 int iringbuf_idx = 0;
-func_log ftrace_log[1024];
+func_log ftrace_log[65536];
 int ftrace_log_idx = 0;
 
 void device_update();
