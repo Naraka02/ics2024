@@ -39,7 +39,7 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 static char iringbuf[IRINGBUF_SIZE][128];
 int iringbuf_idx = 0;
-func_log ftrace_log[65536];
+func_log ftrace_log[1024];
 int ftrace_log_idx = 0;
 
 void device_update();
@@ -81,6 +81,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     ftrace_log[ftrace_log_idx].is_call = false;
     ftrace_log[ftrace_log_idx].name = get_func_name(_this->pc);
     ftrace_log_idx++;
+  }
+  if (ftrace_log_idx >= 1024) {
+    ftrace_log_idx = 0;
   }
 #endif
 }
