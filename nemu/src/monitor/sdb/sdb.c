@@ -164,8 +164,12 @@ static int cmd_d(char *args) {
 }
 
 static int cmd_f(char *args) {
+#ifdef CONFIG_FTRACE
   printf("Function trace log:\n");
   ftrace_display();
+#else
+  printf("Function trace is not enabled.\n");
+#endif
   return 0;
 }
 

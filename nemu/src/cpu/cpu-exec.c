@@ -39,7 +39,7 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 static char iringbuf[IRINGBUF_SIZE][128];
 int iringbuf_idx = 0;
-static func_log ftrace_log[1024];
+func_log ftrace_log[1024];
 int ftrace_log_idx = 0;
 
 void device_update();
@@ -123,6 +123,7 @@ static void execute(uint64_t n) {
   }
 }
 
+#ifdef CONFIG_FTRACE
 void ftrace_display() {
   int depth = 0;
   for (int i = 0; i < ftrace_log_idx; i++) {
@@ -142,6 +143,7 @@ void ftrace_display() {
     }
   }
 }
+#endif
 
 static void statistic() {
   IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
