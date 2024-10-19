@@ -16,8 +16,6 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-volatile static int dummy;
-
 #include <inttypes.h>
 #include <stdbool.h>
 #include <stdint.h>
