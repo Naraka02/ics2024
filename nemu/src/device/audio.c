@@ -31,7 +31,7 @@ static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
 static void sdl_audio_callback(void *userdata, uint8_t *stream, int len) {
-  SDL_UnlockAudio();
+  SDL_LockAudio();
   SDL_memset(stream, 0, len);
   int count = audio_base[reg_count];
   if (count > len) {
@@ -42,7 +42,7 @@ static void sdl_audio_callback(void *userdata, uint8_t *stream, int len) {
     SDL_memset(stream + count, 0, len - count);
     audio_base[reg_count] = 0;
   }
-  SDL_LockAudio();
+  SDL_UnlockAudio();
 }
 
 static void init_sdl() {
