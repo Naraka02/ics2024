@@ -74,9 +74,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 void init_audio() {
   uint32_t space_size = sizeof(uint32_t) * nr_reg;
   audio_base = (uint32_t *)new_space(space_size);
-  audio_base[reg_freq] = 44100;
-  audio_base[reg_channels] = 2;
-  audio_base[reg_samples] = 1024;
   audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
   audio_base[reg_init] = 1;
   audio_base[reg_count] = 0;
