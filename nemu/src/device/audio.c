@@ -66,10 +66,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
         audio_base[reg_init] = 1;
       }
       break;
-      case reg_freq:
-      case reg_channels:
-      case reg_samples:
-        printf("audio: write reg %d = %d\n", idx, audio_base[idx]);
     default:
       break;
   }
