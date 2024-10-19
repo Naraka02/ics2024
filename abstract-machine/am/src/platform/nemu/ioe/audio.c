@@ -38,9 +38,9 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   while (len > sbuf_size - count) {
     count = io_read(AM_AUDIO_STATUS).count;
   }
-  outl(AUDIO_COUNT_ADDR, count + len);
-  uintptr_t addr = AUDIO_SBUF_ADDR + count;
+  uintptr_t addr = (uintptr_t)AUDIO_ADDR + io_read(AM_AUDIO_STATUS).count;
   for (int i = 0; i < len; i++) {
     outb(addr + i, *(uint8_t *)(buf.start + i));
   }
+  outl(AUDIO_COUNT_ADDR, io_read(AM_AUDIO_STATUS).count + len);
 }
