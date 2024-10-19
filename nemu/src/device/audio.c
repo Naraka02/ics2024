@@ -78,7 +78,7 @@ void init_audio() {
   audio_base = (uint32_t *)new_space(space_size);
   audio_base[reg_freq] = 44100;
   audio_base[reg_channels] = 2;
-  audio_base[reg_samples] = 4096;
+  audio_base[reg_samples] = 1024;
   audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
   audio_base[reg_init] = 0;
   audio_base[reg_count] = 0;
