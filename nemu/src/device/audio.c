@@ -30,12 +30,58 @@ enum {
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
+static void sdl_audio_callback(void *userdata, uint8_t *stream, int len) {
+  SDL_memset(stream, 0, len);
+  int count = audio_base[reg_count];
+  if (count > len) {
+    SDL_memcpy(stream, sbuf, len);
+    audio_base[reg_count] -= len;
+  } else {
+    SDL_memcpy(stream, sbuf, count);
+    SDL_memset(stream + count, 0, len - count);
+    audio_base[reg_count] = 0;
+  }
+}
+
+static void init_sdl() {
+  SDL_AudioSpec s;
+  s.format = AUDIO_S16SYS;
+  s.userdata = NULL;
+  s.freq = audio_base[reg_freq];
+  s.channels = audio_base[reg_channels];
+  s.samples = audio_base[reg_samples];
+  s.callback = sdl_audio_callback;
+  SDL_InitSubSystem(SDL_INIT_AUDIO);
+  SDL_OpenAudio(&s, NULL);
+  SDL_PauseAudio(0);
+}
+
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
+  assert(offset < nr_reg * sizeof(uint32_t) && offset % 4 == 0);
+  int idx = offset / 4;
+  switch (idx) {
+    case reg_init:
+      if (is_write && audio_base[reg_init] == 0) {
+        init_sdl();
+        audio_base[reg_init] = 1;
+      }
+      break;
+      case reg_freq:
+        printf("offset = %d, len = %d, is_write = %d\n", offset, len, is_write);
+    default:
+      break;
+  }
 }
 
 void init_audio() {
   uint32_t space_size = sizeof(uint32_t) * nr_reg;
   audio_base = (uint32_t *)new_space(space_size);
+  audio_base[reg_freq] = 44100;
+  audio_base[reg_channels] = 2;
+  audio_base[reg_samples] = 4096;
+  audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
+  audio_base[reg_init] = 0;
+  audio_base[reg_count] = 0;
 #ifdef CONFIG_HAS_PORT_IO
   add_pio_map ("audio", CONFIG_AUDIO_CTL_PORT, audio_base, space_size, audio_io_handler);
 #else
