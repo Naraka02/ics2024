@@ -146,6 +146,10 @@ static int cmd_p(char *args) {
 }
 
 static int cmd_w(char *args) {
+  if (args == NULL) {
+    printf("Please enter a valid expression.\n");
+    return 0;
+  }
   new_wp(args);
   return 0;
 }
