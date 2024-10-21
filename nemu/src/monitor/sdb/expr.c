@@ -290,6 +290,10 @@ word_t eval(int start, int end, bool *success) {
 }
 
 word_t expr(char *e, bool *success) {
+  if (e == NULL) {
+    *success = false;
+    return 0;
+  }
   memset(tokens, 0, TOKEN_SIZE * sizeof(Token));
 
   if (!make_token(e)) {
