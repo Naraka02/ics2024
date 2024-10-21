@@ -166,7 +166,7 @@ config MTRACE
   default y
 
 config FTRACE
-  depends on TRACE
+  depends on ITRACE
   bool "Enable function tracer"
   default y
 
