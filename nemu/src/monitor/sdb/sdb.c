@@ -146,11 +146,15 @@ static int cmd_p(char *args) {
 }
 
 static int cmd_w(char *args) {
+#ifdef CONFIG_WATCHPOINT
   if (args == NULL) {
     printf("Please enter a valid expression.\n");
     return 0;
   }
   new_wp(args);
+#else 
+  printf("Watchpoint is not enabled.\n");
+#endif
   return 0;
 }
 
