@@ -31,18 +31,19 @@ static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
 static void sdl_audio_callback(void *userdata, uint8_t *stream, int len) {
-  SDL_memset(stream, 0, len);
   int count = audio_base[reg_count];
-  printf("audio count: %d\n", count);
-  printf("audio len: %d\n", len);
-  if (count > len) {
-    SDL_memcpy(stream, sbuf, len);
-    audio_base[reg_count] -= len;
-    SDL_memcpy(sbuf, sbuf + len, count - len);
-  } else {
-    SDL_memcpy(stream, sbuf, count);
+  if (count == 0) {
+    SDL_memset(stream, 0, len);
+    return;
+  }
+  if (count < len) {
+    count = len;
+  }
+  SDL_memcpy(stream, sbuf, count);
+  sbuf += count;
+  audio_base[reg_count] -= count;
+  if (count < len) {
     SDL_memset(stream + count, 0, len - count);
-    audio_base[reg_count] = 0;
   }
 }
 
