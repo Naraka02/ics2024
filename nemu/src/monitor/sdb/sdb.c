@@ -159,6 +159,11 @@ static int cmd_w(char *args) {
 }
 
 static int cmd_d(char *args) {
+#ifdef CONFIG_WATCHPOINT
+  if (args == NULL) {
+    printf("Please enter NO of the watchpoint.\n");
+    return 0;
+  }
   char *arg = strtok(NULL, " ");
   int NO;
 
@@ -167,6 +172,9 @@ static int cmd_d(char *args) {
   } else {
     free_wp(NO);
   }
+#else 
+  printf("Watchpoint is not enabled.\n");
+#endif
 
   return 0;
 }
