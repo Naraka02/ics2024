@@ -87,6 +87,10 @@ static int cmd_ci(char *args) {
 
 static int cmd_info(char *args) {
   /* extract the first argument */
+  if (args == NULL) {
+    printf("Please enter a valid argument.\n");
+    return 0;
+  }
   char *arg = strtok(NULL, " ");
   
   if (strcmp(arg, "r") == 0) {
