@@ -25,6 +25,14 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   }
   if (!success) {
     Log("pc last at " FMT_WORD " ", pc);
+    if (ref_r->pc != cpu.pc) {
+      Log("pc mismatch: 0x%x != 0x%x", ref_r->pc, cpu.pc);
+    }
+    for (int i = 0; i < MUXDEF(CONFIG_RVE, 16, 32); i++) {
+      if (ref_r->gpr[i] != gpr(i)) {
+        Log("gpr[%d] mismatch: 0x%x != 0x%x", i, ref_r->gpr[i], gpr(i));
+      }
+    }
   }
   return success;
 }
