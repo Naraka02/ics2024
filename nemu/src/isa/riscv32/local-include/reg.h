@@ -24,10 +24,10 @@ static inline int check_reg_idx(int idx) {
 }
 
 #define csr(idx)                                                               \
-  (idx == 0x342   ? &cpu.csr.mtvec                                             \
-   : idx == 0x341 ? &cpu.csr.mepc                                              \
-   : idx == 0x300 ? &cpu.csr.mstatus                                           \
-   : idx == 0x342 ? &cpu.csr.mcause                                            \
+  (idx == 0x342   ? &(cpu.csr).mtvec                                           \
+   : idx == 0x341 ? &(cpu.csr).mepc                                            \
+   : idx == 0x300 ? &(cpu.csr).mstatus                                         \
+   : idx == 0x342 ? &(cpu.csr).mcause                                          \
                   : 0)
 
 #define gpr(idx) (cpu.gpr[check_reg_idx(idx)])
