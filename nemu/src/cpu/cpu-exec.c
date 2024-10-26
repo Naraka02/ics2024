@@ -33,7 +33,7 @@ typedef struct {
   bool is_call;
 } func_log;
 
-CPU_state cpu = {};
+CPU_state cpu = {.csr.mcause = 0x1800};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
