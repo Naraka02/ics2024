@@ -24,6 +24,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   Log("Interrupt epc = 0x%x", epc);
   Log("Interrupt mtvec = 0x%x", cpu.csr.mtvec);
 #endif
+  Log("Interrupt NO = %d", NO);
   cpu.csr.mepc = epc;
   cpu.csr.mcause = NO;
   return cpu.csr.mtvec;
