@@ -5,7 +5,9 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-int print_int(int num, char *buf) {
+#define BUFSIZE 4096
+
+static inline int print_int(int num, char *buf) {
   int num_len = 0;
   int is_neg = num < 0;
   if (is_neg) {
@@ -26,7 +28,7 @@ int print_int(int num, char *buf) {
   return num_len + is_neg;
 }
 
-int print_hex(int num, char *buf) {
+static inline int print_hex(int num, char *buf) {
   int num_len = 0;
   int tmp = num;
   do {
@@ -77,7 +79,7 @@ int _Printf(char *buf, const char *fmt, va_list ap) {
 int printf(const char *fmt, ...) {
   int ans;
   va_list ap;
-  char buf[4096];
+  char buf[BUFSIZE];
 
   va_start(ap, fmt);
   ans = _Printf(buf, fmt, ap);
@@ -96,7 +98,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 int sprintf(char *out, const char *fmt, ...) {
   int ans;
   va_list ap;
-  char buf[1024];
+  char buf[BUFSIZE];
 
   va_start(ap, fmt);
   ans = _Printf(buf, fmt, ap);
