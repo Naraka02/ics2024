@@ -1,3 +1,4 @@
+#include "am.h"
 #include <proc.h>
 #include <elf.h>
 
@@ -9,8 +10,13 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+size_t get_ramdisk_size();
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  TODO();
+  Elf_Ehdr ehdr;
+  ramdisk_read(&ehdr, 0, sizeof(ehdr));
+  assert(*(uint32_t *)ehdr.e_ident == 0x7f454c46);
   return 0;
 }
 
