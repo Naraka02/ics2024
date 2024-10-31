@@ -17,8 +17,7 @@ size_t get_ramdisk_size();
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;
   ramdisk_read(&ehdr, 0, sizeof(ehdr));
-  printf("%d", *(uint32_t *)ehdr.e_ident - 0x7f454c46);
-  assert(*(int8_t *)ehdr.e_ident == 0x7f);
+  printf("%d", *(int32_t *)ehdr.e_ident - 0x7f454c46);
   return 0;
 }
 
