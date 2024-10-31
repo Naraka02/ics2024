@@ -28,7 +28,7 @@ static inline int print_int(int num, char *buf) {
   return num_len + is_neg;
 }
 
-static inline int print_hex(int num, char *buf) {
+static inline int print_hex(unsigned int num, char *buf) {
   int num_len = 0;
   int tmp = num;
   do {
