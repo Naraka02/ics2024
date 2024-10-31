@@ -1,6 +1,7 @@
 #include "am.h"
 #include <proc.h>
 #include <elf.h>
+#include <stdint.h>
 
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
@@ -17,7 +18,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;
   ramdisk_read(&ehdr, 0, sizeof(ehdr));
   printf("%d", *(uint32_t *)ehdr.e_ident - 0x7f454c46);
-  assert(*(uint32_t *)ehdr.e_ident == 0x7f454c46);
+  assert(*(int8_t *)ehdr.e_ident == 0x7f);
   return 0;
 }
 
