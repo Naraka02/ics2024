@@ -66,6 +66,8 @@ int _Printf(char *buf, const char *fmt, va_list ap) {
             print_hex(va_arg(ap, unsigned int), buf + len);
             break;
           case 'p':
+            buf[len++] = '0';
+            buf[len++] = 'x';
             print_hex(va_arg(ap, unsigned int), buf + len);
             break;
         }
