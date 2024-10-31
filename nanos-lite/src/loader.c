@@ -28,7 +28,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       ramdisk_read(&phdr[i].p_vaddr, phdr[i].p_offset, phdr[i].p_filesz);
       memset(&(phdr[i].p_paddr) + phdr[i].p_filesz, 0, phdr[i].p_memsz - phdr[i].p_filesz);
       ret = phdr[i].p_vaddr;
-      printf("sd");
     }
   }
   return ret;
