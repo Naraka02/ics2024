@@ -1,7 +1,5 @@
-#include "am.h"
 #include <proc.h>
 #include <elf.h>
-#include <stdint.h>
 
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
