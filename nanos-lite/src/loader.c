@@ -30,7 +30,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       ret = phdr[i].p_vaddr;
     }
   }
-  printf("0x%d\n", ret);
   return ret;
 }
 
