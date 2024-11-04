@@ -41,7 +41,7 @@ static inline int print_hex(unsigned int num, char *buf) {
     buf[i] = digit < 10 ? digit + '0' : digit - 10 + 'a';
     num /= 10;
   }
-  return num_len + num < 0; 
+  return num_len + num < 0;
 }
 
 int _Printf(char *buf, const char *fmt, va_list ap) {
@@ -63,12 +63,12 @@ int _Printf(char *buf, const char *fmt, va_list ap) {
             buf[len++] = va_arg(ap, int);
             break;
           case 'x':
-            print_hex(va_arg(ap, unsigned int), buf + len);
+            len += print_hex(va_arg(ap, unsigned int), buf + len);
             break;
           case 'p':
             buf[len++] = '0';
             buf[len++] = 'x';
-            print_hex(va_arg(ap, unsigned int), buf + len);
+            len += print_hex((uintptr_t)va_arg(ap, void*), buf + len);
             break;
         }
         break;
