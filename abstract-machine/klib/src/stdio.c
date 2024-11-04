@@ -30,7 +30,7 @@ static inline int print_int(int num, char *buf) {
 
 static inline int print_hex(unsigned int num, char *buf) {
   int num_len = 0;
-  int tmp = num;
+  unsigned int tmp = num;
   do {
     tmp /= 16;
     num_len++;
@@ -41,7 +41,7 @@ static inline int print_hex(unsigned int num, char *buf) {
     buf[i] = digit < 10 ? digit + '0' : digit - 10 + 'a';
     num /= 10;
   }
-  return num_len + num < 0;
+  return num_len;
 }
 
 int _Printf(char *buf, const char *fmt, va_list ap) {
