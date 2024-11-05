@@ -29,7 +29,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
                    phdr[i].p_filesz);
       printf("Clearing %d bytes at 0x%x\n", phdr[i].p_memsz - phdr[i].p_filesz,
              phdr[i].p_vaddr + phdr[i].p_filesz);
-      memset((void *)(uintptr_t)(phdr[i].p_vaddr) + phdr[i].p_filesz, 0,
+      memset((void *)(uintptr_t)(phdr[i].p_vaddr + phdr[i].p_filesz), 0,
              phdr[i].p_memsz - phdr[i].p_filesz);
     }
   }
