@@ -1,6 +1,6 @@
 #include <am.h>
-#include <klib.h>
 #include <klib-macros.h>
+#include <klib.h>
 #include <stdarg.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
@@ -37,44 +37,44 @@ static inline int print_hex(unsigned int num, char *buf) {
   } while (tmp);
   int digit;
   for (int i = num_len - 1; i >= 0; --i) {
-    digit = num % 10;
+    digit = num % 16;
     buf[i] = digit < 10 ? digit + '0' : digit - 10 + 'a';
-    num /= 10;
+    num /= 16;
   }
   return num_len;
 }
 
 int _Printf(char *buf, const char *fmt, va_list ap) {
   int len = 0;
-  for (const char* p = fmt; *p != '\0'; p++) {
+  for (const char *p = fmt; *p != '\0'; p++) {
     switch (*p) {
-      case '%':
-        switch (*++p) {
-          case 'd':
-            len += print_int(va_arg(ap, int), buf + len);
-            break;
-          case 's':
-            char *str = va_arg(ap, char*);
-            while (*str != '\0') {
-              buf[len++] = *str++;
-            }
-            break;
-          case 'c':
-            buf[len++] = va_arg(ap, int);
-            break;
-          case 'x':
-            len += print_hex(va_arg(ap, unsigned int), buf + len);
-            break;
-          case 'p':
-            buf[len++] = '0';
-            buf[len++] = 'x';
-            len += print_hex((uintptr_t)va_arg(ap, void*), buf + len);
-            break;
+    case '%':
+      switch (*++p) {
+      case 'd':
+        len += print_int(va_arg(ap, int), buf + len);
+        break;
+      case 's':
+        char *str = va_arg(ap, char *);
+        while (*str != '\0') {
+          buf[len++] = *str++;
         }
         break;
-      default:
-        buf[len++] = *p;
+      case 'c':
+        buf[len++] = va_arg(ap, int);
         break;
+      case 'x':
+        len += print_hex(va_arg(ap, unsigned int), buf + len);
+        break;
+      case 'p':
+        buf[len++] = '0';
+        buf[len++] = 'x';
+        len += print_hex((uintptr_t)va_arg(ap, void *), buf + len);
+        break;
+      }
+      break;
+    default:
+      buf[len++] = *p;
+      break;
     }
   }
   buf[len++] = '\0';
