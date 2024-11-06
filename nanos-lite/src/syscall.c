@@ -1,5 +1,12 @@
 #include "syscall.h"
+#include "am.h"
 #include <common.h>
+
+static inline void sys_yield(Context *c) {
+  yield();
+  c->GPRx = 0;
+}
+
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -9,8 +16,7 @@ void do_syscall(Context *c) {
 
   switch (a[0]) {
   case SYS_yield:
-    yield();
-    c->GPRx = 0;
+    sys_yield(c);
     break;
   case SYS_exit:
     halt(0);
