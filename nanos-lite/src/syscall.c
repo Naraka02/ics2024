@@ -10,7 +10,6 @@ static inline void sys_yield(Context *c) {
 }
 
 static inline ssize_t sys_write(int fd, const void *buf, size_t count) {
-  printf("sys_write(fd = %d, buf = %p, count = %d)\n", fd, buf, count);
   switch (fd) {
   case 1:
   case 2:
@@ -29,14 +28,12 @@ void do_syscall(Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
-  printf("Syscall ID = %d\n", a[0]);
 
   switch (a[0]) {
   case SYS_yield:
     sys_yield(c);
     break;
   case SYS_exit:
-    printf("Exit status: %d\n", a[1]);
     halt(0);
     break;
   case SYS_write:
