@@ -36,6 +36,7 @@ void do_syscall(Context *c) {
     sys_yield(c);
     break;
   case SYS_exit:
+    printf("Exit status: %d\n", a[1]);
     halt(0);
     break;
   case SYS_write:
