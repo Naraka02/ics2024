@@ -10,6 +10,7 @@ static inline void sys_yield(Context *c) {
 }
 
 static inline ssize_t sys_write(int fd, const void *buf, size_t count) {
+  printf("sys_write(fd = %d, buf = %p, count = %d)\n", fd, buf, count);
   switch (fd) {
   case 1:
   case 2:
