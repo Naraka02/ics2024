@@ -22,12 +22,6 @@ static inline void sys_yield(Context *c) {
 }
 
 static inline ssize_t sys_write(int fd, const void *buf, size_t count) {
-  if (fd == 1 || fd == 2) {
-    for (size_t i = 0; i < count; i++) {
-      putch(((char *)buf)[i]);
-    }
-    return count;
-  }
   return fs_write(fd, buf, count);
 }
 
