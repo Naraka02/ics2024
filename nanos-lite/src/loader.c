@@ -28,8 +28,8 @@ int fs_close(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;
+  Log("loading %s", filename);
   int fp = fs_open(filename, 0, 0);
-  printf("fp: %d\n", fp);
   fs_read(fp, &ehdr, sizeof(ehdr));
 
   assert(ehdr.e_ident[0] == 0x7f && ehdr.e_ident[1] == 'E' &&
