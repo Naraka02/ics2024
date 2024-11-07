@@ -33,15 +33,11 @@ static inline ssize_t sys_write(int fd, const void *buf, size_t count) {
 static inline int sys_brk(int *addr) {
   extern char end;
   static char *brk = &end;
-  char *old_brk = brk;
-  if (addr == 0) {
-    return (int)brk;
-  }
-  if (addr > (int *)brk) {
+  if ((uintptr_t)brk < (uintptr_t)addr) {
     brk = (char *)addr;
+    return 0;
   }
-  printf("brk: %p\n", brk);
-  return (int)old_brk;
+  return -1;
 }
 
 static inline int sys_open(const char *pathname, int flags, int mode) {
