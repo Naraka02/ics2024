@@ -64,6 +64,8 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3;
   a[3] = c->GPR4;
 
+  Log("Syscall ID = %d", a[0]);
+
   switch (a[0]) {
   case SYS_yield:
     sys_yield(c);
@@ -78,7 +80,6 @@ void do_syscall(Context *c) {
     c->GPRx = sys_brk((int *)a[1]);
     break;
   case SYS_open:
-    Log("open %s", (const char *)a[1]);
     c->GPRx = sys_open((const char *)a[1], a[2], a[3]);
     break;
   case SYS_read:
