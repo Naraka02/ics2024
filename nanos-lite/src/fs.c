@@ -49,7 +49,6 @@ int fs_open(const char *pathname, int flags, int mode) {
 
 size_t fs_read(int fd, void *buf, size_t len) {
   assert(open_offset + len <= file_table[fd].size);
-  Log("fs_read: offset = %d, len = %d", file_table[fd].disk_offset, len);
   return file_table[fd].read(buf, file_table[fd].disk_offset + open_offset,
                              len);
 }
@@ -75,6 +74,7 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
     panic("invalid whence");
   }
   assert(open_offset <= file_table[fd].size);
+  Log("lseek: %d", open_offset);
   return open_offset;
 }
 
