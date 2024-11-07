@@ -52,9 +52,10 @@ static inline off_t sys_lseek(int fd, off_t offset, int whence) {
 static inline int sys_gettimeofday(void *tv, void *tz) {
   assert(tz == NULL);
   uint64_t us = io_read(AM_TIMER_UPTIME).us;
-  printf("us = %d\n", us);
   ((struct timeval *)tv)->tv_sec = us / 1000000;
   ((struct timeval *)tv)->tv_usec = us % 1000000;
+  printf("sys_gettimeofday: tv_sec = %d, tv_usec = %d\n",
+         ((struct timeval *)tv)->tv_sec, ((struct timeval *)tv)->tv_usec);
   return 0;
 }
 
