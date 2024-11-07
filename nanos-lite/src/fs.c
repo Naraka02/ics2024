@@ -48,6 +48,7 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
+  Log("fs_read: offset = %d, len = %d", open_offset, len);
   assert(open_offset + len <= file_table[fd].size);
   open_offset += len;
   return file_table[fd].read(
