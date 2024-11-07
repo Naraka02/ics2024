@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-int gettimeofday(struct timeval *tv, void *tz) {}
+int gettimeofday(struct timeval *tv, void *tz);
 
 int main() {
   struct timeval tv;
