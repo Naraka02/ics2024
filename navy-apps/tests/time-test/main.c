@@ -7,6 +7,7 @@ int main() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
   long us = tv.tv_usec;
+  printf("us = %ld\n", us);
   while (1) {
     gettimeofday(&tv, NULL);
     if (tv.tv_usec - us >= 500000) {
