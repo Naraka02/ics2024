@@ -38,8 +38,9 @@ static Finfo file_table[] __attribute__((used)) = {
 
 int fs_open(const char *pathname, int flags, int mode) {
   assert(pathname != NULL);
-  Log("fs_open %s", pathname);
   for (int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++) {
+    Log("file_table[%d].name = %s", i, file_table[i].name);
+
     if (strcmp(pathname, file_table[i].name) == 0) {
       open_offset = 0;
       return i;
