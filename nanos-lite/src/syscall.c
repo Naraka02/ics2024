@@ -54,8 +54,6 @@ static inline int sys_gettimeofday(void *tv, void *tz) {
   uint64_t us = io_read(AM_TIMER_UPTIME).us;
   ((struct timeval *)tv)->tv_sec = us / 1000000;
   ((struct timeval *)tv)->tv_usec = us % 1000000;
-  printf("sys_gettimeofday: tv_sec = %d, tv_usec = %d\n",
-         ((struct timeval *)tv)->tv_sec, ((struct timeval *)tv)->tv_usec);
   return 0;
 }
 
