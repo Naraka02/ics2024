@@ -40,6 +40,7 @@ static inline int sys_brk(int *addr) {
   if (addr > (int *)brk) {
     brk = (char *)addr;
   }
+  printf("brk: %p\n", brk);
   return (int)old_brk;
 }
 
@@ -63,8 +64,6 @@ void do_syscall(Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
-
-  Log("Syscall ID = %d", a[0]);
 
   switch (a[0]) {
   case SYS_yield:
