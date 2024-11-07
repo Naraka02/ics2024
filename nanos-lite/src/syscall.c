@@ -5,6 +5,10 @@
 
 #define ssize_t int
 #define off_t int
+struct timeval {
+  long tv_sec;
+  long tv_usec;
+};
 
 int fs_open(const char *pathname, int flags, int mode);
 size_t fs_read(int fd, void *buf, size_t len);
@@ -18,16 +22,7 @@ static inline void sys_yield(Context *c) {
 }
 
 static inline ssize_t sys_write(int fd, const void *buf, size_t count) {
-  switch (fd) {
-  case 1:
-  case 2:
-    for (size_t i = 0; i < count; i++) {
-      putch(((char *)buf)[i]);
-    }
-    return count;
-  default:
-    return fs_write(fd, buf, count);
-  }
+  return fs_write(fd, buf, count);
 }
 
 static inline int sys_brk(int *addr) {
@@ -52,6 +47,14 @@ static inline int sys_close(int fd) { return fs_close(fd); }
 
 static inline off_t sys_lseek(int fd, off_t offset, int whence) {
   return fs_lseek(fd, offset, whence);
+}
+
+static inline int sys_gettimeofday(void *tv, void *tz) {
+  assert(tz == NULL);
+  uint64_t us = io_read(AM_TIMER_UPTIME).us;
+  ((struct timeval *)tv)->tv_sec = us / 1000000;
+  ((struct timeval *)tv)->tv_usec = us % 1000000;
+  return 0;
 }
 
 void do_syscall(Context *c) {
@@ -85,6 +88,9 @@ void do_syscall(Context *c) {
     break;
   case SYS_lseek:
     c->GPRx = sys_lseek(a[1], a[2], a[3]);
+    break;
+  case SYS_gettimeofday:
+    c->GPRx = sys_gettimeofday((void *)a[1], (void *)a[2]);
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
