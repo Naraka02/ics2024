@@ -23,12 +23,15 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   if (ev.keycode == AM_KEY_NONE) {
     return 0;
   }
-  int ret = snprintf(buf, len, "%s %s\n", ev.keydown ? "kd" : "ku",
-                     keyname[ev.keycode]);
-  return ret;
+  return snprintf(buf, len, "%s %s\n", ev.keydown ? "kd" : "ku",
+                  keyname[ev.keycode]);
 }
 
-size_t dispinfo_read(void *buf, size_t offset, size_t len) { return 0; }
+size_t dispinfo_read(void *buf, size_t offset, size_t len) {
+  AM_GPU_CONFIG_T cfg = io_read(AM_GPU_CONFIG);
+  snprintf(buf, len, "WIDTH: %d\nHEIGHT: %d\n", cfg.width, cfg.height);
+  return len;
+}
 
 size_t fb_write(const void *buf, size_t offset, size_t len) { return 0; }
 
