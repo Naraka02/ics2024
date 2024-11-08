@@ -9,26 +9,18 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
 
-  SDL_Rect full_src = {0, 0, src->w, src->h};
-  SDL_Rect full_dst = {0, 0, dst->w, dst->h};
+  SDL_Rect src_r = srcrect ? *srcrect : (SDL_Rect){0, 0, src->w, src->h};
+  SDL_Rect dst_r = dstrect ? *dstrect : (SDL_Rect){0, 0, dst->w, dst->h};
 
-  if (!srcrect)
-    srcrect = &full_src;
-  if (!dstrect)
-    dstrect = &full_dst;
+  uint8_t *src_pixels = (uint8_t *)src->pixels + src_r.y * src->pitch +
+                        src_r.x * src->format->BytesPerPixel;
+  uint8_t *dst_pixels = (uint8_t *)dst->pixels + dst_r.y * dst->pitch +
+                        dst_r.x * dst->format->BytesPerPixel;
 
-  int width = srcrect->w < dstrect->w ? srcrect->w : dstrect->w;
-  int height = srcrect->h < dstrect->h ? srcrect->h : dstrect->h;
-
-  uint8_t *src_pixels = (uint8_t *)src->pixels + srcrect->y * src->pitch +
-                        srcrect->x * src->format->BytesPerPixel;
-  uint8_t *dst_pixels = (uint8_t *)dst->pixels + dstrect->y * dst->pitch +
-                        dstrect->x * dst->format->BytesPerPixel;
-
-  for (int y = 0; y < height; y++) {
+  for (int y = 0; y < src_r.h; y++) {
     uint8_t *src_row = src_pixels + y * src->pitch;
     uint8_t *dst_row = dst_pixels + y * dst->pitch;
-    memcpy(dst_row, src_row, width * src->format->BytesPerPixel);
+    memcpy(dst_row, src_row, src_r.w * src->format->BytesPerPixel);
   }
 }
 
