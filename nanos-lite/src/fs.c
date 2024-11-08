@@ -11,7 +11,7 @@ typedef struct {
   WriteFn write;
 } Finfo;
 
-enum { FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENT, FD_FB };
+enum { FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB };
 
 static size_t open_offset = 0;
 
@@ -35,7 +35,7 @@ static Finfo file_table[] __attribute__((used)) = {
     [FD_STDIN] = {"stdin", 0, 0, invalid_read, invalid_write},
     [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
     [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
-    [FD_EVENT] = {"/dev/events", 0, 0, events_read, invalid_write},
+    {"/dev/events", 0, 0, events_read, invalid_write},
 #include "files.h"
 };
 
@@ -52,7 +52,6 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
-  Log("fs_read: fd = %d, len = %d", fd, len);
   len = open_offset + len <= file_table[fd].size || fd < FD_FB
             ? len
             : file_table[fd].size - open_offset;
