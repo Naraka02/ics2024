@@ -8,18 +8,40 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
                      SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-  if (srcrect == NULL || dstrect == NULL) {
-    memcpy(dst->pixels, src->pixels, src->pitch * src->h);
-    *srcrect = (SDL_Rect){0, 0, src->w, src->h};
-    *dstrect = (SDL_Rect){0, 0, src->w, src->h};
+  SDL_Rect fulldst;
+  int srcx, srcy, w, h;
+
+  if (dstrect == NULL) {
+    fulldst.x = 0, fulldst.y = 0;
+    dstrect = &fulldst;
+  }
+
+  if (srcrect == NULL) {
+    srcx = 0, srcy = 0, w = src->w, h = src->h;
   } else {
-    for (int i = 0; i < srcrect->h; i++) {
-      memcpy(dst->pixels + (dstrect->y + i) * dst->pitch +
-                 dstrect->x * dst->format->BytesPerPixel,
-             src->pixels + (srcrect->y + i) * src->pitch +
-                 srcrect->x * src->format->BytesPerPixel,
-             srcrect->w * src->format->BytesPerPixel);
+    int maxw, maxh;
+
+    srcx = srcrect->x;
+    w = srcrect->w;
+    if (srcx < 0) {
+      w += srcx;
+      dstrect->x -= srcx;
+      srcx = 0;
     }
+    maxw = src->w - srcx;
+    if (w > maxw)
+      w = maxw;
+
+    srcy = srcrect->y;
+    h = srcrect->h;
+    if (srcy < 0) {
+      h += srcy;
+      dstrect->y -= srcy;
+      srcy = 0;
+    }
+    maxh = src->h - srcy;
+    if (h > maxh)
+      h = maxh;
   }
 }
 
