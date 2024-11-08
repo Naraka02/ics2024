@@ -94,7 +94,8 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
 int fs_close(int fd) { return 0; }
 
 void init_fs() {
-  // TODO: initialize the size of /dev/fb
+  AM_GPU_CONFIG_T cfg = io_read(AM_GPU_CONFIG);
+  file_table[FD_FB].size = cfg.width * cfg.height * 4;
   int table_size = sizeof(file_table) / sizeof(Finfo);
   for (int i = 0; i < table_size; i++) {
     if (file_table[i].read == NULL) {
