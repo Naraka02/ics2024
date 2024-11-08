@@ -29,7 +29,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   SDL_Rect dst_r = dstrect ? *dstrect : (SDL_Rect){0, 0, dst->w, dst->h};
 
-  uint8_t r = color >> 24 & 0xff, g = color >> 16 & 0xff, b = color >> 8 & 0xff,
+  uint8_t r = color >> 16 & 0xff, g = color >> 16 & 0xff, b = color >> 8 & 0xff,
           a = color & 0xff;
   color = SDL_MapRGBA(dst->format, r, g, b, a);
   for (int j = 0; j < dst_r.h; j++)
