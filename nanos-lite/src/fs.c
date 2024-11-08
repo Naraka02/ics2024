@@ -44,7 +44,6 @@ int fs_open(const char *pathname, int flags, int mode) {
   for (int i = FD_FB; i < sizeof(file_table) / sizeof(Finfo); i++) {
     if (strcmp(pathname, file_table[i].name) == 0) {
       open_offset = 0;
-      Log("open %s %d", pathname, i);
       return i;
     }
   }
@@ -52,6 +51,7 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
+  Log("fs_read: fd = %d, len = %d", fd, len);
   len = open_offset + len <= file_table[fd].size || fd < FD_FB
             ? len
             : file_table[fd].size - open_offset;
