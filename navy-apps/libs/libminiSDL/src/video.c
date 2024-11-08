@@ -22,6 +22,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
     uint8_t *dst_row = dst_pixels + y * dst->pitch;
     memcpy(dst_row, src_row, src_r.w * src->format->BytesPerPixel);
   }
+  NDL_DrawRect((uint32_t *)dst->pixels, dst_r.x, dst_r.y, dst_r.w, dst_r.h);
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
@@ -30,6 +31,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   for (int j = 0; j < dst_r.h; j++)
     for (int i = 0; i < dst_r.w; i++)
       dst->pixels[(dst_r.y + j) * dst->w + dst_r.x + i] = color;
+  NDL_DrawRect((uint32_t *)dst->pixels, dst_r.x, dst_r.y, dst_r.w, dst_r.h);
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
