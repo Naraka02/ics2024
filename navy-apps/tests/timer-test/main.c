@@ -9,7 +9,7 @@ int main() {
   long us = tv.tv_usec;
   while (1) {
     gettimeofday(&tv, NULL);
-    printf("us = %d, tv_usec = %d\n", us, tv.tv_usec);
+    printf("us = %d, tv_usec = %d, tv_sec = %d\n", us, tv.tv_usec, tv.tv_sec);
     if (tv.tv_usec - us >= 500000) {
       printf("0.5 second passed\n");
       us = tv.tv_usec;
