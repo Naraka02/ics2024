@@ -10,7 +10,7 @@ int main() {
   while (1) {
     gettimeofday(&tv, NULL);
     if (tv.tv_sec > sec) {
-      printf("1 second passed\n");
+      printf("%d seconds passed\n", tv.tv_sec);
       sec = tv.tv_sec;
     }
   }
