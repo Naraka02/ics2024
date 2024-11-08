@@ -30,12 +30,6 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   SDL_Rect dst_r = dstrect ? *dstrect : (SDL_Rect){0, 0, dst->w, dst->h};
 
-  uint8_t r = color >> 16 & 0xff, g = color >> 8 & 0xff, b = color & 0xff,
-          a = color >> 24 & 0xff;
-  printf("r = %d, g = %d, b = %d, a = %d\n", r, g, b, a);
-  printf("color = %x\n", color);
-  color = SDL_MapRGBA(dst->format, r, g, b, a);
-  printf("color = %x\n", color);
   for (int j = 0; j < dst_r.h; j++)
     for (int i = 0; i < dst_r.w; i++)
       dst->pixels[(dst_r.y + j) * dst->w + dst_r.x + i] = color;
