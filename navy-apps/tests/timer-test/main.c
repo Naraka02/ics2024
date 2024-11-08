@@ -6,13 +6,12 @@ int gettimeofday(struct timeval *tv, void *tz);
 int main() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  long us = tv.tv_usec;
+  int sec = tv.tv_sec;
   while (1) {
     gettimeofday(&tv, NULL);
-    printf("us = %d, tv_sec = %d\n", us, tv.tv_sec);
-    if (tv.tv_usec - us >= 500000) {
-      printf("0.5 second passed\n");
-      us = tv.tv_usec;
+    if (tv.tv_sec > sec) {
+      printf("1 second passed\n");
+      sec = tv.tv_sec;
     }
   }
 }
