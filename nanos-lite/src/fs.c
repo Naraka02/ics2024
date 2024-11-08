@@ -93,7 +93,11 @@ void init_fs() {
   // TODO: initialize the size of /dev/fb
   int FD_SIZE = sizeof(file_table) / sizeof(Finfo);
   for (int i = FD_FB; i < FD_SIZE; i++) {
-    file_table[i].read = ramdisk_read;
-    file_table[i].write = ramdisk_write;
+    if (file_table[i].read == NULL) {
+      file_table[i].read = ramdisk_read;
+    }
+    if (file_table[i].write == NULL) {
+      file_table[i].write = ramdisk_write;
+    }
   }
 }
