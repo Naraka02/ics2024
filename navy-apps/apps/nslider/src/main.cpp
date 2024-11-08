@@ -52,13 +52,13 @@ int main() {
   screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
 
   int rep = 0, g = 0;
-  printf("Press j/down to page down, k/up to page up, gg to first page\n");
 
   render();
 
   while (1) {
     SDL_Event e;
     SDL_WaitEvent(&e);
+    printf("Polling event\n");
 
     if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
