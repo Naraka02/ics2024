@@ -78,7 +78,7 @@ int _Printf(char *buf, const char *fmt, va_list ap) {
     }
   }
   buf[len++] = '\0';
-  return 0;
+  return len;
 }
 
 int printf(const char *fmt, ...) {
