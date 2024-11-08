@@ -15,11 +15,10 @@ SDL_Surface *IMG_Load(const char *filename) {
   FILE *fp = fopen(filename, "rb");
   printf("loading %s\n", filename);
   int size = fseek(fp, 0, SEEK_END);
-  void *buf = malloc(size);
+  unsigned char *buf = (unsigned char *)malloc(size);
   fseek(fp, 0, SEEK_SET);
   fread(buf, 1, size, fp);
   SDL_Surface *ret = STBIMG_LoadFromMemory(buf, size);
-  assert(ret);
   free(buf);
   fclose(fp);
   return ret;
