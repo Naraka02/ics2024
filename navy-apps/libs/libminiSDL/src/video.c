@@ -10,8 +10,8 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
   if (srcrect == NULL || dstrect == NULL) {
     memcpy(dst->pixels, src->pixels, src->pitch * src->h);
-    srcrect = (SDL_Rect){0, 0, src->w, src->h};
-    dstrect = (SDL_Rect){0, 0, src->w, src->h};
+    *srcrect = (SDL_Rect){0, 0, src->w, src->h};
+    *dstrect = (SDL_Rect){0, 0, src->w, src->h};
   } else {
     for (int i = 0; i < srcrect->h; i++) {
       memcpy(dst->pixels + (dstrect->y + i) * dst->pitch +
