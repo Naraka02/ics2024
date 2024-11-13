@@ -50,7 +50,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
         pixels[(y + j) * s->w + x + i] =
             s->format->palette->colors[p[x + i]].val;
   }
-  NDL_DrawRect((uint32_t *)s->pixels, x, y, s->w, s->h);
+  NDL_DrawRect(pixels, x, y, s->w, s->h);
 }
 
 // APIs below are already implemented.
