@@ -14,7 +14,6 @@ int functab_size = 0;
 
 #ifdef CONFIG_FTRACE
 void init_ftrace(const char *elf_file) {
-  Log("elf_file: %s", elf_file);
   if (elf_file == NULL) {
     Log("No ELF file specified, skip initializing ftrace");
     return;
