@@ -41,6 +41,8 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  printf("SDL_UpdateRect: (%d, %d, %d, %d)\n", x, y, w, h);
+  printf("BPP: %d\n", s->format->BitsPerPixel);
   if (s->format->BitsPerPixel == 8) {
     SDL_Color *colors = s->format->palette->colors;
     for (size_t i = 0; i < sizeof(s->pixels) / sizeof(uint8_t); i++) {
