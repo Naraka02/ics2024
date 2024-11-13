@@ -30,8 +30,6 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   SDL_Rect dst_r = dstrect ? *dstrect : (SDL_Rect){0, 0, dst->w, dst->h};
   uint32_t *pixels = (uint32_t *)dst->pixels;
 
-  printf("dst->format->BitsPerPixel = %d\n", dst->format->BitsPerPixel);
-
   if (dst->format->BitsPerPixel == 8) {
     SDL_Color *c = &dst->format->palette->colors[color];
     color = SDL_MapRGBA(dst->format, c->r, c->g, c->b, c->a);
