@@ -1,24 +1,24 @@
 /***************************************************************************************
-* Copyright (c) 2014-2022 Zihao Yu, Nanjing University
-*
-* NEMU is licensed under Mulan PSL v2.
-* You can use this software according to the terms and conditions of the Mulan PSL v2.
-* You may obtain a copy of Mulan PSL v2 at:
-*          http://license.coscl.org.cn/MulanPSL2
-*
-* THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-* EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-* MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-*
-* See the Mulan PSL v2 for more details.
-***************************************************************************************/
+ * Copyright (c) 2014-2022 Zihao Yu, Nanjing University
+ *
+ * NEMU is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan
+ *PSL v2. You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ *
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY
+ *KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ *NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ *
+ * See the Mulan PSL v2 for more details.
+ ***************************************************************************************/
 
-#include <isa.h>
-#include <cpu/cpu.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <memory/vaddr.h>
 #include "sdb.h"
+#include <cpu/cpu.h>
+#include <isa.h>
+#include <memory/vaddr.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 
 static int is_batch_mode = false;
 
@@ -28,9 +28,11 @@ void new_wp(char *e);
 void free_wp(int NO);
 void print_wp();
 void ftrace_display();
+void init_ftrace(const char *elf_file);
 
-/* We use the `readline' library to provide more flexibility to read from stdin. */
-static char* rl_gets() {
+/* We use the `readline' library to provide more flexibility to read from stdin.
+ */
+static char *rl_gets() {
   static char *line_read = NULL;
 
   if (line_read) {
@@ -61,28 +63,28 @@ static int cmd_ci(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   uint64_t N;
-  int valid,i;
+  int valid, i;
 
   if (arg == NULL) {
     /* no argument given */
-		cpu_exec(1);
+    cpu_exec(1);
   } else {
-		valid = sscanf(arg, "%lu", &N);
-		for(i = 0 ;arg[i] != '\0' ; i++) {
-			if(arg[i] < '0' || arg[i] > '9') {
-				valid = 0;
-				break;
-			}
-		}
-		if(valid == 1) {
-	  	cpu_exec(N);
-		} else {
-	  	/* not a number */
-	  	printf("Invalid argument, please enter a number.\n");
-		}
+    valid = sscanf(arg, "%lu", &N);
+    for (i = 0; arg[i] != '\0'; i++) {
+      if (arg[i] < '0' || arg[i] > '9') {
+        valid = 0;
+        break;
+      }
+    }
+    if (valid == 1) {
+      cpu_exec(N);
+    } else {
+      /* not a number */
+      printf("Invalid argument, please enter a number.\n");
+    }
   }
 
-  return 0;	
+  return 0;
 }
 
 static int cmd_info(char *args) {
@@ -92,61 +94,61 @@ static int cmd_info(char *args) {
     return 0;
   }
   char *arg = strtok(NULL, " ");
-  
+
   if (strcmp(arg, "r") == 0) {
     isa_reg_display();
   } else if (strcmp(arg, "w") == 0) {
     print_wp();
   } else {
-	  printf("Please enter a valid argument.\n");
+    printf("Please enter a valid argument.\n");
   }
   return 0;
 }
 
 static int cmd_x(char *args) {
-	char *arg1 = strtok(NULL, " ");
-	char *arg2 = strtok(NULL, "\n");
-	
-	if(arg1 == NULL || arg2 == NULL) {
-		printf("Please enter two vaild arguments.");
-	} else {
-	  word_t N, address, result;
+  char *arg1 = strtok(NULL, " ");
+  char *arg2 = strtok(NULL, "\n");
+
+  if (arg1 == NULL || arg2 == NULL) {
+    printf("Please enter two vaild arguments.");
+  } else {
+    word_t N, address, result;
     bool success = true;
     int i;
 
-    if ( sscanf(arg1, "%u", &N) != 1) { 
+    if (sscanf(arg1, "%u", &N) != 1) {
       success = false;
     }
     address = expr(arg2, &success);
     if (success == false) {
       printf("Bad expression.\n");
     } else {
-      for (i = 0; i < N; i++){
+      for (i = 0; i < N; i++) {
         if (i % 4 == 0) {
           printf("0x%08x:\t", address + 16 * (i / 4));
         }
         result = vaddr_read(address + 4 * i, 4);
         printf("0x%08x\t", result);
-        if(i % 4 == 3 || i == N - 1) {
+        if (i % 4 == 3 || i == N - 1) {
           printf("\n");
         }
       }
     }
-	}
-	
-	return 0;
+  }
+
+  return 0;
 }
 
 static int cmd_p(char *args) {
-	bool success = true;
-	word_t result = expr(args, &success);
-	if (success == false) {
-		printf("Bad expression.\n");
-	} else{
-		printf("%s = %u\n", args, result);
+  bool success = true;
+  word_t result = expr(args, &success);
+  if (success == false) {
+    printf("Bad expression.\n");
+  } else {
+    printf("%s = %u\n", args, result);
     printf("0x%08x\n", result);
-	}
-	return 0;
+  }
+  return 0;
 }
 
 static int cmd_w(char *args) {
@@ -156,7 +158,7 @@ static int cmd_w(char *args) {
     return 0;
   }
   new_wp(args);
-#else 
+#else
   printf("Watchpoint is not enabled.\n");
 #endif
   return 0;
@@ -176,7 +178,7 @@ static int cmd_d(char *args) {
   } else {
     free_wp(NO);
   }
-#else 
+#else
   printf("Watchpoint is not enabled.\n");
 #endif
 
@@ -193,24 +195,38 @@ static int cmd_f(char *args) {
   return 0;
 }
 
+static int cmd_e(char *args) {
+#ifdef CONFIG_FTRACE
+  if (args == NULL) {
+    printf("Please enter a valid ELF file.\n");
+    return 0;
+  }
+  init_ftrace(args);
+#else
+  printf("Function trace is not enabled.\n");
+#endif
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
   const char *name;
   const char *description;
-  int (*handler) (char *);
-} cmd_table [] = {
-  { "help", "Display information about all supported commands", cmd_help },
-  { "c", "Continue the execution of the program", cmd_c },
-  { "q", "Exit NEMU", cmd_q },
-  { "si", "Step program N(default by 1) times", cmd_ci },
-  { "info", "Print status of registers or watchpoints", cmd_info }, 
-	{ "x", "Examine memory", cmd_x},
-	{ "p", "Calculate the expression", cmd_p},
-  { "w", "Set watchpoints", cmd_w},
-  { "d", "Delete watchpoints", cmd_d},
-  { "f", "Print the function trace log", cmd_f},
-  /* TODO: Add more commands */
+  int (*handler)(char *);
+} cmd_table[] = {
+    {"help", "Display information about all supported commands", cmd_help},
+    {"c", "Continue the execution of the program", cmd_c},
+    {"q", "Exit NEMU", cmd_q},
+    {"si", "Step program N(default by 1) times", cmd_ci},
+    {"info", "Print status of registers or watchpoints", cmd_info},
+    {"x", "Examine memory", cmd_x},
+    {"p", "Calculate the expression", cmd_p},
+    {"w", "Set watchpoints", cmd_w},
+    {"d", "Delete watchpoints", cmd_d},
+    {"e", "Assign an ELF file", cmd_e},
+    {"f", "Print the function trace log", cmd_f},
+    /* TODO: Add more commands */
 
 };
 
@@ -223,12 +239,11 @@ static int cmd_help(char *args) {
 
   if (arg == NULL) {
     /* no argument given */
-    for (i = 0; i < NR_CMD; i ++) {
+    for (i = 0; i < NR_CMD; i++) {
       printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
     }
-  }
-  else {
-    for (i = 0; i < NR_CMD; i ++) {
+  } else {
+    for (i = 0; i < NR_CMD; i++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
         printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
         return 0;
@@ -239,9 +254,7 @@ static int cmd_help(char *args) {
   return 0;
 }
 
-void sdb_set_batch_mode() {
-  is_batch_mode = true;
-}
+void sdb_set_batch_mode() { is_batch_mode = true; }
 
 void sdb_mainloop() {
   if (is_batch_mode) {
@@ -249,12 +262,14 @@ void sdb_mainloop() {
     return;
   }
 
-  for (char *str; (str = rl_gets()) != NULL; ) {
+  for (char *str; (str = rl_gets()) != NULL;) {
     char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
-    if (cmd == NULL) { continue; }
+    if (cmd == NULL) {
+      continue;
+    }
 
     /* treat the remaining string as the arguments,
      * which may need further parsing
@@ -270,14 +285,18 @@ void sdb_mainloop() {
 #endif
 
     int i;
-    for (i = 0; i < NR_CMD; i ++) {
+    for (i = 0; i < NR_CMD; i++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
-        if (cmd_table[i].handler(args) < 0) { return; }
+        if (cmd_table[i].handler(args) < 0) {
+          return;
+        }
         break;
       }
     }
 
-    if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
+    if (i == NR_CMD) {
+      printf("Unknown command '%s'\n", cmd);
+    }
   }
 }
 
@@ -307,7 +326,7 @@ void init_sdb() {
   init_regex();
 
   /* Test the expressions. */
-  //test_regex();
+  // test_regex();
 
   /* Initialize the watchpoint pool. */
   init_wp_pool();
