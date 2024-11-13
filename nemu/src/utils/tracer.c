@@ -14,6 +14,7 @@ int functab_size = 0;
 
 #ifdef CONFIG_FTRACE
 void init_ftrace(const char *elf_file) {
+  Log("elf_file: %s", elf_file);
   if (elf_file == NULL) {
     Log("No ELF file specified, skip initializing ftrace");
     return;
@@ -26,7 +27,8 @@ void init_ftrace(const char *elf_file) {
   Elf32_Ehdr ehdr;
   fread(&ehdr, sizeof(ehdr), 1, fp);
 
-  Assert(ehdr.e_ident[0] == 0x7f && ehdr.e_ident[1] == 'E' && ehdr.e_ident[2] == 'L' && ehdr.e_ident[3] == 'F',
+  Assert(ehdr.e_ident[0] == 0x7f && ehdr.e_ident[1] == 'E' &&
+             ehdr.e_ident[2] == 'L' && ehdr.e_ident[3] == 'F',
          "Invalid ELF file %s", elf_file);
 
   Elf32_Shdr shdr[ehdr.e_shnum];
@@ -46,7 +48,6 @@ void init_ftrace(const char *elf_file) {
   Assert(symtab_shdr.sh_size % sizeof(Elf32_Sym) == 0, "Invalid symtab size");
   Assert(strtab_shdr.sh_size > 0, "Invalid strtab size");
 
-
   fseek(fp, symtab_shdr.sh_offset, SEEK_SET);
   Elf32_Sym symtab[symtab_shdr.sh_size / sizeof(Elf32_Sym)];
   fread(symtab, sizeof(symtab), 1, fp);
@@ -62,15 +63,15 @@ void init_ftrace(const char *elf_file) {
       functab_size++;
     }
   }
-  
+
   fclose(fp);
- 
+
   for (int i = 0; i < functab_size; i++) {
     Log("Function %s at 0x%08x", functab[i].name, functab[i].addr);
   }
 }
 
-char* get_func_name(word_t addr) {
+char *get_func_name(word_t addr) {
   for (int i = 0; i < functab_size; i++) {
     if (addr >= functab[i].addr && addr < functab[i].addr + functab[i].size) {
       return functab[i].name;
