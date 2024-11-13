@@ -45,7 +45,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   } else {
     pixels = (uint32_t *)s->pixels;
   }
-  printf("%d %d %d %d\n", x, y, w, h);
   NDL_DrawRect(pixels, x, y, s->w, s->h);
 }
 
