@@ -42,6 +42,8 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   } else if (s->format->BitsPerPixel == 8) {
     uint8_t *pixels = (uint8_t *)s->pixels;
     SDL_Palette *palette = s->format->palette;
+    uint32_t *convertedPixels =
+        (uint32_t *)malloc(s->w * s->h * sizeof(uint32_t));
 
     for (int i = 0; i < s->w * s->h; i++) {
       uint8_t pixelIndex = pixels[i];
@@ -49,10 +51,11 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 
       uint32_t pixelColor = (color.r << 16) | (color.g << 8) | color.b;
 
-      pixels[i] = pixelColor;
+      convertedPixels[i] = pixelColor;
     }
 
-    NDL_DrawRect((uint32_t *)pixels, x, y, s->w, s->h);
+    NDL_DrawRect(convertedPixels, x, y, s->w, s->h);
+    free(convertedPixels);
   }
 }
 
