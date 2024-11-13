@@ -3,9 +3,10 @@
 #include <string.h>
 
 #define keyname(k) #k,
+#define NUM_KEYS SDLK_PAGEDOWN
 
 static const char *keyname[] = {"NONE", _KEYS(keyname)};
-static uint8_t keystate[256] = {0};
+static uint8_t keystate[NUM_KEYS] = {0};
 
 int SDL_PushEvent(SDL_Event *ev) { return 0; }
 
@@ -51,4 +52,9 @@ int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
   return 0;
 }
 
-uint8_t *SDL_GetKeyState(int *numkeys) {}
+uint8_t *SDL_GetKeyState(int *numkeys) {
+  if (numkeys == NULL) {
+    *numkeys = NUM_KEYS;
+  }
+  return keystate;
+}
