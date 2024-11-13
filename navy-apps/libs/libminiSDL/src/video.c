@@ -30,6 +30,11 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   SDL_Rect dst_r = dstrect ? *dstrect : (SDL_Rect){0, 0, dst->w, dst->h};
   uint32_t *pixels = (uint32_t *)dst->pixels;
 
+  if (dst->format->palette) {
+    SDL_Color *c = &dst->format->palette->colors[color];
+    color = SDL_MapRGBA(dst->format, c->r, c->g, c->b, c->unused);
+  }
+
   for (int j = 0; j < dst_r.h; j++)
     for (int i = 0; i < dst_r.w; i++)
       pixels[(dst_r.y + j) * dst->w + dst_r.x + i] = color;
