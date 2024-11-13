@@ -41,7 +41,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     pixels = malloc(sizeof(s->pixels) * 4);
     for (int i = 0; i < sizeof(s->pixels) / sizeof(s->pixels[0]); i++) {
       SDL_Color *c = &s->format->palette->colors[s->pixels[i]];
-      pixels[i] = 0xffffffff;
+      pixels[i] = c->r;
     }
   }
   NDL_DrawRect(pixels, x, y, s->w, s->h);
