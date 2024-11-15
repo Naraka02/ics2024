@@ -1,5 +1,4 @@
 #include <am.h>
-#include <sys/time.h>
 
 static void __am_uart_config(AM_UART_CONFIG_T *cfg) { cfg->present = false; }
 static void __am_uart_tx(AM_UART_TX_T *tx) { tx->data = 0; }
@@ -19,7 +18,7 @@ static void __am_timer_rtc(AM_TIMER_RTC_T *rtc) {
 static void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  uptime->us = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+  uptime->us = tv.tv_sec * 10000000 + tv.tv_usec;
 }
 static void __am_input_config(AM_INPUT_CONFIG_T *cfg) { cfg->present = false; }
 static void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
