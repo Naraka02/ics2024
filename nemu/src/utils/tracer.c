@@ -53,6 +53,9 @@ void init_ftrace(const char *elf_file) {
 
   for (int i = 0; i < symtab_shdr.sh_size / sizeof(Elf32_Sym); i++) {
     if (ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
+      if (functab_size >= FUNCTAB_SIZE) {
+        functab_size = 0;
+      }
       char name[128];
       fseek(fp, strtab_shdr.sh_offset + symtab[i].st_name, SEEK_SET);
       fread(name, 128, 1, fp);
