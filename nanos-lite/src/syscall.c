@@ -1,6 +1,7 @@
 #include "syscall.h"
 #include "am.h"
 #include <common.h>
+#include <proc.h>
 #include <stdint.h>
 
 #define ssize_t int
@@ -14,6 +15,7 @@ int fs_open(const char *pathname, int flags, int mode);
 size_t fs_read(int fd, void *buf, size_t len);
 size_t fs_write(int fd, const void *buf, size_t len);
 size_t fs_lseek(int fd, size_t offset, int whence);
+void naive_uload(PCB *pcb, const char *filename);
 
 int fs_close(int fd);
 static inline void sys_yield(Context *c) {
@@ -57,6 +59,17 @@ static inline int sys_gettimeofday(void *tv, void *tz) {
   return 0;
 }
 
+static inline int sys_exit(int status) {
+  naive_uload(NULL, "/bin/menu");
+  return 0;
+}
+
+static inline int sys_execve(const char *filename, const char **argv,
+                             const char **envp) {
+  naive_uload(NULL, filename);
+  return -1;
+}
+
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -69,7 +82,7 @@ void do_syscall(Context *c) {
     sys_yield(c);
     break;
   case SYS_exit:
-    halt(0);
+    c->GPRx = sys_exit(a[1]);
     break;
   case SYS_write:
     c->GPRx = sys_write(a[1], (void *)a[2], a[3]);
@@ -91,6 +104,10 @@ void do_syscall(Context *c) {
     break;
   case SYS_gettimeofday:
     c->GPRx = sys_gettimeofday((void *)a[1], (void *)a[2]);
+    break;
+  case SYS_execve:
+    c->GPRx = sys_execve((const char *)a[1], (const char **)a[2],
+                         (const char **)a[3]);
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);

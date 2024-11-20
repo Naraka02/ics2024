@@ -72,13 +72,29 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   close(fd);
 }
 
-void NDL_OpenAudio(int freq, int channels, int samples) {}
+void NDL_OpenAudio(int freq, int channels, int samples) {
+  int fd = open("/dev/sbctl", 0);
+  int args[3] = {freq, channels, samples};
+  write(fd, args, sizeof(args));
+  close(fd);
+}
 
 void NDL_CloseAudio() {}
 
-int NDL_PlayAudio(void *buf, int len) { return 0; }
+int NDL_PlayAudio(void *buf, int len) {
+  int fd = open("/dev/sb", 0);
+  int ret = write(fd, buf, len);
+  close(fd);
+  return ret;
+}
 
-int NDL_QueryAudio() { return 0; }
+int NDL_QueryAudio() {
+  int fd = open("/dev/sbctl", 0);
+  int ret;
+  read(fd, &ret, sizeof(ret));
+  close(fd);
+  return ret;
+}
 
 int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
