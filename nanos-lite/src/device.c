@@ -70,6 +70,7 @@ size_t sbctl_write(const void *buf, size_t offset, size_t len) {
   int freq = *(int *)buf;
   int channels = *(int *)(buf + 4);
   int samples = *(int *)(buf + 8);
+  printf("freq = %d, channels = %d, samples = %d\n", freq, channels, samples);
   io_write(AM_AUDIO_CTRL, freq, channels, samples);
   return len;
 }
