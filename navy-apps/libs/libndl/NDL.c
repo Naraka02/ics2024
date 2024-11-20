@@ -49,7 +49,7 @@ void NDL_OpenCanvas(int *w, int *h) {
   }
   int fd = open("/proc/dispinfo", 0);
   char buf[64];
-  int len = read(fd, buf, sizeof(buf) - 1);
+  read(fd, buf, 64);
   sscanf(buf, "WIDTH: %d\nHEIGHT: %d\n", &screen_w, &screen_h);
   if (*w == 0 && *h == 0) {
     *w = screen_w;
