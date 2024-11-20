@@ -85,7 +85,6 @@ int NDL_PlayAudio(void *buf, int len) {
   int fd = open("/dev/sb", 0);
   int ret = write(fd, buf, len);
   close(fd);
-  printf("NDL_PlayAudio: %d\n", ret);
   return ret;
 }
 
