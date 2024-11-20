@@ -27,15 +27,7 @@ static inline ssize_t sys_write(int fd, const void *buf, size_t count) {
   return fs_write(fd, buf, count);
 }
 
-static inline int sys_brk(int *addr) {
-  extern char end;
-  static char *brk = &end;
-  if ((uintptr_t)brk < (uintptr_t)addr) {
-    brk = (char *)addr;
-    return 0;
-  }
-  return -1;
-}
+static inline int sys_brk(int *addr) { return 0; }
 
 static inline int sys_open(const char *pathname, int flags, int mode) {
   return fs_open(pathname, flags, mode);
