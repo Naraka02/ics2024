@@ -93,6 +93,7 @@ int NDL_QueryAudio() {
   void *buf = malloc(4);
   read(fd, buf, 4);
   int ret = *(int *)buf;
+  printf("free: %d\n", ret);
   close(fd);
   return ret;
 }
