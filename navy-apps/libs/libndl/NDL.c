@@ -90,9 +90,9 @@ int NDL_PlayAudio(void *buf, int len) {
 
 int NDL_QueryAudio() {
   int fd = open("/dev/sbctl", 0);
-  void *buf = malloc(4);
-  read(fd, buf, 4);
-  int ret = *(int *)buf;
+  int ret;
+  read(fd, &ret, sizeof(ret));
+  printf("query audio: %d\n", ret);
   close(fd);
   return ret;
 }
