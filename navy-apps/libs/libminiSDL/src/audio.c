@@ -14,7 +14,8 @@ void CallBackHelper() {
   if (SDL_GetTicks() - timer < interval)
     return;
   timer = SDL_GetTicks();
-  SDL_Callback(NULL, stream, samples);
+  int free = NDL_QueryAudio();
+  SDL_Callback(NULL, stream, free > samples ? samples : free);
   NDL_PlayAudio(stream, samples);
 }
 
@@ -24,7 +25,6 @@ int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
   samples = desired->samples;
   SDL_Callback = desired->callback;
   NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
-  printf("SDL_OpenAudio\n");
 
   CallBackHelper();
   return 0;
