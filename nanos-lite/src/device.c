@@ -63,6 +63,7 @@ size_t sbctl_read(void *buf, size_t offset, size_t len) {
   AM_AUDIO_STATUS_T stat = io_read(AM_AUDIO_STATUS);
   AM_AUDIO_CONFIG_T cfg = io_read(AM_AUDIO_CONFIG);
   snprintf(buf, len, "%d", cfg.bufsize - stat.count);
+  printf("sbctl_read: %d\n", *(int *)buf);
   return len;
 }
 
