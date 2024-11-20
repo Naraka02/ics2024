@@ -66,6 +66,7 @@ static inline int sys_exit(int status) {
 
 static inline int sys_execve(const char *filename, const char **argv,
                              const char **envp) {
+  printf("load %s", filename);
   naive_uload(NULL, filename);
   return -1;
 }
