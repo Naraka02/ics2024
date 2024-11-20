@@ -92,6 +92,7 @@ int NDL_QueryAudio() {
   int fd = open("/dev/sbctl", 0);
   void *buf = malloc(4);
   read(fd, buf, 4);
+  printf("free: %d\n", *(int *)buf);
   int ret = *(int *)buf;
   printf("free: %d\n", ret);
   close(fd);
