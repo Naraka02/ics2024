@@ -25,7 +25,7 @@ void init_proc() {
 
   Log("Initializing processes...");
 
-  naive_uload(NULL, "/bin/nterm");
+  naive_uload(NULL, "/bin/fceux");
 }
 
 Context *schedule(Context *prev) { return NULL; }
