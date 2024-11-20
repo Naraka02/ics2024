@@ -1,5 +1,7 @@
 #include <NDL.h>
 #include <SDL.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 static uint32_t timer = 0;
 static uint32_t interval = 0;
