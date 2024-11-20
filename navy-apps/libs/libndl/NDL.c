@@ -93,6 +93,7 @@ int NDL_QueryAudio() {
   int ret;
   read(fd, &ret, sizeof(ret));
   close(fd);
+  printf("NDL_QueryAudio: %d\n", ret);
   return ret;
 }
 
