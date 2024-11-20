@@ -29,6 +29,7 @@ int fs_close(int fd);
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;
   int fd = fs_open(filename, 0, 0);
+  Log("Hi");
   assert(fd >= 0);
   fs_read(fd, &ehdr, sizeof(ehdr));
 
