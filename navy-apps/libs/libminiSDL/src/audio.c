@@ -1,6 +1,7 @@
 #include <NDL.h>
 #include <SDL.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 static uint32_t timer = 0;
@@ -23,6 +24,7 @@ int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
   samples = desired->samples;
   SDL_Callback = desired->callback;
   NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
+  printf("SDL_OpenAudio\n");
 
   CallBackHelper();
   return 0;
