@@ -36,7 +36,7 @@ int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
 void SDL_CloseAudio() {}
 
 void SDL_PauseAudio(int pause_on) {
-  if (pause_on > 0)
+  if (pause_on)
     return;
   CallBackHelper();
 }
