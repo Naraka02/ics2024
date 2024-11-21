@@ -59,8 +59,6 @@ static void init_sdl() {
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   assert(offset < nr_reg * sizeof(uint32_t) && offset % 4 == 0);
   int idx = offset / 4;
-  printf("audio: offset = %d, len = %d, is_write = %d\n", offset, len,
-         is_write);
   switch (idx) {
   case reg_init:
     if (is_write && audio_base[reg_init] == 1) {
@@ -69,11 +67,8 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
     }
     break;
   case reg_count:
-    if (is_write) {
-      audio_base[reg_count] += len;
-      SDL_QueueAudio(1, sbuf, len);
-    }
-    break;
+    assert(!is_write);
+    audio_base[reg_count] = SDL_GetQueuedAudioSize(1);
   default:
     break;
   }
