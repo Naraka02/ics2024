@@ -9,9 +9,10 @@ static uint32_t interval = 0;
 static uint8_t *stream = NULL;
 static int samples = 0;
 static void (*SDL_Callback)(void *, uint8_t *, int) = NULL;
+static int is_init = 0;
 
 void CallBackHelper() {
-  if (SDL_GetTicks() - timer < interval || SDL_Callback == NULL)
+  if (SDL_GetTicks() - timer < interval || !is_init)
     return;
   timer = SDL_GetTicks();
   int free = NDL_QueryAudio();
@@ -25,6 +26,7 @@ int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
   samples = desired->samples;
   SDL_Callback = desired->callback;
   NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
+  is_init = 1;
   return 0;
 }
 
