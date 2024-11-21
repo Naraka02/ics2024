@@ -52,7 +52,16 @@ size_t am_write(const void *buf, size_t offset, size_t len) {
 }
 
 size_t sb_write(const void *buf, size_t offset, size_t len) {
-  io_write(AM_AUDIO_PLAY, (Area){(void *)buf, (void *)buf + len});
+  int nplay = 0;
+  Area sbuf;
+  sbuf.start = (void *)buf;
+  while (nplay < len) {
+    int playlen = len - nplay > 4096 ? 4096 : len - nplay;
+    sbuf.end = sbuf.start + playlen;
+    io_write(AM_AUDIO_PLAY, sbuf);
+    sbuf.start += playlen;
+    nplay += playlen;
+  }
   return len;
 }
 
