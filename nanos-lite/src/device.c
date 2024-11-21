@@ -61,6 +61,7 @@ size_t sb_write(const void *buf, size_t offset, size_t len) {
     io_write(AM_AUDIO_PLAY, sbuf);
     sbuf.start += playlen;
     nplay += playlen;
+    printf("Already play %d/%d bytes of data\n", nplay, len);
   }
   return len;
 }
