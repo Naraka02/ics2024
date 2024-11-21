@@ -29,6 +29,8 @@ void free_wp(int NO);
 void print_wp();
 void ftrace_display();
 void init_ftrace(const char *elf_file);
+void difftest_detach();
+void difftest_attach();
 
 /* We use the `readline' library to provide more flexibility to read from stdin.
  */
@@ -208,6 +210,24 @@ static int cmd_e(char *args) {
   return 0;
 }
 
+static int cmd_detach(char *args) {
+#ifdef CONFIG_DIFFTEST
+  difftest_detach();
+#else
+  printf("Difftest is not enabled.\n");
+#endif
+  return 0;
+}
+
+static int cmd_attach(char *args) {
+#ifdef CONFIG_DIFFTEST
+  difftest_attach();
+#else
+  printf("Difftest is not enabled.\n");
+#endif
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -226,6 +246,8 @@ static struct {
     {"d", "Delete watchpoints", cmd_d},
     {"e", "Assign an ELF file", cmd_e},
     {"f", "Print the function trace log", cmd_f},
+    {"detach", "Detach difftest", cmd_detach},
+    {"attach", "Attach difftest", cmd_attach},
     /* TODO: Add more commands */
 
 };
