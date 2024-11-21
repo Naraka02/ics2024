@@ -79,8 +79,8 @@ void FillAudio(void *userdata, uint8_t *stream, int len) {
   }
   if (nbyte < len)
     memset(stream + nbyte, 0, len - nbyte);
+  printf("stream_save = %p, stream = %p, len = %d\n", stream_save, stream, len);
   memcpy(stream_save, stream, len);
-  printf("Playing %d samples\n", samples_per_channel);
 }
 
 int main(int argc, char *argv[]) {
