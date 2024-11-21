@@ -10,14 +10,17 @@ static uint8_t *stream = NULL;
 static int samples = 0;
 static void (*SDL_Callback)(void *, uint8_t *, int) = NULL;
 static int is_init = 0;
+static int is_recall = 0;
 
 void CallBackHelper() {
-  if (SDL_GetTicks() - timer < interval || !is_init)
+  if (SDL_GetTicks() - timer < interval || !is_init || is_recall)
     return;
+  is_recall = 1;
   timer = SDL_GetTicks();
   int free = NDL_QueryAudio();
   SDL_Callback(NULL, stream, free > samples ? samples : free);
   NDL_PlayAudio(stream, samples);
+  is_recall = 0;
 }
 
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
