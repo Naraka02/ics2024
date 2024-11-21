@@ -67,6 +67,12 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       audio_base[reg_init] = 0;
     }
     break;
+  case reg_count:
+    if (is_write) {
+      audio_base[reg_count] += len;
+      SDL_QueueAudio(1, sbuf, len);
+    }
+    break;
   default:
     break;
   }
