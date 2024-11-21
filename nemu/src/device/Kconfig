@@ -105,7 +105,7 @@ config SB_ADDR
 
 config SB_SIZE
   hex "Size of the audio stream buffer"
-  default 0x100000
+  default 0x100000000
 
 config AUDIO_CTL_PORT
   depends on HAS_PORT_IO
