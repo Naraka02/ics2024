@@ -18,6 +18,7 @@ void CallBackHelper() {
   is_recall = 1;
   timer = SDL_GetTicks();
   int free = NDL_QueryAudio();
+  printf("free: %d samples: %d\n", free, samples);
   SDL_Callback(NULL, stream, free > samples ? samples : free);
   NDL_PlayAudio(stream, samples);
   is_recall = 0;
