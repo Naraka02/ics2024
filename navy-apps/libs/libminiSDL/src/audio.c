@@ -25,8 +25,6 @@ int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
   samples = desired->samples;
   SDL_Callback = desired->callback;
   NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
-
-  CallBackHelper();
   return 0;
 }
 
