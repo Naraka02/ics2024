@@ -68,7 +68,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
     break;
   case reg_count:
     if (is_write) {
-      audio_base[reg_count] = 0;
     } else {
       audio_base[reg_count] = SDL_GetQueuedAudioSize(1);
     }
