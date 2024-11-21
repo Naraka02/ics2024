@@ -49,7 +49,6 @@ void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {
 
 SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec,
                            uint8_t **audio_buf, uint32_t *audio_len) {
-  printf("Loading %s\n", file);
   FILE *fp = fopen(file, "r");
 
   uint16_t NumChannels, BitsPerSample;
@@ -66,6 +65,7 @@ SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec,
   spec->format = BitsPerSample == 8 ? AUDIO_U8 : AUDIO_S16SYS;
 
   fseek(fp, 44, SEEK_SET);
+  printf("audio_len: %d\n", *audio_len);
   fread(audio_buf, *audio_len, 1, fp);
   fclose(fp);
 
