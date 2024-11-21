@@ -8,9 +8,13 @@ static const char *keyname[] = {"NONE", _KEYS(keyname)};
 #define NUM_KEYS (sizeof(keyname) / sizeof(char))
 static uint8_t keystate[NUM_KEYS] = {0};
 
+void CallBackHelper();
+
 int SDL_PushEvent(SDL_Event *ev) { return 0; }
 
 int SDL_PollEvent(SDL_Event *ev) {
+  CallBackHelper();
+
   char buf[64];
   if (NDL_PollEvent(buf, 64) == 0) {
     return 0;
