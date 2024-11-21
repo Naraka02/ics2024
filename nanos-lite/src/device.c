@@ -62,6 +62,8 @@ size_t sb_write(const void *buf, size_t offset, size_t len) {
     sbuf.start += playlen;
     nplay += playlen;
   }
+  while (io_read(AM_AUDIO_STATUS).count > 0)
+    ;
   return len;
 }
 
