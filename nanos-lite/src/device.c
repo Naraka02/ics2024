@@ -52,19 +52,7 @@ size_t am_write(const void *buf, size_t offset, size_t len) {
 }
 
 size_t sb_write(const void *buf, size_t offset, size_t len) {
-  int nplay = 0;
-  Area sbuf;
-  sbuf.start = (void *)buf;
-  while (nplay < len) {
-    int playlen = len - nplay > 65536 ? 65536 : len - nplay;
-    sbuf.end = sbuf.start + playlen;
-    io_write(AM_AUDIO_PLAY, sbuf);
-    sbuf.start += playlen;
-    nplay += playlen;
-    printf("Already play %d/%d bytes of data\n", nplay, len);
-  }
-  while (io_read(AM_AUDIO_STATUS).count > 0)
-    ;
+  io_write(AM_AUDIO_PLAY, {(void *)buf, (void *)buf + len});
   return len;
 }
 
