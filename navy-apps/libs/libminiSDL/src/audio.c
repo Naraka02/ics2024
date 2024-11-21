@@ -41,14 +41,36 @@ void SDL_PauseAudio(int pause_on) {
   CallBackHelper();
 }
 
-void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {}
+void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {
+  for (int i = 0; i < len; i++) {
+    dst[i] = (dst[i] * volume + src[i] * (128 - volume)) / 128;
+  }
+}
 
 SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec,
                            uint8_t **audio_buf, uint32_t *audio_len) {
-  return NULL;
+  FILE *fp = fopen(file, "r");
+
+  uint16_t NumChannels, BitsPerSample;
+  uint32_t SampleRate;
+  fseek(fp, 22, SEEK_SET);
+  fread(&NumChannels, 2, 1, fp);
+  fseek(fp, 34, SEEK_SET);
+  fread(&BitsPerSample, 2, 1, fp);
+  fseek(fp, 24, SEEK_SET);
+  fread(&SampleRate, 4, 1, fp);
+
+  spec->freq = SampleRate;
+  spec->channels = NumChannels;
+  spec->format = BitsPerSample == 8 ? AUDIO_U8 : AUDIO_S16SYS;
+
+  fseek(fp, 44, SEEK_SET);
+  fread(audio_buf, *audio_len, 1, fp);
+
+  return spec;
 }
 
-void SDL_FreeWAV(uint8_t *audio_buf) {}
+void SDL_FreeWAV(uint8_t *audio_buf) { free(audio_buf); }
 
 void SDL_LockAudio() {}
 
