@@ -66,6 +66,7 @@ SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec,
 
   fseek(fp, 44, SEEK_SET);
   fread(audio_buf, *audio_len, 1, fp);
+  fclose(fp);
 
   return spec;
 }
