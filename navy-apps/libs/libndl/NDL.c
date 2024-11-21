@@ -83,7 +83,6 @@ void NDL_CloseAudio() {}
 
 int NDL_PlayAudio(void *buf, int len) {
   int fd = open("/dev/sb", 0);
-  printf("play audio %d\n", len);
   int ret = write(fd, buf, len);
   close(fd);
   return ret;
