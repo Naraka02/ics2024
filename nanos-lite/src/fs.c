@@ -44,8 +44,8 @@ static Finfo file_table[] __attribute__((used)) = {
     [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
     [FD_FB] = {"/dev/fb", 0, 0, invalid_read, fb_write},
     {"/dev/events", 0, 0, events_read, invalid_write},
-    {"/dev/am", 128, 0, am_read, am_write},
-    {"/dev/sb", 409600, 0, invalid_read, sb_write},
+    {"/dev/am", 0, 0, am_read, am_write},
+    {"/dev/sb", 0, 0, invalid_read, sb_write},
     {"/dev/sbctl", 0, 0, sbctl_read, sbctl_write},
     {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
 #include "files.h"
