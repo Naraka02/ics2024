@@ -65,9 +65,8 @@ SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec,
   spec->format = BitsPerSample == 8 ? AUDIO_U8 : AUDIO_S16SYS;
 
   fseek(fp, 44, SEEK_SET);
-  fread(*audio_buf, *audio_len, 1, fp);
-  printf("Loaded %s(freq = %d, channels = %d)...\n", file, SampleRate,
-         NumChannels);
+  *audio_buf = (uint8_t *)malloc(*audio_len);
+  *audio_len = fread(*audio_buf, 1, *audio_len, fp);
   fclose(fp);
 
   return spec;
