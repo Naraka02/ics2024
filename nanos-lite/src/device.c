@@ -55,7 +55,6 @@ size_t sb_write(const void *buf, size_t offset, size_t len) {
   int sbuf_size = io_read(AM_AUDIO_CONFIG).bufsize;
   while (len > sbuf_size - io_read(AM_AUDIO_STATUS).count)
     ;
-  io_write(AM_AUDIO_PLAY, (Area){(void *)buf, (void *)buf + len});
   io_write(AM_AUDIO_STATUS, len + io_read(AM_AUDIO_STATUS).count);
   return len;
 }
