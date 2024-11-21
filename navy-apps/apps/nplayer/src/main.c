@@ -1,11 +1,11 @@
+#include <SDL.h>
+#include <assert.h>
+#include <fixedptc.h>
 #include <stdint.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
-#include <SDL.h>
+#include <string.h>
 #include <vorbis.h>
-#include <fixedptc.h>
 
 #define MUSIC_PATH "/share/music/little-star.ogg"
 #define SAMPLES 4096
@@ -25,7 +25,7 @@ static void drawVerticalLine(int x, int y0, int y1, uint32_t color) {
   assert(y0 <= y1);
   int i;
   uint32_t *p = (void *)screen->pixels;
-  for (i = y0; i <= y1; i ++) {
+  for (i = y0; i <= y1; i++) {
     p[i * W + x] = color;
   }
 }
@@ -35,34 +35,41 @@ static void visualize(int16_t *stream, int samples) {
   static int color = 0;
   SDL_FillRect(screen, NULL, 0);
   int center_y = H / 2;
-  for (i = 0; i < samples; i ++) {
-    fixedpt multipler = fixedpt_cos(fixedpt_divi(fixedpt_muli(FIXEDPT_PI, 2 * i), samples));
+  for (i = 0; i < samples; i++) {
+    fixedpt multipler =
+        fixedpt_cos(fixedpt_divi(fixedpt_muli(FIXEDPT_PI, 2 * i), samples));
     int x = i * W / samples;
-    int y = center_y - fixedpt_toint(fixedpt_muli(fixedpt_divi(fixedpt_muli(multipler, stream[i]), 32768), H / 2));
-    if (y < center_y) drawVerticalLine(x, y, center_y, color);
-    else drawVerticalLine(x, center_y, y, color);
-    color ++;
+    int y =
+        center_y -
+        fixedpt_toint(fixedpt_muli(
+            fixedpt_divi(fixedpt_muli(multipler, stream[i]), 32768), H / 2));
+    if (y < center_y)
+      drawVerticalLine(x, y, center_y, color);
+    else
+      drawVerticalLine(x, center_y, y, color);
+    color++;
     color &= 0xffffff;
   }
   SDL_UpdateRect(screen, 0, 0, 0, 0);
 }
 
 static void AdjustVolume(int16_t *stream, int samples) {
-  if (volume == MAX_VOLUME) return;
+  if (volume == MAX_VOLUME)
+    return;
   if (volume == 0) {
     memset(stream, 0, samples * sizeof(stream[0]));
     return;
   }
   int i;
-  for (i = 0; i < samples; i ++) {
+  for (i = 0; i < samples; i++) {
     stream[i] = stream[i] * volume / MAX_VOLUME;
   }
 }
 
 void FillAudio(void *userdata, uint8_t *stream, int len) {
   int nbyte = 0;
-  int samples_per_channel = stb_vorbis_get_samples_short_interleaved(v,
-      info.channels, (int16_t *)stream, len / sizeof(int16_t));
+  int samples_per_channel = stb_vorbis_get_samples_short_interleaved(
+      v, info.channels, (int16_t *)stream, len / sizeof(int16_t));
   if (samples_per_channel != 0 || len < sizeof(int16_t)) {
     int samples = samples_per_channel * info.channels;
     nbyte = samples * sizeof(int16_t);
@@ -70,7 +77,9 @@ void FillAudio(void *userdata, uint8_t *stream, int len) {
   } else {
     is_end = 1;
   }
-  if (nbyte < len) memset(stream + nbyte, 0, len - nbyte);
+  if (nbyte < len)
+    memset(stream + nbyte, 0, len - nbyte);
+  printf("Playing %d samples\n", samples_per_channel);
   memcpy(stream_save, stream, len);
 }
 
@@ -107,7 +116,8 @@ int main(int argc, char *argv[]) {
 
   stream_save = malloc(SAMPLES * info.channels * sizeof(*stream_save));
   assert(stream_save);
-  printf("Playing %s(freq = %d, channels = %d)...\n", MUSIC_PATH, info.sample_rate, info.channels);
+  printf("Playing %s(freq = %d, channels = %d)...\n", MUSIC_PATH,
+         info.sample_rate, info.channels);
   SDL_PauseAudio(0);
 
   while (!is_end) {
@@ -115,8 +125,14 @@ int main(int argc, char *argv[]) {
     while (SDL_PollEvent(&ev)) {
       if (ev.type == SDL_KEYDOWN) {
         switch (ev.key.keysym.sym) {
-          case SDLK_MINUS:  if (volume >= 8) volume -= 8; break;
-          case SDLK_EQUALS: if (volume <= MAX_VOLUME - 8) volume += 8; break;
+        case SDLK_MINUS:
+          if (volume >= 8)
+            volume -= 8;
+          break;
+        case SDLK_EQUALS:
+          if (volume <= MAX_VOLUME - 8)
+            volume += 8;
+          break;
         }
       }
     }
