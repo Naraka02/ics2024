@@ -32,6 +32,7 @@ static uint32_t *audio_base = NULL;
 
 static void sdl_audio_callback(void *userdata, uint8_t *stream, int len) {
   int count = audio_base[reg_count];
+  printf("audio callback: count = %d, len = %d\n", count, len);
   if (count < len) {
     SDL_memcpy(stream, sbuf, count);
     SDL_memset(stream + count, 0, len - count);
@@ -66,8 +67,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       audio_base[reg_init] = 0;
     }
     break;
-  case reg_count:
-    panic("audio count is read-only");
   default:
     break;
   }
