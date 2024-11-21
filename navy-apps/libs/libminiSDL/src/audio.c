@@ -11,7 +11,7 @@ static int samples = 0;
 static void (*SDL_Callback)(void *, uint8_t *, int) = NULL;
 
 void CallBackHelper() {
-  if (SDL_GetTicks() - timer < interval)
+  if (SDL_GetTicks() - timer < interval || SDL_Callback == NULL)
     return;
   timer = SDL_GetTicks();
   int free = NDL_QueryAudio();
