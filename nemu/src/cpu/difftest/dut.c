@@ -146,7 +146,7 @@ void difftest_detach() { is_detach = true; }
 void difftest_attach() {
   is_detach = false;
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
-  ref_difftest_memcpy(0x100000, guest_to_host(RESET_VECTOR), CONFIG_MSIZE,
+  ref_difftest_memcpy(0x100000, guest_to_host(0x100000), CONFIG_MSIZE,
                       DIFFTEST_TO_REF);
 }
 #else
