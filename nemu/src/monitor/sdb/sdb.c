@@ -245,9 +245,9 @@ static int cmd_load(char *args) {
     printf("Failed to open snapshot file.\n");
     return 0;
   }
-  fread(&cpu, sizeof(cpu), 1, fp);
+  int ret = fread(&cpu, sizeof(cpu), 1, fp);
   fclose(fp);
-  return 0;
+  return ret;
 }
 
 static int cmd_help(char *args);
