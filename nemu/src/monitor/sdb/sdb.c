@@ -228,6 +228,28 @@ static int cmd_attach(char *args) {
   return 0;
 }
 
+static int cmd_save(char *args) {
+  FILE *fp = fopen("snapshot", "w");
+  if (fp == NULL) {
+    printf("Failed to open snapshot file.\n");
+    return 0;
+  }
+  fwrite(&cpu, sizeof(cpu), 1, fp);
+  fclose(fp);
+  return 0;
+}
+
+static int cmd_load(char *args) {
+  FILE *fp = fopen("snapshot", "r");
+  if (fp == NULL) {
+    printf("Failed to open snapshot file.\n");
+    return 0;
+  }
+  fread(&cpu, sizeof(cpu), 1, fp);
+  fclose(fp);
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -248,6 +270,8 @@ static struct {
     {"f", "Print the function trace log", cmd_f},
     {"detach", "Detach difftest", cmd_detach},
     {"attach", "Attach difftest", cmd_attach},
+    {"save", "Save snapshot", cmd_save},
+    {"load", "Load snapshot", cmd_load},
     /* TODO: Add more commands */
 
 };
