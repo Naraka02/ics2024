@@ -52,7 +52,7 @@ static inline int sys_gettimeofday(void *tv, void *tz) {
 }
 
 static inline int sys_exit(int status) {
-  // naive_uload(NULL, "/bin/nterm");
+  naive_uload(NULL, "/bin/nterm");
   return 0;
 }
 
