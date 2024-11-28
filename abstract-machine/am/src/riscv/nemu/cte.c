@@ -40,7 +40,8 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   memset(c, 0, sizeof(Context));
   c->mstatus = 0x1800;
   c->mepc = (uintptr_t)entry;
-  c->GPR4 = (uintptr_t)arg;
+  printf("arg: %p\n", arg);
+  c->GPR1 = (uintptr_t)arg;
   return c;
 }
 
