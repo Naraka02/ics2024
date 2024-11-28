@@ -41,7 +41,6 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->mstatus = 0x1800;
   c->mepc = (uintptr_t)entry - 4;
   c->gpr[10] = (uintptr_t)arg;
-  c->gpr[15] = (uintptr_t)arg;
   return c;
 }
 
