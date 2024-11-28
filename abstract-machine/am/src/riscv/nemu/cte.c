@@ -40,7 +40,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   memset(c, 0, sizeof(Context));
   c->mstatus = 0x1800;
   c->mepc = (uintptr_t)entry;
-  for (int i = 0; i < 8; i++) {
+  for (int i = 8; i < 16; i++) {
     c->gpr[i] = (uintptr_t)arg;
   }
   return c;
