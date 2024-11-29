@@ -21,7 +21,10 @@ void init_ftrace(const char *elf_file) {
 
   Log("Initializing ftrace with ELF file %s", elf_file);
   FILE *fp = fopen(elf_file, "rb");
-  Assert(fp, "Failed to open ELF file %s", elf_file);
+  if (fp == NULL) {
+    Log("Failed to open ELF file %s", elf_file);
+    return;
+  }
 
   Elf32_Ehdr ehdr;
   fread(&ehdr, sizeof(ehdr), 1, fp);
