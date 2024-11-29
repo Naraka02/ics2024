@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char *argv[], char *envp[]);
@@ -10,6 +11,7 @@ void call_main(uintptr_t *args) {
   char **envp = (char **)(args + argc + 2);
   environ = envp;
   asm("call  __libc_init_array");
+  printf("%d", argc);
   exit(main(argc, argv, envp));
   assert(0);
 }
