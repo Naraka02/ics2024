@@ -57,6 +57,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
+  pcb->cp = ucontext(NULL, kstack, (void *)entry);
 
   int argc = 0, envc = 0;
   uintptr_t *sp = heap.end; // ustack.end
@@ -85,6 +86,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
   uintptr_t *up = sp; // start of string area
   sp -= argc + envc + 3;
+  pcb->cp->GPRx = (uintptr_t)sp;
   sp[0] = argc + 1;
   for (int i = 0; i < argc + 1; i++) {
     sp[1 + i] = (uintptr_t)up;
@@ -97,9 +99,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     up += strlen((const char *)up) + 1;
   }
   sp[3 + argc + envc] = 0;
-
-  pcb->cp = ucontext(NULL, kstack, (void *)entry);
-  pcb->cp->GPRx = (uintptr_t)sp;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
