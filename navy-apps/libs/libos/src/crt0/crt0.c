@@ -7,7 +7,7 @@ extern char **environ;
 void call_main(uintptr_t *args) {
   int argc = args[0];
   char **argv = (char **)args[1];
-  char **envp = (char **)args[2];
+  char **envp = (char **)(args + argc + 2);
   environ = envp;
   asm("call  __libc_init_array");
   exit(main(0, argv, envp));

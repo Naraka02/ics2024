@@ -53,11 +53,31 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   return ehdr.e_entry;
 }
 
-void context_uload(PCB *pcb, const char *filename) {
+void context_uload(PCB *pcb, const char *filename, char *const argv[],
+                   char *const envp[]) {
   uintptr_t entry = loader(pcb, filename);
-  Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
-  pcb->cp = kcontext(kstack, (void *)entry, NULL);
-  pcb->cp->GPRx = (uintptr_t)heap.end;
+  Area ustack = {pcb->stack, pcb->stack + STACK_SIZE};
+  pcb->cp = ucontext(NULL, ustack, (void *)entry);
+
+  int argc = 0, envc = 0;
+  uintptr_t *sp = heap.end;
+  pcb->cp->GPRx = (uintptr_t)sp;
+
+  while (argv[argc++])
+    ;
+  while (envp[envc++])
+    ;
+
+  *sp++ = argc + envc;
+  for (int i = 0; i < argc; i++) {
+    *(char **)sp++ = argv[i];
+  }
+  *(char **)sp++ = NULL;
+
+  for (int i = 0; i < envc; i++) {
+    *(char **)sp++ = envp[i];
+  }
+  *(char **)sp++ = NULL;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
