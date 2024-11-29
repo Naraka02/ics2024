@@ -60,7 +60,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
   int argc = 0, envc = 0;
   uintptr_t *sp = ustack.end;
-  printf("sp = %p\n", sp);
 
   if (argv) {
     while (argv[argc]) {
