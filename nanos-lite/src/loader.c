@@ -83,8 +83,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   sp -= strlen(filename) + 1;
   strcpy((char *)sp, filename);
 
-  printf("sp: %p\n", sp);
-
   uintptr_t *up = sp; // start of string area
   sp -= argc + envc + 3;
   sp[0] = argc + 1;
@@ -93,7 +91,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   for (int i = 0; i < argc; i++) {
     sp[2 + i] = (uintptr_t)up;
     up += strlen((const char *)up) + 1;
-    printf("argv[%d]: %s\n", i, (const char *)sp[2 + i]);
   }
   sp[2 + argc] = 0;
   for (int i = 0; i < envc; i++) {
