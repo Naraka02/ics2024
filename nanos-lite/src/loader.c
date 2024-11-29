@@ -89,6 +89,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   for (int i = envc - 1; i >= 0; i--) {
     sp -= sizeof(uintptr_t);
     string_area -= strlen(envp[i]) + 1;
+    printf("string_area: %p\n", string_area);
     *sp = *string_area;
   }
   sp -= sizeof(uintptr_t);
