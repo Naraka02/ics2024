@@ -9,10 +9,8 @@ void call_main(uintptr_t *args) {
   int argc = args[0];
   printf("args = %p\n", args);
   printf("argc = %d\n", argc);
-  for (int i = 0; i < argc; i++) {
-    printf("argv[%d] = %s\n", i, (char *)args[i + 1]);
-  }
-  char **argv = (char **)args;
+  printf("%s\n", (char *)args[1]);
+  char **argv = (char **)args[1];
   char **envp = (char **)args[argc + 1];
   environ = envp;
   asm("call  __libc_init_array");
