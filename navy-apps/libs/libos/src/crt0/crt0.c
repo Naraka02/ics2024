@@ -9,7 +9,7 @@ void call_main(uintptr_t *args) {
   int argc = args[0];
   printf("args = %p\n", args);
   printf("argc = %d\n", argc);
-  printf("%s\n", (char *)args[1]);
+  printf("%c\n", *(char *)args[1]);
   char **argv = (char **)args[1];
   char **envp = (char **)args[argc + 1];
   environ = envp;
