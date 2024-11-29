@@ -57,7 +57,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   uintptr_t entry = loader(pcb, filename);
   Area ustack = {pcb->stack, pcb->stack + STACK_SIZE};
-  pcb->cp = ucontext(NULL, ustack, (void *)entry);
 
   int argc = 0, envc = 0;
   uintptr_t *sp = ustack.end;
@@ -87,8 +86,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   strcpy((char *)sp, filename);
   *--sp = argc + 1 + envc;
 
-  printf("sp = %p\n", sp);
-
+  pcb->cp = ucontext(NULL, ustack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)sp;
 }
 
