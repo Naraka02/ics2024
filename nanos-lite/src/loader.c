@@ -60,9 +60,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   pcb->cp = ucontext(NULL, ustack, (void *)entry);
 
   int argc = 0, envc = 0;
-  uintptr_t *sp = heap.end;
-  printf("ustack.start = %p, ustack.end = %p\n", ustack.start, ustack.end);
-  pcb->cp->GPRx = (uintptr_t)sp;
+  uintptr_t *sp = ustack.end;
+  pcb->cp->GPRx = (uintptr_t)heap.end;
 
   if (argv) {
     while (argv[argc]) {
@@ -75,16 +74,17 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     }
   }
 
-  *(int *)sp++ = argc + envc;
-  for (int i = 0; i < argc; i++) {
-    *(char **)sp++ = argv[i];
+  *--sp = 0;
+  for (int i = envc - 1; i >= 0; i--) {
+    sp -= strlen(envp[i]) + 1;
+    strcpy((char *)sp, envp[i]);
   }
-  *(char **)sp++ = NULL;
-
-  for (int i = 0; i < envc; i++) {
-    *(char **)sp++ = envp[i];
+  *--sp = 0;
+  for (int i = argc - 1; i >= 0; i--) {
+    sp -= strlen(argv[i]) + 1;
+    strcpy((char *)sp, argv[i]);
   }
-  *(char **)sp++ = NULL;
+  *--sp = argc + 1 + envc;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
