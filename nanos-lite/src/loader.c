@@ -87,6 +87,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   uintptr_t *up = sp; // start of string area
   sp -= argc + envc + 3;
   pcb->cp->GPRx = (uintptr_t)sp;
+  printf("argv = %p\n", sp);
   sp[0] = argc + 1;
   for (int i = 0; i < argc + 1; i++) {
     sp[1 + i] = (uintptr_t)up;
