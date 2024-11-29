@@ -56,10 +56,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   uintptr_t entry = loader(pcb, filename);
-  Area ustack = {pcb->stack, pcb->stack + STACK_SIZE};
+  Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
 
   int argc = 0, envc = 0;
-  uintptr_t *sp = ustack.end;
+  uintptr_t *sp = heap.end; // ustack.end
 
   if (argv) {
     while (argv[argc]) {
@@ -85,26 +85,22 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
   printf("sp: %p\n", sp);
 
-  uintptr_t *string_area = ustack.end;
-  sp -= sizeof(uintptr_t);
-  *sp = 0;
-  for (int i = envc - 1; i >= 0; i--) {
-    sp -= sizeof(uintptr_t);
-    string_area -= strlen(envp[i]) + 1;
-    printf("string_area: %p\n", string_area);
-    *sp = *string_area;
+  uintptr_t *up = sp; // start of string area
+  sp -= argc + envc + 3;
+  sp[0] = argc + 1;
+  sp[1] = (uintptr_t)up;
+  for (int i = 0; i < argc; i++) {
+    sp[2 + i] = (uintptr_t)up;
+    up += strlen((const char *)up) + 1;
   }
-  sp -= sizeof(uintptr_t);
-  *sp = 0;
-  for (int i = argc; i >= 0; i--) {
-    sp -= sizeof(uintptr_t);
-    string_area -= strlen(argv[i]) + 1;
-    *sp = *string_area;
+  sp[2 + argc] = 0;
+  for (int i = 0; i < envc; i++) {
+    sp[3 + argc + i] = (uintptr_t)up;
+    up += strlen((const char *)up) + 1;
   }
-  sp -= sizeof(int);
-  *(int *)sp = argc;
+  sp[3 + argc + envc] = 0;
 
-  pcb->cp = ucontext(NULL, ustack, (void *)entry);
+  pcb->cp = ucontext(NULL, kstack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)sp;
 }
 
