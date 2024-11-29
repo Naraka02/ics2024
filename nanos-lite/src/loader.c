@@ -61,7 +61,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
   int argc = 0, envc = 0;
   uintptr_t *sp = ustack.end;
-  pcb->cp->GPRx = (uintptr_t)heap.end;
 
   if (argv) {
     while (argv[argc]) {
@@ -85,6 +84,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     strcpy((char *)sp, argv[i]);
   }
   *--sp = argc + 1 + envc;
+
+  pcb->cp->GPRx = (uintptr_t)sp;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
