@@ -14,8 +14,8 @@ void call_main(uintptr_t *args) {
   char **argv = malloc(argc * sizeof(char *));
   argv[0] = (char *)args + 4;
   for (int i = 1; i < argc; i++) {
-    printf("%s\n", argv[i - 1]);
     argv[i] = argv[i - 1] + strlen(argv[i - 1]) + 1;
+    printf("%s\n", argv[i]);
   }
   char **envp = (char **)args[2];
   environ = envp;
