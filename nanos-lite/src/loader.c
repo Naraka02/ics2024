@@ -73,6 +73,17 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
       envc++;
     }
   }
+
+  *(int *)sp++ = argc + envc;
+  for (int i = 0; i < argc; i++) {
+    *(char **)sp++ = argv[i];
+  }
+  *(char **)sp++ = NULL;
+
+  for (int i = 0; i < envc; i++) {
+    *(char **)sp++ = envp[i];
+  }
+  *(char **)sp++ = NULL;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
