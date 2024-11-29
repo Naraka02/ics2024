@@ -34,7 +34,7 @@ void init_proc() {
   context_uload(&pcb[1], "/bin/pal", argv, envp);
   switch_boot_pcb();
 
-  // Log("Initializing processes...");
+  Log("Initializing processes...");
 
   // naive_uload(NULL, "/bin/nterm");
 }
