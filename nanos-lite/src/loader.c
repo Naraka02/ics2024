@@ -86,10 +86,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   uintptr_t *up = sp; // start of string area
   sp -= argc + envc + 3;
   sp[0] = argc + 1;
-  sp[1] = (uintptr_t)up;
-  up += strlen((const char *)up) + 1;
-  for (int i = 0; i < argc; i++) {
-    sp[2 + i] = (uintptr_t)up;
+  for (int i = 0; i < argc + 1; i++) {
+    sp[1 + i] = (uintptr_t)up;
     up += strlen((const char *)up) + 1;
   }
   sp[2 + argc] = 0;
