@@ -11,7 +11,7 @@ void call_main(uintptr_t *args) {
 
   char **argv = (char **)(args + 1);
   for (int i = 0; i < argc; i++) {
-    printf("argv[%d] = %s\n", i, argv[i]);
+    printf("argv[%d] = %s %p\n", i, argv[i], argv[i]);
   }
   char **envp = (char **)(args + argc + 2);
   environ = envp;
