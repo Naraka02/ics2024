@@ -73,21 +73,31 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     }
   }
 
-  *--sp = 0;
   for (int i = envc - 1; i >= 0; i--) {
     sp -= strlen(envp[i]) + 1;
     strcpy((char *)sp, envp[i]);
   }
-  *--sp = 0;
   for (int i = argc - 1; i >= 0; i--) {
     sp -= strlen(argv[i]) + 1;
-    printf("sp = %p\n", sp);
     strcpy((char *)sp, argv[i]);
   }
   sp -= strlen(filename) + 1;
-  printf("sp = %p\n", sp);
   strcpy((char *)sp, filename);
-  *--sp = argc + 1;
+
+  sp -= sizeof(uintptr_t);
+  *sp = 0;
+  for (int i = envc - 1; i >= 0; i--) {
+    sp -= sizeof(uintptr_t);
+    *(uintptr_t *)sp = (uintptr_t)sp + sizeof(uintptr_t);
+  }
+  sp -= sizeof(uintptr_t);
+  *sp = 0;
+  for (int i = argc; i >= 0; i--) {
+    sp -= sizeof(uintptr_t);
+    *(uintptr_t *)sp = (uintptr_t)sp + sizeof(uintptr_t);
+  }
+  sp -= sizeof(int);
+  *(int *)sp = argc;
 
   pcb->cp = ucontext(NULL, ustack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)sp;
