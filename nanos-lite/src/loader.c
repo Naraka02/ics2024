@@ -63,6 +63,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
   if (argv) {
     while (argv[argc]) {
+      printf("argv[%d]: %s\n", argc, argv[argc]);
       argc++;
     }
   }
@@ -85,7 +86,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   sp -= strlen(filename) + 1;
   strcpy((char *)sp, filename);
   *--sp = argc + 1;
-  printf("argc = %d\n", argc);
 
   pcb->cp = ucontext(NULL, ustack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)sp;
