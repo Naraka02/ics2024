@@ -61,7 +61,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
   int argc = 0, envc = 0;
   uintptr_t *sp = heap.end;
-  printf("heap.end: %p\n", heap.end);
+  printf("ustack.start = %p, ustack.end = %p\n", ustack.start, ustack.end);
   pcb->cp->GPRx = (uintptr_t)sp;
 
   if (argv) {
