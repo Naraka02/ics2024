@@ -1,14 +1,16 @@
 #include <assert.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char *argv[], char *envp[]);
 extern char **environ;
 void call_main(uintptr_t *args) {
   int argc = args[0];
+
   char **argv = (char **)(args + 1);
   for (int i = 0; i < argc; i++) {
-    argv[i] = (char *)args[argc + 1 + i];
+    printf("argv[%d] = %s\n", i, argv[i]);
   }
   char **envp = (char **)(args + argc + 2);
   environ = envp;
