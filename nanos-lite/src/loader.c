@@ -87,6 +87,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   strcpy((char *)sp, filename);
   *--sp = argc + 1 + envc;
 
+  printf("sp = %p\n", sp);
+
   pcb->cp->GPRx = (uintptr_t)sp;
 }
 
