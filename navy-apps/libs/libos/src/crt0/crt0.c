@@ -10,7 +10,7 @@ void call_main(uintptr_t *args) {
   printf("args = %p\n", args);
   printf("argc = %d\n", argc);
   printf("%s\n", (char *)args + 4);
-  char **argv = (char **)(args + 4);
+  char **argv = (char **)(args + 1);
   for (int i = 0; i <= argc; i++) {
     printf("argv[%d] = %s\n", i, argv[i]);
   }
