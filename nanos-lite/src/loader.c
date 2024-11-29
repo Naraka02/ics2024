@@ -73,9 +73,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
       envc++;
     }
   }
-  printf("%s\n", argv[0]);
-  printf("%d %d\n", argc, envc);
-  *(int *)sp++ = argc + envc;
+
+  //*(int *)sp++ = argc + envc;
   for (int i = 0; i < argc; i++) {
     *(char **)sp++ = argv[i];
   }
