@@ -11,7 +11,7 @@ void call_main(uintptr_t *args) {
   char **envp = (char **)(args + argc + 2);
   environ = envp;
   asm("call  __libc_init_array");
-  printf("%d", argc);
+  // printf("%d", argc);
   exit(main(argc, argv, envp));
   assert(0);
 }
