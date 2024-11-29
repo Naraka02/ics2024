@@ -63,6 +63,11 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   uintptr_t *sp = heap.end;
   pcb->cp->GPRx = (uintptr_t)sp;
 
+  while (argv[argc++])
+    ;
+  while (envp[envc++])
+    ;
+
   printf("%s\n", argv);
   printf("%d %d\n", argc, envc);
   *(int *)sp++ = argc + envc;
