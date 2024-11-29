@@ -53,6 +53,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   return ehdr.e_entry;
 }
 
+void context_uload(PCB *pcb, const char *filename) {
+  uintptr_t entry = loader(pcb, filename);
+  Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
+  pcb->cp = kcontext(kstack, (void *)entry, NULL);
+  pcb->cp->GPRx = (uintptr_t)heap.end;
+}
+
 void naive_uload(PCB *pcb, const char *filename) {
   uintptr_t entry = loader(pcb, filename);
   Log("Jump to entry = %p", entry);
