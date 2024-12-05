@@ -31,7 +31,7 @@ static void sh_handle_cmd(const char *cmd) {
   char *argv[16];
   int argc = 0;
   char *filename = strtok((char *)cmd, " ");
-  char *token = strtok((char *)cmd, " ");
+  char *token = strtok(NULL, " ");
   while (token) {
     argv[argc++] = token;
     token = strtok(NULL, " ");
@@ -40,7 +40,7 @@ static void sh_handle_cmd(const char *cmd) {
 
   if (argc == 0)
     return;
-  execvp(argv[0], argv);
+  execvp(filename, argv);
 }
 
 void builtin_sh_run() {
