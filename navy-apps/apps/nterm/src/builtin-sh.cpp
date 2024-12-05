@@ -2,6 +2,7 @@
 #include <nterm.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 char handle_key(SDL_Event *ev);
@@ -29,13 +30,10 @@ static void sh_handle_cmd(const char *cmd) {
 
   char *argv[16];
   int argc = 0;
-  p = (char *)cmd;
-  for (char *q = p; *q; q++) {
-    if (*q == ' ') {
-      *q = '\0';
-      argv[argc++] = p;
-      p = q + 1;
-    }
+  char *token = strtok((char *)cmd, " ");
+  while (token) {
+    argv[argc++] = token;
+    token = strtok(NULL, " ");
   }
   argv[argc] = NULL;
   if (argc == 0)
