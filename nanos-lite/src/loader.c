@@ -96,9 +96,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   printf("filename: %s\n", (char *)sp[1]);
   for (int i = 0; i < envc; i++) {
     sp[3 + argc + i] = (uintptr_t)up;
-    printf("filename: %s\n", (char *)sp[1]);
     up += strlen((const char *)up) + 1;
   }
+  printf("filename: %s\n", (char *)sp[1]);
   sp[3 + argc + envc] = 0;
 
   printf("filename: %s\n", (char *)sp[1]);
