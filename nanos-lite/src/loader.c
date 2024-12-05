@@ -75,11 +75,12 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     }
   }
 
+  printf("filename: %s, entry: %p\n", filename, entry);
   for (int i = envc - 1; i >= 0; i--) {
     sp -= strlen(envp[i]) + 1;
+    printf("filename: %s, entry: %p\n", filename, entry);
     strcpy((char *)sp, envp[i]);
   }
-  printf("filename: %s, entry: %p\n", filename, entry);
   for (int i = argc - 1; i >= 0; i--) {
     sp -= strlen(argv[i]) + 1;
     strcpy((char *)sp, argv[i]);
