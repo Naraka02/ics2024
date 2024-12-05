@@ -26,7 +26,18 @@ static void sh_handle_cmd(const char *cmd) {
   while (*p != '\n')
     p++;
   *p = '\0';
-  execvp(cmd, NULL);
+  char *argv[16];
+  int argc = 0;
+  for (char *q = (char *)cmd; *q; q++) {
+    if (*q == ' ') {
+      *q = '\0';
+      argv[argc++] = q + 1;
+    }
+  }
+  argv[argc] = NULL;
+  if (argc == 0)
+    return;
+  execvp(argv[0], argv);
 }
 
 void builtin_sh_run() {

@@ -75,7 +75,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     }
   }
 
-  printf("argc = %d, envc = %d\n", argc, envc);
   for (int i = envc - 1; i >= 0; i--) {
     sp -= strlen(envp[i]) + 1;
     strcpy((char *)sp, envp[i]);
