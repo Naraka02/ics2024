@@ -63,7 +63,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
   int argc = 0, envc = 0;
   uintptr_t *sp = new_page(NR_PAGES); // ustack.end
-  if (argc > 0) {
+  if (argv) {
     printf("argv[0] = %s\n", argv[0]);
   }
   if (argv) {
@@ -77,7 +77,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     }
   }
 
-  if (argc > 0) {
+  if (argv) {
     printf("argv[0] = %s\n", argv[0]);
   }
 
