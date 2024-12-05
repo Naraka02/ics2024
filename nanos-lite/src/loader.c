@@ -74,6 +74,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
       envc++;
     }
   }
+  printf("filename: %s, entry: %p\n", filename, entry);
 
   for (int i = envc - 1; i >= 0; i--) {
     sp -= strlen(envp[i]) + 1;
@@ -100,7 +101,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   }
   sp[3 + argc + envc] = 0;
 
-  printf("filename: %s, entry: %p\n", filename, entry);
   pcb->cp = ucontext(NULL, kstack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)sp;
 }
