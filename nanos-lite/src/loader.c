@@ -91,6 +91,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   sp[0] = argc + 1;
   for (int i = 0; i < argc + 1; i++) {
     sp[1 + i] = (uintptr_t)up;
+    printf("argv[%d] = %s\n", i, (const char *)up);
     up += strlen((const char *)up) + 1;
   }
   sp[2 + argc] = 0;
