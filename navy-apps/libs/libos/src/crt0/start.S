@@ -30,8 +30,8 @@ _start:
   jal call_main
 
 #elif defined(__riscv)
-  mv s0, zero
   call  __libc_init_array
+  mv s0, zero
   mv sp, a0
   jal call_main
 
