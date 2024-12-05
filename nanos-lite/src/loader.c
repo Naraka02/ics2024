@@ -59,6 +59,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   printf("argv: %p\n", argv);
+  printf("argv[0]: %s\n", argv[0]);
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
 
