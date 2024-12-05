@@ -36,6 +36,7 @@ static void sh_handle_cmd(const char *cmd) {
     token = strtok(NULL, " ");
   }
   argv[argc] = NULL;
+
   if (argc == 0)
     return;
   execvp(argv[0], argv);
