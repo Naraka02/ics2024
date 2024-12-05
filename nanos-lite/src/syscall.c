@@ -65,7 +65,6 @@ static inline int sys_execve(const char *filename, char *const argv[],
     return -1;
   }
   context_uload(current, filename, argv, envp);
-  printf("execve not implemented\n");
   switch_boot_pcb();
   yield();
   return 0;
