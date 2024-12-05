@@ -59,7 +59,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   uintptr_t entry = loader(pcb, filename);
-  printf("filename: %s, entry: %p\n", filename, entry);
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
 
   int argc = 0, envc = 0;
@@ -101,6 +100,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   }
   sp[3 + argc + envc] = 0;
 
+  printf("filename: %s, entry: %p\n", filename, entry);
   pcb->cp = ucontext(NULL, kstack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)sp;
 }
