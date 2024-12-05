@@ -64,9 +64,6 @@ static inline int sys_execve(const char *filename, char *const argv[],
   if (filename == NULL) {
     return -1;
   }
-  printf("execve: filename = %s\n", filename);
-  printf("execve: argv = %p\n", argv);
-  printf("execve: envp = %p\n", envp);
   context_uload(current, filename, argv, NULL);
   switch_boot_pcb();
   yield();
