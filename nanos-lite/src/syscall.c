@@ -61,6 +61,7 @@ static inline int sys_exit(int status) {
 
 static inline int sys_execve(const char *filename, const char **argv,
                              const char **envp) {
+  Log("execve: filename = %s", filename);
   context_uload(current, filename, (char *const *)argv, (char *const *)envp);
   switch_boot_pcb();
   yield();
