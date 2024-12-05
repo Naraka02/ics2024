@@ -59,13 +59,12 @@ static inline int sys_exit(int status) {
   return 0;
 }
 
-static inline int sys_execve(const char *filename, const char **argv,
-                             const char **envp) {
+static inline int sys_execve(const char *filename, char *const argv[],
+                             char *const envp[]) {
   if (filename == NULL) {
     return -1;
   }
-  Log("execve: filename = %s", filename);
-  context_uload(current, filename, (char *const *)argv, (char *const *)envp);
+  context_uload(current, filename, argv, envp);
   switch_boot_pcb();
   yield();
   return 0;
@@ -107,8 +106,8 @@ void do_syscall(Context *c) {
     c->GPRx = sys_gettimeofday((void *)a[1], (void *)a[2]);
     break;
   case SYS_execve:
-    c->GPRx = sys_execve((const char *)a[1], (const char **)a[2],
-                         (const char **)a[3]);
+    c->GPRx = sys_execve((const char *)a[1], (char *const *)a[2],
+                         (char *const *)a[3]);
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
