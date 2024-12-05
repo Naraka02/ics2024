@@ -91,7 +91,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   sp[0] = argc + 1;
   for (int i = 0; i < argc + 1; i++) {
     sp[1 + i] = (uintptr_t)up;
-    printf("argv[%d] = %s\n", i, (const char *)up);
     up += strlen((const char *)up) + 1;
   }
   sp[2 + argc] = 0;
@@ -100,6 +99,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     up += strlen((const char *)up) + 1;
   }
   sp[3 + argc + envc] = 0;
+
+  printf("filename: %s\n", (char *)sp[1]);
 
   pcb->cp = ucontext(NULL, kstack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)sp;
