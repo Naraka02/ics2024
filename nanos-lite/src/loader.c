@@ -1,3 +1,4 @@
+#include "memory.h"
 #include <elf.h>
 #include <fs.h>
 #include <proc.h>
@@ -20,6 +21,8 @@
 #else
 #error Unsupported ISA
 #endif
+
+#define NR_PAGES 8
 
 int fs_open(const char *pathname, int flags, int mode);
 size_t fs_read(int fd, void *buf, size_t len);
@@ -59,7 +62,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
 
   int argc = 0, envc = 0;
-  uintptr_t *sp = heap.end; // ustack.end
+  uintptr_t *sp = new_page(NR_PAGES); // ustack.end
 
   if (argv) {
     while (argv[argc]) {

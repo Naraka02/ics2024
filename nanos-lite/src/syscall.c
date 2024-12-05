@@ -16,6 +16,9 @@ size_t fs_read(int fd, void *buf, size_t len);
 size_t fs_write(int fd, const void *buf, size_t len);
 size_t fs_lseek(int fd, size_t offset, int whence);
 void naive_uload(PCB *pcb, const char *filename);
+void context_uload(PCB *pcb, const char *filename, char *const argv[],
+                   char *const envp[]);
+void switch_boot_pcb();
 
 int fs_close(int fd);
 static inline void sys_yield(Context *c) {
@@ -58,8 +61,10 @@ static inline int sys_exit(int status) {
 
 static inline int sys_execve(const char *filename, const char **argv,
                              const char **envp) {
-  naive_uload(NULL, filename);
-  return -1;
+  context_uload(current, filename, (char *const *)argv, (char *const *)envp);
+  switch_boot_pcb();
+  yield();
+  return 0;
 }
 
 void do_syscall(Context *c) {
