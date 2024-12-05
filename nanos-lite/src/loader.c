@@ -58,16 +58,12 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
-  printf("argv: %p\n", argv);
-  if (argv)
-    printf("argv[0]: %s\n", argv[0]);
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
 
   int argc = 0, envc = 0;
   uintptr_t *sp = new_page(NR_PAGES); // ustack.end
 
-  printf("argv: %p\n", argv);
   if (argv) {
     while (argv[argc]) {
       argc++;
@@ -85,6 +81,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   }
   for (int i = argc - 1; i >= 0; i--) {
     sp -= strlen(argv[i]) + 1;
+    printf("argv[%d] = %s\n", i, argv[i]);
     strcpy((char *)sp, argv[i]);
   }
   sp -= strlen(filename) + 1;

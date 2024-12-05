@@ -64,7 +64,6 @@ static inline int sys_execve(const char *filename, char *const argv[],
   if (filename == NULL) {
     return -1;
   }
-  printf("argv: %p\n", argv);
   context_uload(current, filename, argv, NULL);
   switch_boot_pcb();
   yield();
