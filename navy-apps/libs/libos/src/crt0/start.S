@@ -31,6 +31,7 @@ _start:
 
 #elif defined(__riscv)
   mv s0, zero
+  call  __libc_init_array
   mv sp, a0
   jal call_main
 
