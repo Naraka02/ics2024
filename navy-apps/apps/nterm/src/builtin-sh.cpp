@@ -26,12 +26,15 @@ static void sh_handle_cmd(const char *cmd) {
   while (*p != '\n')
     p++;
   *p = '\0';
+
   char *argv[16];
   int argc = 0;
-  for (char *q = (char *)cmd; *q; q++) {
+  p = (char *)cmd;
+  for (char *q = p; *q; q++) {
     if (*q == ' ') {
       *q = '\0';
-      argv[argc++] = q + 1;
+      argv[argc++] = p;
+      p = q + 1;
     }
   }
   argv[argc] = NULL;
