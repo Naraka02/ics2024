@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 extern void __libc_init_array();
@@ -9,6 +10,7 @@ extern char **environ;
 void call_main(uintptr_t *args) {
   int argc = *(int *)args;
   char **argv = (char **)(args + 1);
+  printf("first arg: %s\n", argv[0]);
   char **envp = (char **)(args + argc + 2);
   environ = envp;
   __libc_init_array();
