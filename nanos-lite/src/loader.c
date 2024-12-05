@@ -70,8 +70,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     }
   }
   if (envp) {
+    printf("envp: %s\n", envp[0]);
     while (envp[envc]) {
-      printf("envp[%d] = %s\n", envc, envp[envc]);
       envc++;
     }
   }
