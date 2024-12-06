@@ -38,8 +38,6 @@ static void sh_handle_cmd(const char *cmd) {
   }
   argv[argc] = NULL;
 
-  if (argc == 0)
-    return;
   execvp(filename, argv);
 }
 
