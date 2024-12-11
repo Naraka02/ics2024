@@ -61,9 +61,11 @@ static inline int sys_exit(int status) {
 
 static inline int sys_execve(const char *filename, char *const argv[],
                              char *const envp[]) {
-  if (filename == NULL) {
-    return -1;
+  int fd = fs_open(filename, 0, 0);
+  if (fd < 0) {
+    return -2;
   }
+  fs_close(fd);
   context_uload(current, filename, argv, NULL);
   switch_boot_pcb();
   yield();

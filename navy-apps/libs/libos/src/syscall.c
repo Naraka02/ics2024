@@ -98,7 +98,14 @@ int _gettimeofday(struct timeval *tv, struct timezone *tz) {
 }
 
 int _execve(const char *fname, char *const argv[], char *const envp[]) {
-  return _syscall_(SYS_execve, (intptr_t)fname, (intptr_t)argv, (intptr_t)envp);
+  int ret =
+      _syscall_(SYS_execve, (intptr_t)fname, (intptr_t)argv, (intptr_t)envp);
+  if (ret < 0) {
+    extern int errno;
+    errno = -ret;
+    return -1;
+  }
+  return ret;
 }
 
 // Syscalls below are not used in Nanos-lite.
