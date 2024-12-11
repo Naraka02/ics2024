@@ -13,7 +13,7 @@ include $(NAVY_HOME)/Makefile
 ifeq ($(ISA), native)
 CFLAGS += -I$(WORK_DIR)/include/native/
 else
-CFLAGS += -I$(WORK_DIR)/include/navy/ -D__GLIBC__ -fdata-sections -ffunction-sections -nostdlib
+CFLAGS += -I$(WORK_DIR)/include/navy/ -D__GLIBC__ -fdata-sections -ffunction-sections -nostdlib -Wno-error=implicit-function-declaration
 comma = ,
 LDFLAGS := $(addprefix -Wl$(comma), $(LDFLAGS))
 export LDFLAGS
