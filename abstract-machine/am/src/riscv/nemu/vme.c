@@ -81,7 +81,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     PTE *pte = dir + vpn_0;
     *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
   } else {
-    printf("%p\n", *updir_pte);
     PTE *pte = (PTE *)((*updir_pte) & 0xFFFFF000) + vpn_0;
     *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
   }
