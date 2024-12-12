@@ -65,7 +65,6 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  printf("hello\n");
   uint32_t vaddr = *(uint32_t *)va;
   uint32_t paddr = *(uint32_t *)pa;
 
@@ -83,6 +82,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
   } else {
     PTE *pte = (PTE *)(*updir_pte & 0xFFFFF000) + vpn_0;
+    printf("%p\n", pte);
     *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
   }
 }
