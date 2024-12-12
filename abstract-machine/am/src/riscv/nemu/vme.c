@@ -36,6 +36,7 @@ bool vme_init(void *(*pgalloc_f)(int), void (*pgfree_f)(void *)) {
       map(&kas, va, va, 0);
     }
   }
+  printf("hellp");
 
   set_satp(kas.ptr);
   vme_enable = 1;
@@ -65,7 +66,6 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  printf("sd");
   uint32_t vaddr = *(uint32_t *)va;
   uint32_t paddr = *(uint32_t *)pa;
 
