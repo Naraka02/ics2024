@@ -8,7 +8,12 @@ void *new_page(size_t nr_page) {
 }
 
 #ifdef HAS_VME
-static void *pg_alloc(int n) { return NULL; }
+static void *pg_alloc(int n) {
+  int nr_page = (n - 1) / PGSIZE + 1;
+  void *ptr = new_page(nr_page);
+  memset(ptr, 0, nr_page * PGSIZE);
+  return ptr;
+}
 #endif
 
 void free_page(void *p) { panic("not implement yet"); }
