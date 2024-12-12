@@ -72,7 +72,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uint32_t vpn_0 = (vaddr >> 12) & 0x000003FF;
   uint32_t ppn = (paddr >> 12) & 0x000FFFFF;
 
-  PTE *updir = as->ptr;
+  PTE *updir = (PTE *)as->ptr;
   PTE *updir_pte = updir + vpn_1;
 
   if (updir_pte == 0) {
