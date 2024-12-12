@@ -64,7 +64,27 @@ void __am_switch(Context *c) {
   }
 }
 
-void map(AddrSpace *as, void *va, void *pa, int prot) {}
+void map(AddrSpace *as, void *va, void *pa, int prot) {
+  uint32_t vaddr = *(uint32_t *)va;
+  uint32_t paddr = *(uint32_t *)pa;
+
+  uint32_t vpn_1 = (vaddr >> 22) & 0x000003FF;
+  uint32_t vpn_0 = (vaddr >> 12) & 0x000003FF;
+  uint32_t ppn = (paddr >> 12) & 0x000FFFFF;
+
+  PTE *updir = as->ptr;
+  PTE *updir_pte = updir + vpn_1;
+
+  if (updir_pte == 0) {
+    PTE *dir = (PTE *)(pgalloc_usr(PGSIZE));
+    *updir_pte = (PTE)dir | PTE_V;
+    PTE *pte = dir + vpn_0;
+    *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
+  } else {
+    PTE *pte = (PTE *)(*updir_pte & 0xFFFFF000) + vpn_0;
+    *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
+  }
+}
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *c = (Context *)(kstack.end - sizeof(Context));
