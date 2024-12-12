@@ -74,7 +74,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 
   PTE *updir = as->ptr;
   PTE *updir_pte = updir + vpn_1;
-  printf("%p\n", updir);
 
   if (updir_pte == 0) {
     PTE *dir = (PTE *)(pgalloc_usr(PGSIZE));
