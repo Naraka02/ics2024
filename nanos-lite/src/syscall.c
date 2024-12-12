@@ -54,12 +54,6 @@ static inline int sys_gettimeofday(void *tv, void *tz) {
   return 0;
 }
 
-static inline int sys_exit(int status) {
-  switch_boot_pcb();
-  yield();
-  return 0;
-}
-
 static inline int sys_execve(const char *filename, char *const argv[],
                              char *const envp[]) {
   int fd = fs_open(filename, 0, 0);
@@ -70,6 +64,11 @@ static inline int sys_execve(const char *filename, char *const argv[],
   context_uload(current, filename, argv, NULL);
   switch_boot_pcb();
   yield();
+  return 0;
+}
+
+static inline int sys_exit(int status) {
+  sys_execve("/bin/nterm", NULL, NULL);
   return 0;
 }
 
