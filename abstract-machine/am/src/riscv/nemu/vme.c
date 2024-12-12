@@ -37,7 +37,6 @@ bool vme_init(void *(*pgalloc_f)(int), void (*pgfree_f)(void *)) {
     }
   }
 
-  printf("%d\n", i);
   set_satp(kas.ptr);
   vme_enable = 1;
 
@@ -75,6 +74,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 
   PTE *updir = as->ptr;
   PTE *updir_pte = updir + vpn_1;
+  printf("%p", *updir);
 
   if (*updir_pte == 0) {
     PTE *dir = (PTE *)(pgalloc_usr(PGSIZE));
