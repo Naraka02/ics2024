@@ -56,6 +56,7 @@ static inline int sys_gettimeofday(void *tv, void *tz) {
 
 static inline int sys_exit(int status) {
   switch_boot_pcb();
+  yield();
   return 0;
 }
 
