@@ -65,6 +65,7 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  printf("hello\n");
   uint32_t vaddr = *(uint32_t *)va;
   uint32_t paddr = *(uint32_t *)pa;
 
