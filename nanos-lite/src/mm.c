@@ -24,7 +24,7 @@ void free_page(void *p) { panic("not implement yet"); }
 int mm_brk(uintptr_t brk) {
   extern char _heap_start;
   extern char _end;
-  Log("%p %p %p", brk, current->max_brk, &_heap_start, &_end);
+  Log("%p %p %p %p", brk, current->max_brk, &_heap_start, &_end);
   return 0;
 }
 
