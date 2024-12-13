@@ -20,9 +20,9 @@
 #include <stdint.h>
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  uint32_t vpn_1 = (vaddr >> 22) & 0x000003FF;
-  uint32_t vpn_0 = (vaddr >> 12) & 0x000003FF;
-  uint32_t page_offset = vaddr & 0x00000FFF;
+  uint32_t vpn_1 = BITS(vaddr, 31, 22);
+  uint32_t vpn_0 = BITS(vaddr, 21, 12);
+  uint32_t page_offset = BITS(vaddr, 11, 0);
 
   uintptr_t updir = cpu.csr.satp >> 12;
   uintptr_t updir_pte_addr = updir + vpn_1 * 4;
