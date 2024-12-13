@@ -19,7 +19,10 @@ static void *pg_alloc(int n) {
 void free_page(void *p) { panic("not implement yet"); }
 
 /* The brk() system call handler. */
-int mm_brk(uintptr_t brk) { return 0; }
+int mm_brk(uintptr_t brk) {
+  Log("brk : %p\n", brk);
+  return 0;
+}
 
 void init_mm() {
   pf = (void *)ROUNDUP(heap.start, PGSIZE);
