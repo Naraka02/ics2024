@@ -66,8 +66,8 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  uint32_t vaddr = *(uint32_t *)va;
-  uint32_t paddr = *(uint32_t *)pa;
+  uintptr_t vaddr = (uintptr_t)va;
+  uintptr_t paddr = (uintptr_t)pa;
 
   uint32_t vpn_1 = (vaddr >> 22) & 0x000003FF;
   uint32_t vpn_0 = (vaddr >> 12) & 0x000003FF;
