@@ -2,6 +2,9 @@
 #include <klib.h>
 #include <nemu.h>
 
+#define BITMASK(bits) ((1ull << (bits)) - 1)
+#define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1))
+
 static AddrSpace kas = {};
 static void *(*pgalloc_usr)(int) = NULL;
 static void (*pgfree_usr)(void *) = NULL;
@@ -32,7 +35,6 @@ bool vme_init(void *(*pgalloc_f)(int), void (*pgfree_f)(void *)) {
   int i;
   for (i = 0; i < LENGTH(segments); i++) {
     void *va = segments[i].start;
-    printf("Mapping %p to %p\n", va, (void *)segments[i].end);
     for (; va < segments[i].end; va += PGSIZE) {
       map(&kas, va, va, 0);
     }
@@ -69,9 +71,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uintptr_t vaddr = (uintptr_t)va;
   uintptr_t paddr = (uintptr_t)pa;
 
-  uint32_t vpn_1 = (vaddr >> 22) & 0x000003FF;
-  uint32_t vpn_0 = (vaddr >> 12) & 0x000003FF;
-  uint32_t ppn = (paddr >> 12) & 0x000FFFFF;
+  uint32_t vpn_1 = BITS(vaddr, 31, 22);
+  uint32_t vpn_0 = BITS(vaddr, 21, 12);
+  uint32_t ppn = BITS(paddr, 31, 12);
 
   PTE *updir = as->ptr;
   PTE *updir_pte = updir + vpn_1;
