@@ -45,12 +45,31 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   for (int i = 0; i < ehdr.e_phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
-      fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
-      printf("vaddr : %p", phdr[i].p_vaddr);
-      fs_read(fd, (void *)(uintptr_t)phdr[i].p_vaddr, phdr[i].p_filesz);
+      int nr_pages = (phdr[i].p_memsz - 1) / PGSIZE;
+      uintptr_t va = phdr[i].p_vaddr;
 
-      memset((void *)(uintptr_t)(phdr[i].p_vaddr + phdr[i].p_filesz), 0,
-             phdr[i].p_memsz - phdr[i].p_filesz);
+      fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
+      int j;
+      for (j = 0; j < nr_pages; j++) {
+        uintptr_t *pa = new_page(1);
+        map(&pcb->as, (void *)va, pa, 0b1110);
+        va += PGSIZE;
+        fs_read(fd, pa,
+                (j + 1) * PGSIZE > phdr[i].p_filesz
+                    ? phdr[i].p_filesz - j * PGSIZE
+                    : PGSIZE);
+        if ((j + 1) * PGSIZE > phdr[i].p_filesz) {
+          fs_read(fd, pa, phdr[i].p_filesz - j * PGSIZE);
+          break;
+        } else {
+          fs_read(fd, pa, PGSIZE);
+        }
+      }
+      for (; j < nr_pages; j++) {
+        uintptr_t *pa = new_page(1);
+        map(&pcb->as, (void *)va, pa, 0b1110);
+        memset(pa, 0, PGSIZE);
+      }
     }
   }
   fs_close(fd);
@@ -62,6 +81,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   protect(&pcb->as);
   int argc = 0, envc = 0;
   uintptr_t *sp = new_page(NR_PAGES); // ustack.end
+  for (int i = 0; i < NR_PAGES; i++) {
+    map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE, sp - (i + 1) * PGSIZE,
+        0b1110);
+  }
 
   if (argv) {
     while (argv[argc]) {

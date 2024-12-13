@@ -68,7 +68,8 @@ static inline int sys_execve(const char *filename, char *const argv[],
 }
 
 static inline int sys_exit(int status) {
-  sys_execve("/bin/nterm", NULL, NULL);
+  halt(0);
+  // sys_execve("/bin/nterm", NULL, NULL);
   return 0;
 }
 
