@@ -27,14 +27,14 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
 
   printf("satp = 0x%08x\n", cpu.csr.satp);
   uintptr_t updir = cpu.csr.satp << 12;
-  uintptr_t updir_pte_addr = updir + vpn_1;
+  uintptr_t updir_pte_addr = updir + vpn_1 * 4;
 
   word_t updir_pte = paddr_read(updir_pte_addr, 4);
   assert(updir_pte & 0x1);
 
   printf("updir_pte = 0x%08x\n", updir_pte);
   uintptr_t dir = updir_pte >> 12;
-  uintptr_t pte_addr = dir + vpn_0;
+  uintptr_t pte_addr = dir + vpn_0 * 4;
 
   word_t pte = paddr_read(pte_addr, 4);
   assert(pte & 0x1);
