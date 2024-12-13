@@ -28,4 +28,5 @@ void init_mm() {
 #ifdef HAS_VME
   vme_init(pg_alloc, free_page);
 #endif
+  printf("hello");
 }
