@@ -19,6 +19,7 @@ void naive_uload(PCB *pcb, const char *filename);
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]);
 void switch_boot_pcb();
+int mm_brk(uintptr_t brk);
 
 int fs_close(int fd);
 static inline void sys_yield(Context *c) {
@@ -30,7 +31,7 @@ static inline ssize_t sys_write(int fd, const void *buf, size_t count) {
   return fs_write(fd, buf, count);
 }
 
-static inline int sys_brk(int *addr) { return 0; }
+static inline int sys_brk(int *addr) { return mm_brk((uintptr_t)addr); }
 
 static inline int sys_open(const char *pathname, int flags, int mode) {
   return fs_open(pathname, flags, mode);
@@ -68,8 +69,7 @@ static inline int sys_execve(const char *filename, char *const argv[],
 }
 
 static inline int sys_exit(int status) {
-  halt(0);
-  // sys_execve("/bin/nterm", NULL, NULL);
+  sys_execve("/bin/nterm", NULL, NULL);
   return 0;
 }
 
