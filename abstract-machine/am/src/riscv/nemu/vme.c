@@ -82,16 +82,16 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     PTE *dir = (PTE *)(pgalloc_usr(PGSIZE));
     *updir_pte = (PTE)dir | PTE_V;
     PTE *pte = dir + vpn_0;
-    *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
+    *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R | PTE_U | PTE_D | PTE_A;
   } else {
     PTE *pte = (PTE *)((*updir_pte) & 0xFFFFF000) + vpn_0;
-    *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
+    *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R | PTE_U | PTE_D | PTE_A;
   }
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *c = (Context *)(kstack.end - sizeof(Context));
-  c->mstatus = 0x1800;
+  c->mstatus = 0;
   c->mepc = (uintptr_t)entry - 4;
   c->pdir = as->ptr;
   return c;
