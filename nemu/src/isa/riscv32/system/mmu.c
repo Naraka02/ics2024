@@ -53,8 +53,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   }
 
   printf("pte = 0x%08x\n", pte);
-  uint32_t ppn = pte << 12;
-  printf("ppn = 0x%08x\n", ppn);
+  uint32_t ppn = pte & 0xFFFFF000;
   paddr_t paddr = ppn | page_offset;
   return paddr;
 }
