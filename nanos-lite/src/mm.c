@@ -1,4 +1,5 @@
 #include <memory.h>
+#include <proc.h>
 
 static void *pf = NULL;
 
@@ -20,7 +21,8 @@ void free_page(void *p) { panic("not implement yet"); }
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
-  Log("brk : %p\n", brk);
+  extern PCB *current;
+  Log("%p %p", brk, current->max_brk);
   return 0;
 }
 
