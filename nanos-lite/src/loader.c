@@ -46,6 +46,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   for (int i = 0; i < ehdr.e_phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
       fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
+      printf("vaddr : %p", phdr[i].p_vaddr);
       fs_read(fd, (void *)(uintptr_t)phdr[i].p_vaddr, phdr[i].p_filesz);
 
       memset((void *)(uintptr_t)(phdr[i].p_vaddr + phdr[i].p_filesz), 0,
@@ -58,6 +59,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
+  protect(&pcb->as);
   int argc = 0, envc = 0;
   uintptr_t *sp = new_page(NR_PAGES); // ustack.end
 
