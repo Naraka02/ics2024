@@ -29,7 +29,7 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)0);
-  context_uload(&pcb[1], "/bin/nterm", NULL, NULL);
+  context_uload(&pcb[1], "/bin/dummy", NULL, NULL);
   switch_boot_pcb();
 
   Log("Initializing processes...");
