@@ -23,8 +23,8 @@ void free_page(void *p) { panic("not implement yet"); }
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
   extern char _heap_start;
-  extern char _end;
-  Log("%p %p %p %p", brk, current->max_brk, &_heap_start, &_end);
+  extern char end;
+  Log("%p %p %p %p", brk, current->max_brk, &_heap_start, &end);
   return 0;
 }
 
