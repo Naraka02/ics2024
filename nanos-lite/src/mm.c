@@ -27,6 +27,8 @@ int mm_brk(uintptr_t brk) {
   }
   if (current->max_brk == 0) {
     current->max_brk = brk % PGSIZE == 0 ? brk : (brk / PGSIZE + 1) * PGSIZE;
+    void *page = new_page(1);
+    map(&current->as, (void *)current->max_brk - PGSIZE, page, 0b1110);
     return 0;
   }
 
