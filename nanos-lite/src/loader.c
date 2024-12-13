@@ -54,10 +54,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         uintptr_t *pa = new_page(1);
         map(&pcb->as, (void *)va, pa, 0b1110);
         va += PGSIZE;
-        fs_read(fd, pa,
-                (j + 1) * PGSIZE > phdr[i].p_filesz
-                    ? phdr[i].p_filesz - j * PGSIZE
-                    : PGSIZE);
         if ((j + 1) * PGSIZE > phdr[i].p_filesz) {
           fs_read(fd, pa, phdr[i].p_filesz - j * PGSIZE);
           break;
