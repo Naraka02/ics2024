@@ -27,6 +27,7 @@ int mm_brk(uintptr_t brk) {
   }
   if (current->max_brk == 0) {
     current->max_brk = brk % PGSIZE == 0 ? brk : (brk / PGSIZE + 1) * PGSIZE;
+    return 0;
   }
 
   int nr_pages = (brk - current->max_brk - 1) / PGSIZE + 1;
