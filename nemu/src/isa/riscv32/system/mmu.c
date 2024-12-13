@@ -51,7 +51,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     break;
   }
 
-  uint32_t ppn = pte >> 12;
-  paddr_t paddr = ppn << 12 | page_offset;
+  uint32_t ppn = pte << 12;
+  paddr_t paddr = ppn >> 12 | page_offset;
   return paddr;
 }
