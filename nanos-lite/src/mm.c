@@ -22,7 +22,7 @@ void free_page(void *p) { panic("not implement yet"); }
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
   extern PCB *current;
-  Log("%p %p %p", brk, current->max_brk, current->as.area.end);
+  Log("%p %p %p", brk, current->max_brk, current->stack);
   return 0;
 }
 
