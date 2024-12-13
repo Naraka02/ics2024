@@ -23,7 +23,6 @@
       : isa_mmu_translate(addr, len, type)
 
 word_t vaddr_ifetch(vaddr_t addr, int len) {
-  printf("satp[31] : %d\n", cpu.csr.satp >> 31);
   return paddr_read(ADDR(addr, len, MEM_TYPE_IFETCH), len);
 }
 
