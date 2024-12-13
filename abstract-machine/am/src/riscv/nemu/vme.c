@@ -71,11 +71,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uint32_t vpn_1 = (vaddr >> 22) & 0x000003FF;
   uint32_t vpn_0 = (vaddr >> 12) & 0x000003FF;
   uint32_t ppn = (paddr >> 12) & 0x000FFFFF;
-  printf("%d\n",vpn_1);
 
   PTE *updir = as->ptr;
   PTE *updir_pte = updir + vpn_1;
-  printf("%p\n", *updir_pte);
 
   if (*updir_pte == 0) {
     PTE *dir = (PTE *)(pgalloc_usr(PGSIZE));
@@ -84,7 +82,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
   } else {
     PTE *pte = (PTE *)((*updir_pte) & 0xFFFFF000) + vpn_0;
-    printf("pte :%p\n", pte);
     *pte = ppn << 12 | PTE_V | PTE_X | PTE_W | PTE_R;
   }
 }
