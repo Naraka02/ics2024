@@ -26,7 +26,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uint32_t page_offset = BITS(vaddr, 11, 0);
 
   printf("satp = 0x%08x\n", cpu.csr.satp);
-  uintptr_t updir = cpu.csr.satp >> 12;
+  uintptr_t updir = cpu.csr.satp << 12;
   uintptr_t updir_pte_addr = updir + vpn_1 * 4;
 
   word_t updir_pte = paddr_read(updir_pte_addr, 4);
