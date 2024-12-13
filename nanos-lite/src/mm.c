@@ -23,7 +23,7 @@ void free_page(void *p) { panic("not implement yet"); }
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
   printf("%p %p\n", brk, current->max_brk);
-  if (current->max_brk >= brk) {
+  if (current->max_brk > brk) {
     return 0;
   }
   if (current->max_brk == 0) {
