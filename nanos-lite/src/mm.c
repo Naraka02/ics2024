@@ -22,13 +22,13 @@ void free_page(void *p) { panic("not implement yet"); }
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
-  printf("brk : %p\n", brk);
-  if (current->max_brk == 0) {
-    current->max_brk = brk % PGSIZE == 0 ? brk : (brk / PGSIZE + 1) * PGSIZE;
-  }
   if (current->max_brk >= brk) {
     return 0;
   }
+  if (current->max_brk == 0) {
+    current->max_brk = brk % PGSIZE == 0 ? brk : (brk / PGSIZE + 1) * PGSIZE;
+  }
+  printf("brk : %p\n", brk);
 
   int nr_pages = (brk - current->max_brk - 1) / PGSIZE + 1;
   for (int i = 0; i < nr_pages; i++) {
