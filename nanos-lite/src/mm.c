@@ -24,12 +24,14 @@ void free_page(void *p) { panic("not implement yet"); }
 int mm_brk(uintptr_t brk) {
   printf("hello\n");
   if (current->max_brk >= brk) {
+    printf("hello\n");
     return 0;
   }
   if (current->max_brk == 0) {
     current->max_brk = brk % PGSIZE == 0 ? brk : (brk / PGSIZE + 1) * PGSIZE;
     void *page = new_page(1);
     map(&current->as, (void *)current->max_brk - PGSIZE, page, 0b1110);
+    printf("hello\n");
     return 0;
   }
 
@@ -40,6 +42,7 @@ int mm_brk(uintptr_t brk) {
     map(&current->as, (void *)current->max_brk + i * PGSIZE, page, 0b1110);
   }
   current->max_brk += nr_pages * PGSIZE;
+  printf("hello\n");
   return 0;
 }
 
