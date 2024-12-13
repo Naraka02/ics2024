@@ -45,7 +45,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   for (int i = 0; i < ehdr.e_phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
-      int nr_pages = (phdr[i].p_memsz - 1) / PGSIZE;
+      int nr_pages = (phdr[i].p_memsz - 1) / PGSIZE + 1;
       uintptr_t va = phdr[i].p_vaddr;
 
       fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
