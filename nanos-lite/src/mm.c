@@ -22,7 +22,6 @@ void free_page(void *p) { panic("not implement yet"); }
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
-  Log("%p", brk);
   if (current->max_brk == 0) {
     current->max_brk = brk % PGSIZE == 0 ? brk : (brk / PGSIZE + 1) * PGSIZE;
   }
