@@ -72,6 +72,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       }
     }
   }
+  printf("hello");
   fs_close(fd);
   return ehdr.e_entry;
 }
@@ -126,7 +127,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
   pcb->cp = ucontext(NULL, kstack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)sp;
-  printf("hello");
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
