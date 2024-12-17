@@ -29,6 +29,8 @@ paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
 static word_t pmem_read(paddr_t addr, int len) {
   word_t ret = host_read(guest_to_host(addr), len);
+  printf("pmem_read: addr = " FMT_PADDR ", len = %d, ret = " FMT_WORD "\n",
+         addr, len, ret);
   return ret;
 }
 
@@ -56,7 +58,8 @@ word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr)))
     return pmem_read(addr, len);
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
-  IFDEF(CONFIG_MTRACE, Log("read " FMT_WORD " bytes at " FMT_PADDR " ", len, addr));
+  IFDEF(CONFIG_MTRACE,
+        Log("read " FMT_WORD " bytes at " FMT_PADDR " ", len, addr));
   out_of_bound(addr);
   return 0;
 }
