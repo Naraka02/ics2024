@@ -20,6 +20,7 @@
 #include <stdint.h>
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
+  printf("vaddr: 0x%08x\n", vaddr);
   uint32_t vpn_1 = BITS(vaddr, 31, 22);
   uint32_t vpn_0 = BITS(vaddr, 21, 12);
   uint32_t page_offset = BITS(vaddr, 11, 0);
