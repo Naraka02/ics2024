@@ -22,8 +22,6 @@ void free_page(void *p) { panic("not implement yet"); }
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
-  printf("heap.start %p heap.end %p\n", heap.start, heap.end);
-  printf("brk %p max_brk %p\n", brk, current->max_brk);
   if (current->max_brk >= brk) {
     return 0;
   }
@@ -35,6 +33,7 @@ int mm_brk(uintptr_t brk) {
   int nr_pages = (int)(brk - current->max_brk - 1) / PGSIZE + 1;
   for (int i = 0; i < nr_pages; i++) {
     void *page = new_page(1);
+    printf("new_page: %p\n", page);
     map(&current->as, (void *)current->max_brk + i * PGSIZE, page, 0b1110);
   }
   current->max_brk += nr_pages * PGSIZE;
