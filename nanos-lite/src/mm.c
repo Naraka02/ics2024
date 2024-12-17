@@ -23,20 +23,17 @@ void free_page(void *p) { panic("not implement yet"); }
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
   printf("brk = %p\n", brk);
-  if (current->max_brk >= brk) {
-    return 0;
-  }
   if (current->max_brk == 0) {
     current->max_brk = brk % PGSIZE == 0 ? brk : (brk / PGSIZE + 1) * PGSIZE;
-    return 0;
+  } else if (brk > current->max_brk) {
+    int nr_pages = (int)(brk - current->max_brk - 1) / PGSIZE + 1;
+    for (int i = 0; i < nr_pages; i++) {
+      void *page = new_page(1);
+      map(&current->as, (void *)current->max_brk + i * PGSIZE, page, 0b1110);
+    }
+    current->max_brk += nr_pages * PGSIZE;
   }
 
-  int nr_pages = (int)(brk - current->max_brk - 1) / PGSIZE + 1;
-  for (int i = 0; i < nr_pages; i++) {
-    void *page = new_page(1);
-    map(&current->as, (void *)current->max_brk + i * PGSIZE, page, 0b1110);
-  }
-  current->max_brk += nr_pages * PGSIZE;
   return 0;
 }
 
