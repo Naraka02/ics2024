@@ -30,7 +30,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   word_t updir_pte = paddr_read(updir_pte_addr, 4);
   if (!(updir_pte & 0x1)) {
     printf("vaddr = %x\n", vaddr);
-    assert(0);
+    paddr_read(0, 4);
   }
 
   uintptr_t dir = updir_pte & 0xFFFFF000;
