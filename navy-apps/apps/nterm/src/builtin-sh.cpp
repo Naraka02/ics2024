@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <nterm.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -42,7 +43,7 @@ static void sh_handle_cmd(const char *cmd) {
 }
 
 void builtin_sh_run() {
-  sh_printf("builtin_sh_run\n");
+  printf("builtin_sh_run\n");
 
   sh_banner();
   sh_prompt();
