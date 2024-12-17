@@ -31,6 +31,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   assert(updir_pte & 0x1);
 
   uintptr_t dir = updir_pte & 0xFFFFF000;
+  printf("dir: %x\n", (uint32_t)dir);
   uintptr_t pte_addr = dir + vpn_0 * 4;
   printf("pte_addr: %x\n", (uint32_t)pte_addr);
 
