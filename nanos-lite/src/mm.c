@@ -28,13 +28,11 @@ int mm_brk(uintptr_t brk) {
   if (current->max_brk == 0) {
     current->max_brk = brk % PGSIZE == 0 ? brk : (brk / PGSIZE + 1) * PGSIZE;
     void *page = new_page(1);
-    printf("va: %p, pa: %p\n", (void *)current->max_brk - PGSIZE, page);
     map(&current->as, (void *)current->max_brk - PGSIZE, page, 0b1110);
     return 0;
   }
 
   int nr_pages = (int)(brk - current->max_brk - 1) / PGSIZE + 1;
-  printf("%d\n", nr_pages);
   for (int i = 0; i < nr_pages; i++) {
     void *page = new_page(1);
     map(&current->as, (void *)current->max_brk + i * PGSIZE, page, 0b1110);
