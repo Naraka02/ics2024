@@ -28,13 +28,13 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uintptr_t updir_pte_addr = updir + vpn_1 * 4;
 
   word_t updir_pte = paddr_read(updir_pte_addr, 4);
-  printf("updir_pte: %x\n", updir_pte);
   assert(updir_pte & 0x1);
 
   uintptr_t dir = updir_pte & 0xFFFFF000;
   uintptr_t pte_addr = dir + vpn_0 * 4;
 
   word_t pte = paddr_read(pte_addr, 4);
+  printf("pte: %x\n", pte);
   assert(pte & 0x1);
 
   switch (type) {
