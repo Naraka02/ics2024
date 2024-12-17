@@ -20,7 +20,6 @@
 #include <stdint.h>
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  printf("vaddr = 0x%x\n", vaddr);
   uint32_t vpn_1 = BITS(vaddr, 31, 22);
   uint32_t vpn_0 = BITS(vaddr, 21, 12);
   uint32_t page_offset = BITS(vaddr, 11, 0);
@@ -29,6 +28,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uintptr_t updir_pte_addr = updir + vpn_1 * 4;
 
   word_t updir_pte = paddr_read(updir_pte_addr, 4);
+  printf("updir_pte: %x\n", updir_pte);
   assert(updir_pte & 0x1);
 
   uintptr_t dir = updir_pte & 0xFFFFF000;
