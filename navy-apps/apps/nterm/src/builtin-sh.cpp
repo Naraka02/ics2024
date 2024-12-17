@@ -43,7 +43,6 @@ static void sh_handle_cmd(const char *cmd) {
 }
 
 void builtin_sh_run() {
-  printf("builtin_sh_run\n");
 
   sh_banner();
   sh_prompt();
