@@ -22,6 +22,7 @@ void free_page(void *p) { panic("not implement yet"); }
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
+  printf("heap.start = %p\n", heap.start);
   if (current->max_brk >= brk) {
     return 0;
   }
