@@ -14,6 +14,7 @@
  ***************************************************************************************/
 
 #include "common.h"
+#include <debug.h>
 #include <isa.h>
 #include <memory/paddr.h>
 #include <memory/vaddr.h>
@@ -28,10 +29,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uintptr_t updir_pte_addr = updir + vpn_1 * 4;
 
   word_t updir_pte = paddr_read(updir_pte_addr, 4);
-  if (!(updir_pte & 0x1)) {
-    printf("vaddr = %x\n", vaddr);
-    assert(0);
-  }
+  Assert(updir_pte & 0x1, "vaddr : %x, updir_pte : %x", vaddr, updir_pte);
 
   uintptr_t dir = updir_pte & 0xFFFFF000;
   uintptr_t pte_addr = dir + vpn_0 * 4;
