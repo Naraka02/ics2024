@@ -26,6 +26,7 @@ int mm_brk(uintptr_t brk) {
   if (current->max_brk == 0) {
     current->max_brk = brk % PGSIZE == 0 ? brk : (brk / PGSIZE + 1) * PGSIZE;
   } else if (brk > current->max_brk) {
+    printf("brk > current->max_brk\n");
     int nr_pages = (int)(brk - current->max_brk - 1) / PGSIZE + 1;
     for (int i = 0; i < nr_pages; i++) {
       void *page = new_page(1);
