@@ -9,7 +9,6 @@ void __am_switch(Context *c);
 
 Context *__am_irq_handle(Context *c) {
   __am_get_cur_as(c);
-  printf("c->mcause : %d\n", c->mcause);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -17,6 +16,8 @@ Context *__am_irq_handle(Context *c) {
     case 11:
       ev.event = c->GPR1 == -1 ? EVENT_YIELD : EVENT_SYSCALL;
       break;
+    case 0x80000007:
+      ev.event = EVENT_IRQ_TIMER;
     default:
       ev.event = EVENT_ERROR;
     }
