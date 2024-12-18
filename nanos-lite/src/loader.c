@@ -56,8 +56,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       memset(pages + phdr[i].p_filesz, 0, phdr[i].p_memsz - phdr[i].p_filesz);
 
       for (int j = 0; j < nr_pages; j++) {
-        printf("va = %p, pa = %p\n", (void *)va + j * PGSIZE,
-               pages + j * PGSIZE);
         map(&pcb->as, (void *)va + j * PGSIZE, pages + j * PGSIZE, 0b1110);
       }
       max_brk = max_brk > phdr[i].p_vaddr + phdr[i].p_memsz
