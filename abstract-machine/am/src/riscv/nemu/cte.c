@@ -46,7 +46,7 @@ bool cte_init(Context *(*handler)(Event, Context *)) {
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context *c = (Context *)(kstack.end - sizeof(Context));
   memset(c, 0, sizeof(Context));
-  c->mstatus = 0x1800;
+  c->mstatus = 0x1808;
   c->mepc = (uintptr_t)entry - 4;
   c->GPRx = (uintptr_t)arg;
   c->pdir = NULL;
