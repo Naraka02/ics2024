@@ -35,7 +35,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uintptr_t pte_addr = dir + vpn_0 * 4;
 
   word_t pte = paddr_read(pte_addr, 4);
-  assert(pte & 0x1);
+  Assert(pte & 0x1, "vaddr : %x, pte : %x", vaddr, pte);
 
   switch (type) {
   case MEM_TYPE_IFETCH:
