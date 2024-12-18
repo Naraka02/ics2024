@@ -21,7 +21,8 @@
 #include <stdint.h>
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  if (vaddr > 0x7ffffff1) {
+  if (vaddr > 0x7ffffff1 && vaddr < 0x80000000) {
+
     printf("vaddr : %x\n", vaddr);
   }
   uint32_t vpn_1 = BITS(vaddr, 31, 22);
