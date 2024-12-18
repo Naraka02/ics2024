@@ -11,7 +11,6 @@ Context *__am_irq_handle(Context *c) {
   __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
-    printf("%x\n", c->mcause == 0x80000007);
     switch (c->mcause) {
     case 8:
     case 11:
@@ -19,6 +18,7 @@ Context *__am_irq_handle(Context *c) {
       break;
     case 0x80000007:
       ev.event = EVENT_IRQ_TIMER;
+      break;
     default:
       ev.event = EVENT_ERROR;
     }
