@@ -84,14 +84,11 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   protect(&pcb->as);
   int argc = 0, envc = 0;
-  uintptr_t *stack_end = new_page(NR_PAGES) + NR_PAGES * PGSIZE; // ustack.end
-  uintptr_t *sp = stack_end;
+  void *stack_end = new_page(NR_PAGES) + NR_PAGES * PGSIZE; // ustack.end
+  void *sp = stack_end;
   for (int i = 0; i < NR_PAGES; i++) {
-    printf("va: %p, pa: %p\n", pcb->as.area.end - (i + 1) * PGSIZE,
-           (void *)sp - (i + 1) * PGSIZE);
-
-    map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE,
-        (void *)sp - (i + 1) * PGSIZE, 0b1110);
+    map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE, sp - (i + 1) * PGSIZE,
+        0b1110);
   }
 
   if (argv) {
@@ -118,17 +115,17 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
   uintptr_t *up = sp; // start of string area
   sp -= argc + envc + 4;
-  sp[0] = argc + 1;
+  *(int *)sp = argc;
   for (int i = 0; i < argc + 1; i++) {
-    sp[1 + i] = (uintptr_t)up;
+    *(uintptr_t *)(sp + 4 + i * sizeof(uintptr_t)) = (uintptr_t)up;
     up += strlen((const char *)up) + 1;
   }
-  sp[2 + argc] = 0;
+  *(int *)(sp + 4 + (argc + 1) * sizeof(uintptr_t)) = envc;
   for (int i = 0; i < envc; i++) {
-    sp[3 + argc + i] = (uintptr_t)up;
+    *(uintptr_t *)(sp + 4 + (argc + 2 + i) * sizeof(uintptr_t)) = (uintptr_t)up;
     up += strlen((const char *)up) + 1;
   }
-  sp[3 + argc + envc] = 0;
+  *(uintptr_t *)(sp + 4 + (argc + 2 + envc) * sizeof(uintptr_t)) = 0;
 
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
