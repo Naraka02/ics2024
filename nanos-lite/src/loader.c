@@ -87,7 +87,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   uintptr_t *sp = new_page(NR_PAGES) + NR_PAGES * PGSIZE; // ustack.end
   for (int i = 0; i < NR_PAGES; i++) {
     map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE,
-        sp - (NR_PAGES - i - 1) * PGSIZE, 0b1110);
+        sp - (NR_PAGES - i) * PGSIZE, 0b1110);
   }
 
   if (argv) {
