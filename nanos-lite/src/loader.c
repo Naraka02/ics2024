@@ -87,6 +87,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   uintptr_t *stack_end = new_page(NR_PAGES) + NR_PAGES * PGSIZE; // ustack.end
   uintptr_t *sp = stack_end;
   for (int i = 0; i < NR_PAGES; i++) {
+    printf("va: %p, pa: %p\n", pcb->as.area.end - (i + 1) * PGSIZE,
+           sp - (i + 1) * PGSIZE);
+
     map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE, sp - (i + 1) * PGSIZE,
         0b1110);
   }
