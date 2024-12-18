@@ -26,11 +26,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   Log("Interrupt epc = 0x%x", epc);
   Log("Interrupt mtvec = 0x%x", cpu.csr.mtvec);
 #endif
-  printf("%x\n", cpu.csr.mstatus);
   cpu.csr.mstatus = (cpu.csr.mstatus & ~MSTATUS_MPIE) |
                     ((cpu.csr.mstatus & MSTATUS_MIE) << 4);
   cpu.csr.mstatus = (cpu.csr.mstatus & ~MSTATUS_MIE);
-  printf("%x\n", cpu.csr.mstatus);
   cpu.csr.mepc = epc;
   cpu.csr.mcause = NO;
   return cpu.csr.mtvec;
