@@ -107,15 +107,15 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   sp -= argc + envc + 4;
   *(int *)sp = argc;
   for (int i = 0; i < argc + 1; i++) {
-    *(uintptr_t *)(sp + 4 + i * 4) = (uintptr_t)up;
+    *(char **)(sp + 4 + i * 4) = (char *)up;
     up += strlen((const char *)up) + 1;
   }
   *(int *)(sp + 4 + argc * 4) = envc;
   for (int i = 0; i < envc; i++) {
-    *(uintptr_t *)(sp + 4 + (argc + 2 + i) * 4) = (uintptr_t)up;
+    *(char **)(sp + 4 + (argc + 1 + i) * 4) = (char *)up;
     up += strlen((const char *)up) + 1;
   }
-  *(uintptr_t *)(sp + 4 + (argc + 2 + envc) * 4) = 0;
+  *(int *)(sp + 4 + (argc + envc + 1) * 4) = 0;
 
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
