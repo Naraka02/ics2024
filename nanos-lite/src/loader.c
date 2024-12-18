@@ -76,9 +76,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   void *stack_end = new_page(NR_PAGES) + NR_PAGES * PGSIZE; // ustack.end
   void *sp = stack_end;
   for (int i = 0; i < NR_PAGES; i++) {
-    printf("va: %p, pa: %p\n", pcb->as.area.end - (i + 1) * PGSIZE,
-           sp - (i + 1) * PGSIZE);
-
     map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE, sp - (i + 1) * PGSIZE,
         0b1110);
   }
@@ -122,8 +119,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
   pcb->cp = ucontext(&pcb->as, kstack, (void *)entry);
-  // pcb->cp->GPRx = (uintptr_t)(pcb->as.area.end - (stack_end - sp));
-  pcb->cp->GPRx = (uintptr_t)sp;
+  pcb->cp->GPRx = (uintptr_t)(pcb->as.area.end - (stack_end - sp));
+  // pcb->cp->GPRx = (uintptr_t)sp;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
