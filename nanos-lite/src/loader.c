@@ -47,10 +47,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     if (phdr[i].p_type == PT_LOAD) {
       int nr_pages = (phdr[i].p_memsz - 1) / PGSIZE + 1;
       uintptr_t va = phdr[i].p_vaddr;
-      printf("va = %p, memsz = %d, filesz = %d\n", va, phdr[i].p_memsz,
-             phdr[i].p_filesz);
-      printf("offset = %d\n", phdr[i].p_offset);
-      printf("pa = %p\n", phdr[i].p_paddr);
 
       fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
       int j;
@@ -71,7 +67,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         va += PGSIZE;
         memset(pa, 0, PGSIZE);
       }
-      pcb->max_brk = (uintptr_t)phdr[i].p_vaddr + phdr[i].p_memsz;
+      pcb->max_brk =
+          ((uintptr_t)phdr[i].p_vaddr + phdr[i].p_memsz + PGSIZE - 1) &
+          ~(PGSIZE - 1);
     }
   }
   fs_close(fd);
