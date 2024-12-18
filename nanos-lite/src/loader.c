@@ -85,7 +85,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   protect(&pcb->as);
   int argc = 0, envc = 0;
   uintptr_t *stack_end = new_page(NR_PAGES) + NR_PAGES * PGSIZE; // ustack.end
-  printf("stack_end: %p\n", stack_end);
   uintptr_t *sp = stack_end;
   for (int i = 0; i < NR_PAGES; i++) {
     map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE, sp - (i + 1) * PGSIZE,
@@ -116,8 +115,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
   uintptr_t *up = sp; // start of string area
   sp -= argc + envc + 4;
-  printf("sp: %p\n", sp);
-  printf("argc: %d\n", argc);
   sp[0] = argc + 1;
   for (int i = 0; i < argc + 1; i++) {
     sp[1 + i] = (uintptr_t)up;
