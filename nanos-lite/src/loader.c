@@ -90,8 +90,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     printf("va: %p, pa: %p\n", pcb->as.area.end - (i + 1) * PGSIZE,
            sp - (i + 1) * PGSIZE);
 
-    map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE, sp - (i + 1) * PGSIZE,
-        0b1110);
+    map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE,
+        (void *)sp - (i + 1) * PGSIZE, 0b1110);
   }
 
   if (argv) {
