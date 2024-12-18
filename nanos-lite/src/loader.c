@@ -49,8 +49,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     if (phdr[i].p_type == PT_LOAD) {
       int nr_pages = (phdr[i].p_memsz - 1) / PGSIZE + 1;
       uintptr_t va = phdr[i].p_vaddr;
-      printf("va = %p, memsz = %d, filesz = %d\n", va, phdr[i].p_memsz,
-             phdr[i].p_filesz);
 
       fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
       int j;
@@ -87,6 +85,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   protect(&pcb->as);
   int argc = 0, envc = 0;
   uintptr_t *sp = new_page(NR_PAGES) + NR_PAGES * PGSIZE; // ustack.end
+  printf("pcb->as.area.end: %p\n", pcb->as.area.end);
   for (int i = 0; i < NR_PAGES; i++) {
     map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE, sp - (i + 1) * PGSIZE,
         0b1110);
