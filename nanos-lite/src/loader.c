@@ -47,12 +47,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   for (int i = 0; i < ehdr.e_phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
+      uint32_t page_offset = phdr[i].p_vaddr & (PGSIZE - 1);
       uintptr_t va = phdr[i].p_vaddr & ~(PGSIZE - 1);
-      int nr_pages = (phdr[i].p_memsz - 1 + phdr[i].p_vaddr - va) / PGSIZE + 1;
+      int nr_pages = (phdr[i].p_memsz - 1 + page_offset) / PGSIZE + 1;
       void *pages = new_page(nr_pages);
 
       fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
-      fs_read(fd, pages, phdr[i].p_filesz);
+      fs_read(fd, pages + page_offset, phdr[i].p_filesz);
       memset(pages + phdr[i].p_filesz, 0, phdr[i].p_memsz - phdr[i].p_filesz);
 
       for (int j = 0; j < nr_pages; j++) {

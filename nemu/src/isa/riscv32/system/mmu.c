@@ -51,7 +51,5 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
 
   uint32_t ppn = pte & 0xFFFFF000;
   paddr_t paddr = ppn | page_offset;
-  if (paddr == 0x824e2ffc)
-    printf("%x\n", vaddr);
   return paddr;
 }
