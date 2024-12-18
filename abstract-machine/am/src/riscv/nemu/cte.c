@@ -11,7 +11,7 @@ Context *__am_irq_handle(Context *c) {
   __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
-    printf("%d\n", c->mcause);
+    printf("%x\n", c->mcause);
     switch (c->mcause) {
     case 8:
     case 11:
