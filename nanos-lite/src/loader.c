@@ -67,6 +67,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         va += PGSIZE;
         memset(pa, 0, PGSIZE);
       }
+      pcb->max_brk = (uintptr_t)phdr[i].p_vaddr + phdr[i].p_memsz;
     }
   }
   fs_close(fd);
