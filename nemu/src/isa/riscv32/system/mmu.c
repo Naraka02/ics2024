@@ -21,10 +21,7 @@
 #include <stdint.h>
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  if (vaddr > 0x7ffffff1 && vaddr < 0x80000000) {
 
-    printf("vaddr : %x\n", vaddr);
-  }
   uint32_t vpn_1 = BITS(vaddr, 31, 22);
   uint32_t vpn_0 = BITS(vaddr, 21, 12);
   uint32_t page_offset = BITS(vaddr, 11, 0);
@@ -55,5 +52,9 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
 
   uint32_t ppn = pte & 0xFFFFF000;
   paddr_t paddr = ppn | page_offset;
+  if (vaddr > 0x7ffffff1 && vaddr < 0x80000000) {
+    printf("vaddr : %x\n", vaddr);
+    printf("paddr : %x\n", paddr);
+  }
   return paddr;
 }
