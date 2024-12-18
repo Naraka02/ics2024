@@ -70,7 +70,6 @@ void __am_switch(Context *c) {
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   uintptr_t vaddr = (uintptr_t)va;
   uintptr_t paddr = (uintptr_t)pa;
-  printf("va %p pa %p\n",va , pa);
   assert((vaddr & 0x00000FFF) == 0);
   assert((paddr & 0x00000FFF) == 0);
 
