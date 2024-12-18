@@ -50,6 +50,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       int nr_pages = (phdr[i].p_memsz - 1) / PGSIZE + 1;
       uintptr_t va = phdr[i].p_vaddr;
       void *pages = new_page(nr_pages);
+      printf("va : %p", phdr[i].p_vaddr);
 
       fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
       fs_read(fd, pages, phdr[i].p_filesz);
