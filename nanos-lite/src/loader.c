@@ -43,6 +43,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   fs_lseek(fd, ehdr.e_phoff, SEEK_SET);
   fs_read(fd, phdr, ehdr.e_phnum * ehdr.e_phentsize);
 
+  uintptr_t max_brk = 0;
+
   for (int i = 0; i < ehdr.e_phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
       int nr_pages = (phdr[i].p_memsz - 1) / PGSIZE + 1;
@@ -67,12 +69,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         va += PGSIZE;
         memset(pa, 0, PGSIZE);
       }
-      pcb->max_brk =
-          ((uintptr_t)phdr[i].p_vaddr + phdr[i].p_memsz + PGSIZE - 1) &
-          ~(PGSIZE - 1);
+      max_brk = max_brk > phdr[i].p_vaddr + phdr[i].p_memsz
+                    ? max_brk
+                    : phdr[i].p_vaddr + phdr[i].p_memsz;
     }
   }
   fs_close(fd);
+
+  pcb->max_brk = (max_brk + PGSIZE - 1) & ~(PGSIZE - 1);
   return ehdr.e_entry;
 }
 
