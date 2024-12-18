@@ -53,6 +53,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       printf("va: %p, page_offset: %d, nr_pages: %d\n", va, page_offset,
              nr_pages);
       void *pages = new_page(nr_pages);
+      printf("pages: %p\n", pages);
 
       fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
       fs_read(fd, pages + page_offset, phdr[i].p_filesz);
