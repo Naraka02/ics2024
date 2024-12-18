@@ -85,10 +85,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   protect(&pcb->as);
   int argc = 0, envc = 0;
   uintptr_t *sp = new_page(NR_PAGES) + NR_PAGES * PGSIZE; // ustack.end
-  for (int i = 0; i < NR_PAGES; i++) {
-    map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE,
-        sp - (NR_PAGES - i) * PGSIZE, 0b1110);
-  }
 
   if (argv) {
     while (argv[argc]) {
@@ -126,6 +122,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   }
   sp[3 + argc + envc] = 0;
 
+  for (int i = 0; i < NR_PAGES; i++) {
+    map(&pcb->as, pcb->as.area.end - (i + 1) * PGSIZE, sp - (i + 1) * PGSIZE,
+        0b1110);
+  }
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
   pcb->cp = ucontext(&pcb->as, kstack, (void *)entry);
