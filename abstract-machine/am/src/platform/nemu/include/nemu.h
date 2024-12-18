@@ -42,7 +42,7 @@ extern char _pmem_start;
   RANGE(&_pmem_start, PMEM_END), \
   RANGE(FB_ADDR, FB_ADDR + 0x200000), \
   RANGE(MMIO_BASE, MMIO_BASE + 0x1000), \
-  RANGE(AUDIO_SBUF_ADDR, AUDIO_SBUF_ADDR + 0x1000)
+  RANGE(AUDIO_SBUF_ADDR, AUDIO_SBUF_ADDR + 0x10000)
 
 typedef uintptr_t PTE;
 
