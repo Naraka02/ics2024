@@ -16,7 +16,7 @@ Context *__am_irq_handle(Context *c) {
     case 11:
       ev.event = c->GPR1 == -1 ? EVENT_YIELD : EVENT_SYSCALL;
       break;
-    case 0x80000007:
+    case 0x8000007:
       ev.event = EVENT_IRQ_TIMER;
     default:
       ev.event = EVENT_ERROR;
