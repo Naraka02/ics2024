@@ -70,6 +70,7 @@ void __am_switch(Context *c) {
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   uintptr_t vaddr = (uintptr_t)va;
   uintptr_t paddr = (uintptr_t)pa;
+  assert((vaddr & 0x00000FFF) == 0);
 
   uint32_t vpn_1 = BITS(vaddr, 31, 22);
   uint32_t vpn_0 = BITS(vaddr, 21, 12);
