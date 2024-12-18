@@ -27,8 +27,12 @@ typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
   vaddr_t pc;
   MUXDEF(CONFIG_RV64, riscv64_csr, riscv32_csr) csr;
+  bool INTR;
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
 
+#define MSTATUS_MIE 0x00000008
+#define MSTATUS_MPIE 0x00000080
+#define MSTATUS_MPP 0x00000a00
 // decode
 typedef struct {
   union {

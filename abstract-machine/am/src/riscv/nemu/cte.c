@@ -9,6 +9,7 @@ void __am_switch(Context *c);
 
 Context *__am_irq_handle(Context *c) {
   __am_get_cur_as(c);
+  printf("c->mcause : %d\n", c->mcause);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -47,6 +48,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->mstatus = 0x1800;
   c->mepc = (uintptr_t)entry - 4;
   c->GPRx = (uintptr_t)arg;
+  c->pdir = NULL;
   return c;
 }
 
