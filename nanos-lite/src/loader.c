@@ -49,26 +49,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     if (phdr[i].p_type == PT_LOAD) {
       int nr_pages = (phdr[i].p_memsz - 1) / PGSIZE + 1;
       uintptr_t va = phdr[i].p_vaddr;
+      void *pages = new_page(nr_pages);
 
       fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
-      int j;
-      for (j = 0; j < nr_pages; j++) {
-        uintptr_t *pa = new_page(1);
-        printf("va: %p, pa: %p\n", va, pa);
-        map(&pcb->as, (void *)va, pa, 0b1110);
-        va += PGSIZE;
-        if ((j + 1) * PGSIZE > phdr[i].p_filesz) {
-          fs_read(fd, pa, phdr[i].p_filesz - j * PGSIZE);
-          break;
-        } else {
-          fs_read(fd, pa, PGSIZE);
-        }
-      }
-      for (; j < nr_pages; j++) {
-        uintptr_t *pa = new_page(1);
-        map(&pcb->as, (void *)va, pa, 0b1110);
-        va += PGSIZE;
-        memset(pa, 0, PGSIZE);
+      fs_read(fd, pages, phdr[i].p_filesz);
+      memset(pages + phdr[i].p_filesz, 0, phdr[i].p_memsz - phdr[i].p_filesz);
+
+      for (int j = 0; j < nr_pages; j++) {
+        map(&pcb->as, (void *)va + j * PGSIZE, pages + j * PGSIZE, 0b1110);
       }
       max_brk = max_brk > phdr[i].p_vaddr + phdr[i].p_memsz
                     ? max_brk
