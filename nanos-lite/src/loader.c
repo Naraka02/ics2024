@@ -74,6 +74,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   protect(&pcb->as);
+  printf("pcb->as.ptr: %p\n", pcb->as.ptr);
   int argc = 0, envc = 0;
   void *stack_end = new_page(NR_PAGES) + NR_PAGES * PGSIZE; // ustack.end
   void *sp = stack_end;
