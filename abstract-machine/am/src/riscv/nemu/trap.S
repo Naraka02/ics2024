@@ -57,11 +57,15 @@ save_context:
   csrr t0, mscratch
   bnez t0, user_mode
   li t0, KERNEL
+  mv t1, sp
+  addi t1, t1, CONTEXT_SIZE
   j save_np
 user_mode:
   li t0, USER
+  csrr t1, mscratch
 save_np:
   STORE t0, OFFSET_NP(sp)
+  STORE t1, OFFSET_SP(sp)
 
   csrw mscratch, zero
 
@@ -85,18 +89,20 @@ save_np:
 
   mv sp, a0
 
+  LOAD t0, OFFSET_NP(sp)
+  li t1, USER
+  bne t0, t1, restore_context
+  
+  addi t0, sp, CONTEXT_SIZE
+  csrw mscratch, t0
+
+restore_context:
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
   csrw mepc, t2
 
   MAP(REGS, POP)
-
-  LOAD t0, OFFSET_NP(sp)
-  beqz t0, kernel_mode
-  csrw mscratch, sp
-kernel_mode:
-  LOAD sp, OFFSET_SP(sp)
 
   addi sp, sp, CONTEXT_SIZE
   mret
