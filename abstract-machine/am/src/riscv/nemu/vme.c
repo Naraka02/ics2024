@@ -1,6 +1,7 @@
 #include <am.h>
 #include <klib.h>
 #include <nemu.h>
+#include <stdint.h>
 
 #define BITMASK(bits) ((1ull << (bits)) - 1)
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1))
@@ -97,5 +98,6 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   c->mepc = (uintptr_t)entry - 4;
   c->pdir = as->ptr;
   c->np = 1;
+  c->GPRx = (uintptr_t)kstack.end;
   return c;
 }
