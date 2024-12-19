@@ -122,7 +122,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   Area kstack = {pcb->stack, pcb->stack + STACK_SIZE};
   pcb->cp = ucontext(&pcb->as, kstack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)(pcb->as.area.end - (stack_end - sp));
-  printf("pcb->cp->GPRx: %x\n", pcb->cp->GPRx);
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
