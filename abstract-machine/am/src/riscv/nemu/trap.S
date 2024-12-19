@@ -102,7 +102,8 @@ restore_context:
   csrw mstatus, t1
   csrw mepc, t2
 
-  MAP(REGS, POP)
+  MAP(REGS_HI16, POP)
+  MAP(REGS_LO16, POP)
 
-  addi sp, sp, CONTEXT_SIZE
+  LOAD sp, OFFSET_SP(sp)
   mret
