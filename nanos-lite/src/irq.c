@@ -15,6 +15,7 @@ static Context *do_event(Event e, Context *c) {
   case EVENT_IRQ_TIMER:
     c = schedule(c);
     Log("IRQ_TIMER");
+    printf("%x\n", c->mstatus);
     break;
   default:
     panic("Unhandled event ID = %d", e.event);
