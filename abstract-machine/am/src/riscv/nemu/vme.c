@@ -78,7 +78,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uint32_t ppn = BITS(paddr, 31, 12);
 
   PTE *updir = as->ptr;
-  printf("as->ptr: %p\n", updir);
   PTE *updir_pte = updir + vpn_1;
 
   if (*updir_pte == 0) {
