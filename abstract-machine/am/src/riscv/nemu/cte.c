@@ -53,6 +53,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->mepc = (uintptr_t)entry - 4;
   c->GPRx = (uintptr_t)arg;
   c->pdir = NULL;
+  asm volatile("csrw mscratch, zero");
   return c;
 }
 
