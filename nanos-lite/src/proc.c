@@ -41,7 +41,7 @@ static int count = 0;
 Context *schedule(Context *prev) {
   if (current == &pcb[1]) {
     count++;
-    if (count == 100) {
+    if (count == 10000) {
       count = 0;
       current = &pcb[0];
       return current->cp;
