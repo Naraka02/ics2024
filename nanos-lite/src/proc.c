@@ -39,7 +39,7 @@ void init_proc() {
 
 Context *schedule(Context *prev) {
   current->cp = prev;
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   printf("current is %d\n", current == &pcb[0] ? 0 : 1);
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   return current->cp;
 }
