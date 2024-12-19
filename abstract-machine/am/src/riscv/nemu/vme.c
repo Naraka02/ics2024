@@ -40,7 +40,6 @@ bool vme_init(void *(*pgalloc_f)(int), void (*pgfree_f)(void *)) {
     }
   }
 
-  printf("set satp to %p\n", kas.ptr);
   set_satp(kas.ptr);
   vme_enable = 1;
 
@@ -60,6 +59,9 @@ void unprotect(AddrSpace *as) {}
 
 void __am_get_cur_as(Context *c) {
   c->pdir = (vme_enable ? (void *)get_satp() : NULL);
+  if ((uintptr_t)c->pdir == 0x8244d000) {
+    c->pdir = NULL;
+  }
 }
 
 void __am_switch(Context *c) {
