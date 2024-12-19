@@ -55,18 +55,18 @@ save_context:
 
   # c->np = (ksp == 0 ? KERNEL : USER);
   csrr t0, mscratch
-  bnez t0, user_mode
-  li t0, KERNEL
-  mv t1, sp
-  addi t1, t1, CONTEXT_SIZE
-  j save_np
-user_mode:
+  beqz t0, save_kernel
+save_user:
   li t0, USER
   csrr t1, mscratch
+  j save_np
+save_kernel:
+  li t0, KERNEL
+  LOAD t1, OFFSET_NP(sp)
+  addi t1, t1, CONTEXT_SIZE
 save_np:
   STORE t0, OFFSET_NP(sp)
-  STORE t1, OFFSET_SP(sp)
-
+  STORE t1, OFFSET_NP(sp)
   csrw mscratch, zero
 
   MAP(REGS_HI16, PUSH)
@@ -89,20 +89,19 @@ save_np:
 
   mv sp, a0
 
-  LOAD t0, OFFSET_NP(sp)
-  li t1, USER
-  bne t0, t1, restore_context
-  
-  addi t0, sp, CONTEXT_SIZE
-  csrw mscratch, t0
-
-restore_context:
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
   csrw mepc, t2
 
   MAP(REGS_HI16, POP)
+
+  LOAD t0, OFFSET_NP(sp)
+  li t1, USER
+  bne t0, t1, return
+  csrw mscratch, sp
+  
+return:
   MAP(REGS_LO16, POP)
 
   LOAD sp, OFFSET_SP(sp)
