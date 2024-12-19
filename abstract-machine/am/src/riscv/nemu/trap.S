@@ -62,11 +62,11 @@ save_user:
   j save_np
 save_kernel:
   li t0, KERNEL
-  LOAD t1, OFFSET_NP(sp)
+  LOAD t1, OFFSET_SP(sp)
   addi t1, t1, CONTEXT_SIZE
 save_np:
   STORE t0, OFFSET_NP(sp)
-  STORE t1, OFFSET_NP(sp)
+  STORE t1, OFFSET_SP(sp)
   csrw mscratch, zero
 
   MAP(REGS_HI16, PUSH)
@@ -100,7 +100,7 @@ save_np:
   li t1, USER
   bne t0, t1, return
   csrw mscratch, sp
-  
+ 
 return:
   MAP(REGS_LO16, POP)
 
