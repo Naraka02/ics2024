@@ -27,7 +27,6 @@ Context *__am_irq_handle(Context *c) {
     assert(c != NULL);
   }
   c->mepc += 4;
-  printf("mepc = %p\n", c->mepc);
 
   __am_switch(c);
   return c;
