@@ -39,6 +39,7 @@ void init_proc() {
 
 static int count = 0;
 Context *schedule(Context *prev) {
+  printf("count = %d\n", count);
   if (current == &pcb[1]) {
     count++;
     if (count == 10000) {
