@@ -97,7 +97,5 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   c->mstatus = 0x00000080;
   c->mepc = (uintptr_t)entry - 4;
   c->pdir = as->ptr;
-  c->np = 1;
-  c->GPRx = (uintptr_t)kstack.end;
   return c;
 }
