@@ -29,6 +29,7 @@ static inline int check_reg_idx(int idx) {
    : idx == 0x300 ? &(cpu.csr).mstatus                                         \
    : idx == 0x342 ? &(cpu.csr).mcause                                          \
    : idx == 0x180 ? &(cpu.csr).satp                                            \
+   : idx == 0x340 ? &(cpu.csr).mscratch                                        \
                   : 0)
 
 #define gpr(idx) (cpu.gpr[check_reg_idx(idx)])

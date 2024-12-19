@@ -19,7 +19,7 @@
 #include <common.h>
 
 typedef struct {
-  word_t mcause, mstatus, mtvec, satp;
+  word_t mcause, mstatus, mtvec, satp, mscratch;
   vaddr_t mepc;
 } MUXDEF(CONFIG_RV64, riscv64_csr, riscv32_csr);
 
