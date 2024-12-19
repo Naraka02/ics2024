@@ -49,7 +49,6 @@ bool vme_init(void *(*pgalloc_f)(int), void (*pgfree_f)(void *)) {
 
 void protect(AddrSpace *as) {
   PTE *updir = (PTE *)(pgalloc_usr(PGSIZE));
-  printf("protecting updir %p\n", updir);
   as->ptr = updir;
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
@@ -61,6 +60,7 @@ void unprotect(AddrSpace *as) {}
 
 void __am_get_cur_as(Context *c) {
   c->pdir = (vme_enable ? (void *)get_satp() : NULL);
+  printf("get cur_as: %p\n", c->pdir);
 }
 
 void __am_switch(Context *c) {
