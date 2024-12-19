@@ -68,7 +68,6 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  assert((uintptr_t)as != 0x8244c000);
   uintptr_t vaddr = (uintptr_t)va;
   uintptr_t paddr = (uintptr_t)pa;
   assert((vaddr & 0x00000FFF) == 0);
@@ -79,6 +78,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uint32_t ppn = BITS(paddr, 31, 12);
 
   PTE *updir = as->ptr;
+  printf("as->ptr: %p\n", updir);
   PTE *updir_pte = updir + vpn_1;
 
   if (*updir_pte == 0) {
