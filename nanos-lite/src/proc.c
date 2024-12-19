@@ -38,14 +38,6 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
-  static int count = 0;
-  if (current == &pcb[1]) {
-    count++;
-  }
-  if (count <= 100) {
-    return current->cp;
-  }
-  count = 0;
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   return current->cp;
