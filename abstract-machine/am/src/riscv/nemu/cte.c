@@ -26,9 +26,7 @@ Context *__am_irq_handle(Context *c) {
     c = user_handler(ev, c);
     assert(c != NULL);
   }
-  if (c->mcause != 0x80000007) {
-    c->mepc += 4;
-  }
+  c->mepc += 4;
 
   __am_switch(c);
   return c;
