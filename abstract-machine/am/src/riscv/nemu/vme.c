@@ -59,17 +59,16 @@ void unprotect(AddrSpace *as) {}
 
 void __am_get_cur_as(Context *c) {
   c->pdir = (vme_enable ? (void *)get_satp() : NULL);
-  printf("c->pdir = %p\n", c->pdir);
 }
 
 void __am_switch(Context *c) {
-  printf("swi c->pdir = %p\n", c->pdir);
   if (vme_enable && c->pdir != NULL) {
     set_satp(c->pdir);
   }
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  assert((uintptr_t)as != 0x8244c000);
   uintptr_t vaddr = (uintptr_t)va;
   uintptr_t paddr = (uintptr_t)pa;
   assert((vaddr & 0x00000FFF) == 0);
