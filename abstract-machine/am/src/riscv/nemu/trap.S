@@ -102,4 +102,5 @@ save_np:
 
 return:
   MAP(REGS, POP)
+  LOAD sp, OFFSET_SP(sp)
   mret
