@@ -26,6 +26,7 @@ Context *__am_irq_handle(Context *c) {
     c = user_handler(ev, c);
     assert(c != NULL);
   }
+  printf("c->meepc = %p\n", c->mepc);
   if (c->mcause != 0x80000007) {
     c->mepc += 4;
   }
