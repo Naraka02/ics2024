@@ -46,7 +46,7 @@ f(30) f(31)
 __am_asm_trap:
   csrrw sp, mscratch, sp
   bnez sp, save_context
-  csrr sp, mscratch
+  csrrw sp, mscratch, sp
 
 save_context:
   addi sp, sp, -CONTEXT_SIZE
@@ -101,7 +101,7 @@ restore_context:
   csrw mstatus, t1
   csrw mepc, t2
 
- # MAP(REGS, POP)
+  MAP(REGS, POP)
 
   LOAD sp, OFFSET_SP(sp)
   mret
