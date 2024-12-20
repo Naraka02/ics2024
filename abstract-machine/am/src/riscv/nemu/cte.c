@@ -18,6 +18,8 @@ Context *__am_irq_handle(Context *c) {
       break;
     case 0x80000007:
       ev.event = EVENT_IRQ_TIMER;
+      printf("timer interrupt\n");
+
       break;
     default:
       ev.event = EVENT_ERROR;
