@@ -53,6 +53,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->mepc = (uintptr_t)entry - 4;
   c->GPRx = (uintptr_t)arg;
   c->pdir = NULL;
+  c->gpr[2] = (uintptr_t)kstack.end; // sp
   c->np = 0;
   return c;
 }
