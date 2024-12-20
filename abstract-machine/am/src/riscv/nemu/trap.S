@@ -95,14 +95,16 @@ save_np:
   csrw mepc, t2
 
   MAP(REGS_HI16, POP)
-
-  LOAD t0, OFFSET_NP(sp)
-  li t1, USER
-  bne t0, t1, return
+  LOAD t1, OFFSET_NP(sp)
+  li t2, USER
+  bne t1, t2, restore_kernel
+restore_user:
+  MAP(REGS_LO16, POP)
   csrw mscratch, sp
- 
-return:
+  j return
+restore_kernel:
   MAP(REGS_LO16, POP)
 
+return:
   LOAD sp, OFFSET_SP(sp)
   mret
