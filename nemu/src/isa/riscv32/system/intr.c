@@ -31,12 +31,11 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   cpu.csr.mstatus = (cpu.csr.mstatus & ~MSTATUS_MIE);
   cpu.csr.mepc = epc;
   cpu.csr.mcause = NO;
-  printf("sp : %x\n", cpu.gpr[2]);
   return cpu.csr.mtvec;
 }
 
 word_t isa_query_intr() {
-  if (cpu.INTR && (cpu.csr.mstatus & MSTATUS_MIE)) {
+  if (cpu.INTR && (cpu.csr.mstatus & MSTATUS_MIE) && false) {
     cpu.INTR = false;
     return IRQ_TIMER;
   }
