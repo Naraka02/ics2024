@@ -89,19 +89,17 @@ save_np:
 
   mv sp, a0
 
-  LOAD t0, OFFSET_NP(sp)
-  li t1, USER
-  bne t0, t1, restore_context
-  addi t0, sp, CONTEXT_SIZE
-  csrw mscratch, t0
-
-restore_context:
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
   csrw mepc, t2
 
-  MAP(REGS, POP)
+  LOAD t0, OFFSET_NP(sp)
+  li t1, USER
+  bne t0, t1, return
+  addi t0, sp, CONTEXT_SIZE
+  csrw mscratch, t0
 
-  LOAD sp, OFFSET_SP(sp)
+return:
+  MAP(REGS, POP)
   mret
