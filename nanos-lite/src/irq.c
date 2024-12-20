@@ -5,6 +5,7 @@ void do_syscall(Context *c);
 Context *schedule(Context *prev);
 
 static Context *do_event(Event e, Context *c) {
+  printf("do_event: event = %d\n", e.event);
   switch (e.event) {
   case EVENT_YIELD:
     c = schedule(c);
