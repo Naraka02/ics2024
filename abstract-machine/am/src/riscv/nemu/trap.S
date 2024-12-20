@@ -62,7 +62,7 @@ save_user:
   j save_np
 save_kernel:
   li t0, KERNEL
-  LOAD t1, OFFSET_SP(sp)
+  mv t1, sp
   addi t1, t1, CONTEXT_SIZE
 save_np:
   STORE t0, OFFSET_NP(sp)
