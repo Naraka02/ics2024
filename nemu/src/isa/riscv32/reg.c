@@ -33,6 +33,8 @@ void isa_reg_display() {
   }
   printf("%-10s\t0x%-10x\t0x%x\n", "pc", cpu.pc, cpu.pc);
   printf("%-10s\t0x%-10x\t0x%x\n", "mstatus", cpu.csr.mstatus, cpu.csr.mstatus);
+  printf("%-10s\t0x%-10x\t0x%x\n", "mscratch", cpu.csr.mscratch,
+         cpu.csr.mscratch);
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
