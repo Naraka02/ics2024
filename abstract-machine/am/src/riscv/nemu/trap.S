@@ -87,7 +87,6 @@ save_np:
   mv a0, sp
   call __am_get_cur_as
   call __am_irq_handle
-  call __am_switch
   mv sp, a0
 
   LOAD t1, OFFSET_STATUS(sp)
