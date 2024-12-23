@@ -99,5 +99,6 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   c->pdir = as->ptr;
   c->GPRx = (uintptr_t)kstack.end;
   c->np = 1;
+  asm volatile("csrw mscratch, %0" : : "r"(kstack.end));
   return c;
 }
