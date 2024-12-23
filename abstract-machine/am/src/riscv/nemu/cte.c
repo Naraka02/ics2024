@@ -29,6 +29,7 @@ Context *__am_irq_handle(Context *c) {
   if (c->mcause != 0x80000007) {
     c->mepc += 4;
   }
+  printf("c->GPRx = %x\n", c->GPRx);
 
   __am_switch(c);
   return c;
