@@ -37,6 +37,7 @@ void isa_reg_display() {
          cpu.csr.mscratch);
   printf("%-10s\t0x%-10x\t0x%x\n", "mepc", cpu.csr.mepc, cpu.csr.mepc);
   printf("%-10s\t0x%-10x\t0x%x\n", "mcause", cpu.csr.mcause, cpu.csr.mcause);
+  printf("%-10s\t0x%-10x\t0x%x\n", "mtvec", cpu.csr.mtvec, cpu.csr.mtvec);
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
