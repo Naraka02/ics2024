@@ -4,7 +4,11 @@
 
 static Context *(*user_handler)(Event, Context *) = NULL;
 
+extern void __am_get_cur_as(Context *c);
+extern void __am_switch(Context *c);
+
 Context *__am_irq_handle(Context *c) {
+  __am_get_cur_as(c);
   printf("$sp = %x\n", c->gpr[2]);
   if (user_handler) {
     Event ev = {0};
@@ -27,6 +31,7 @@ Context *__am_irq_handle(Context *c) {
     c->mepc += 4;
   }
   printf("$sp = %x\n", c->gpr[2]);
+  __am_switch(c);
   return c;
 }
 
