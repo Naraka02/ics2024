@@ -30,6 +30,7 @@ Context *__am_irq_handle(Context *c) {
     c->mepc += 4;
   }
 
+  printf("$sp = %p\n", c->gpr[2]);
   __am_switch(c);
   return c;
 }
