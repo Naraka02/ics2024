@@ -5,6 +5,7 @@
 static Context *(*user_handler)(Event, Context *) = NULL;
 
 Context *__am_irq_handle(Context *c) {
+  printf("$sp = %x\n", c->gpr[2]);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -25,6 +26,7 @@ Context *__am_irq_handle(Context *c) {
   if (c->mcause != 0x80000007) {
     c->mepc += 4;
   }
+  printf("$sp = %x\n", c->gpr[2]);
   return c;
 }
 
