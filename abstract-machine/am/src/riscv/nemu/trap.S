@@ -67,7 +67,7 @@ save_kernel:
 save_np:
   STORE t0, OFFSET_NP(sp)
   STORE t1, OFFSET_SP(sp)
-  csrw mscratch, zero
+ # csrw mscratch, zero
 
   MAP(REGS_HI16, PUSH)
 
