@@ -63,7 +63,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       max_brk = max_brk > phdr[i].p_vaddr + phdr[i].p_memsz
                     ? max_brk
                     : phdr[i].p_vaddr + phdr[i].p_memsz;
-      pcb->max_brk = 0;
     }
   }
   fs_close(fd);
