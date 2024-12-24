@@ -67,8 +67,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   }
   fs_close(fd);
 
-  pcb->max_brk = (max_brk + PGSIZE - 1) & ~(PGSIZE - 1);
-  printf("max_brk = %p\n", pcb->max_brk);
+  pcb->max_brk = ((max_brk + PGSIZE - 1) & ~(PGSIZE - 1)) - PGSIZE;
   return ehdr.e_entry;
 }
 
