@@ -46,7 +46,7 @@ f(30) f(31)
 __am_asm_trap:
   csrrw sp, mscratch, sp
   bnez sp, save_context
-  csrr sp, mscratch
+  csrrw sp, mscratch, sp
 
 save_context:
   addi sp, sp, -CONTEXT_SIZE
