@@ -9,7 +9,7 @@ extern void __am_switch(Context *c);
 
 Context *__am_irq_handle(Context *c) {
   __am_get_cur_as(c);
-  printf("$sp = %x\n", c->gpr[2]);
+  printf("before switch $sp = %x\n", c->gpr[2]);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -30,7 +30,7 @@ Context *__am_irq_handle(Context *c) {
   if (c->mcause != 0x80000007) {
     c->mepc += 4;
   }
-  printf("$sp = %x\n", c->gpr[2]);
+  printf("after $sp = %x\n", c->gpr[2]);
   __am_switch(c);
   return c;
 }
