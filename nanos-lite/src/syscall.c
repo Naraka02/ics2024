@@ -52,6 +52,8 @@ static inline int sys_gettimeofday(void *tv, void *tz) {
   uint64_t us = io_read(AM_TIMER_UPTIME).us;
   ((struct timeval *)tv)->tv_sec = us / 1000000;
   ((struct timeval *)tv)->tv_usec = us % 1000000;
+  printf("gettimeofday: %ld %ld\n", ((struct timeval *)tv)->tv_sec,
+         ((struct timeval *)tv)->tv_usec);
   return 0;
 }
 
@@ -79,7 +81,6 @@ void do_syscall(Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
-  printf("syscall ID = %d\n", a[0]);
 
   switch (a[0]) {
   case SYS_yield:
