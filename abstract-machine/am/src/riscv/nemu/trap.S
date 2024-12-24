@@ -51,33 +51,19 @@ __am_asm_trap:
 save_context:
   addi sp, sp, -CONTEXT_SIZE
 
-  MAP(REGS_LO16, PUSH)
-
-  # c->np = (ksp == 0 ? KERNEL : USER);
-  csrr t0, mscratch
-  beqz t0, save_kernel
-save_user:
-  li t0, USER
-  csrr t1, mscratch
-  j save_np
-save_kernel:
-  li t0, KERNEL
-  mv t1, sp
-  addi t1, t1, CONTEXT_SIZE
-save_np:
-  STORE t0, OFFSET_NP(sp)
-  STORE t1, OFFSET_SP(sp)
-  csrw mscratch, zero
-
-  MAP(REGS_HI16, PUSH)
+  MAP(REGS, PUSH)
 
   csrr t0, mcause
   csrr t1, mstatus
   csrr t2, mepc
+  csrr t3, mscratch
 
   STORE t0, OFFSET_CAUSE(sp)
   STORE t1, OFFSET_STATUS(sp)
   STORE t2, OFFSET_EPC(sp)
+  STORE t3, OFFSET_NP(sp)
+
+  csrw mscratch, zero
 
   # set mstatus.MPRV to pass difftest
   li a0, (1 << 17)
@@ -90,16 +76,18 @@ save_np:
 
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
+  LOAD t3, OFFSET_NP(sp)
   csrw mstatus, t1
   csrw mepc, t2
+  csrw mscratch, t3
 
-  LOAD t0, OFFSET_NP(sp)
-  li t1, USER
-  bne t0, t1, return
-  addi t0, sp, CONTEXT_SIZE
-  csrw mscratch, t0
+  MAP(REGS, POP)
+
+  addi sp, sp, CONTEXT_SIZE
+
+  csrrw sp, mscratch, sp
+  bnez sp, return
+  csrrw sp, mscratch, sp
 
 return:
-  MAP(REGS, POP)
-  LOAD sp, OFFSET_SP(sp)
   mret
