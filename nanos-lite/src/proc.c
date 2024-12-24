@@ -40,7 +40,5 @@ void init_proc() {
 Context *schedule(Context *prev) {
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  printf("switch to %s because mcause: %x\n",
-         current == &pcb[0] ? "pcb[0]" : "pcb[1]", prev->mcause);
   return current->cp;
 }
