@@ -36,7 +36,7 @@ f(30) f(31)
 #define OFFSET_CAUSE  ((NR_REGS + 0) * XLEN)
 #define OFFSET_STATUS ((NR_REGS + 1) * XLEN)
 #define OFFSET_EPC    ((NR_REGS + 2) * XLEN)
-#define OFFSET_NP     ((NR_REGS + 3) * XLEN)
+#define OFFSET_SCRATCH     ((NR_REGS + 3) * XLEN)
 
 #define KERNEL 0
 #define USER   1
@@ -61,7 +61,7 @@ save_context:
   STORE t0, OFFSET_CAUSE(sp)
   STORE t1, OFFSET_STATUS(sp)
   STORE t2, OFFSET_EPC(sp)
-  STORE t3, OFFSET_NP(sp)
+  STORE t3, OFFSET_SCRATCH(sp)
 
   csrw mscratch, zero
 
@@ -76,7 +76,7 @@ save_context:
 
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
-  LOAD t3, OFFSET_NP(sp)
+  LOAD t3, OFFSET_SCRATCH(sp)
   csrw mstatus, t1
   csrw mepc, t2
   csrw mscratch, t3
