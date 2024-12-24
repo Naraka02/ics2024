@@ -59,11 +59,11 @@ save_context:
 save_user:
   li t0, USER
   csrr t1, mscratch
-  csrw mscratch, zero
   j save_np
 save_kernel:
   li t0, KERNEL
   mv t1, sp
+  csrw mscratch, zero
   addi t1, t1, CONTEXT_SIZE
 save_np:
   STORE t0, OFFSET_NP(sp)
