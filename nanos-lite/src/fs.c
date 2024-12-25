@@ -76,6 +76,7 @@ size_t fs_write(int fd, const void *buf, size_t len) {
   len = open_offset + len <= file_table[fd].size || file_table[fd].size == 0
             ? len
             : file_table[fd].size - open_offset;
+  printf("fs_write: fd = %d, len = %d\n", fd, len);
   open_offset += len;
   return file_table[fd].write(
       buf, file_table[fd].disk_offset + open_offset - len, len);
