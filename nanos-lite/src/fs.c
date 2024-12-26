@@ -100,7 +100,10 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
   return file_table[fd].open_offset;
 }
 
-int fs_close(int fd) { return 0; }
+int fs_close(int fd) {
+  file_table[fd].open_offset = 0;
+  return 0;
+}
 
 void init_fs() {
   AM_GPU_CONFIG_T cfg = io_read(AM_GPU_CONFIG);
