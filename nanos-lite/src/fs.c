@@ -9,11 +9,10 @@ typedef struct {
   size_t disk_offset;
   ReadFn read;
   WriteFn write;
+  size_t open_offset;
 } Finfo;
 
 enum { FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB };
-
-static size_t open_offset = 0;
 
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
@@ -55,48 +54,50 @@ int fs_open(const char *pathname, int flags, int mode) {
   assert(pathname != NULL);
   for (int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++) {
     if (strcmp(pathname, file_table[i].name) == 0) {
-      open_offset = 0;
+      file_table[i].open_offset = 0;
       return i;
     }
   }
-  Log("no such file: %s", pathname);
+  panic("no such file: %s", pathname);
   return -1;
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
-  len = open_offset + len <= file_table[fd].size || file_table[fd].size == 0
+  len = file_table[fd].open_offset + len <= file_table[fd].size ||
+                file_table[fd].size == 0
             ? len
-            : file_table[fd].size - open_offset;
-  open_offset += len;
+            : file_table[fd].size - file_table[fd].open_offset;
+  file_table[fd].open_offset += len;
   return file_table[fd].read(
-      buf, file_table[fd].disk_offset + open_offset - len, len);
+      buf, file_table[fd].disk_offset + file_table[fd].open_offset - len, len);
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
-  len = open_offset + len <= file_table[fd].size || file_table[fd].size == 0
+  len = file_table[fd].open_offset + len <= file_table[fd].size ||
+                file_table[fd].size == 0
             ? len
-            : file_table[fd].size - open_offset;
-  open_offset += len;
+            : file_table[fd].size - file_table[fd].open_offset;
+  file_table[fd].open_offset += len;
   return file_table[fd].write(
-      buf, file_table[fd].disk_offset + open_offset - len, len);
+      buf, file_table[fd].disk_offset + file_table[fd].open_offset - len, len);
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
   switch (whence) {
   case SEEK_SET:
-    open_offset = offset;
+    file_table[fd].open_offset = offset;
     break;
   case SEEK_CUR:
-    open_offset += offset;
+    file_table[fd].open_offset += offset;
     break;
   case SEEK_END:
-    open_offset = file_table[fd].size + offset;
+    file_table[fd].open_offset = file_table[fd].size + offset;
     break;
   default:
     panic("invalid whence");
   }
-  assert(open_offset <= file_table[fd].size);
-  return open_offset;
+  assert(file_table[fd].open_offset <= file_table[fd].size);
+  return file_table[fd].open_offset;
 }
 
 int fs_close(int fd) { return 0; }
