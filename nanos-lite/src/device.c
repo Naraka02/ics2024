@@ -12,6 +12,8 @@
 static const char *keyname[256]
     __attribute__((used)) = {[AM_KEY_NONE] = "NONE", AM_KEYS(NAME)};
 
+void fg_pcb_switch(int keycode);
+
 size_t serial_write(const void *buf, size_t offset, size_t len) {
   for (size_t i = 0; i < len; i++) {
     putch(((char *)buf)[i]);
@@ -23,6 +25,9 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
   if (ev.keycode == AM_KEY_NONE) {
     return 0;
+  }
+  if (ev.keydown) {
+    fg_pcb_switch(ev.keycode);
   }
   snprintf(buf, len, "%s %s\n", ev.keydown ? "kd" : "ku", keyname[ev.keycode]);
   return len;
