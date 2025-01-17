@@ -4,6 +4,7 @@
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
+PCB *fg_pcb = NULL;
 PCB *current = NULL;
 
 void naive_uload(PCB *pcb, const char *filename);
@@ -31,6 +32,8 @@ void init_proc() {
   context_uload(&pcb[0], "/bin/hello", NULL, NULL);
   // context_kload(&pcb[0], hello_fun, 0);
   context_uload(&pcb[1], "/bin/nterm", NULL, NULL);
+  context_uload(&pcb[2], "/bin/pal", NULL, NULL);
+  context_uload(&pcb[3], "/bin/nslider", NULL, NULL);
   switch_boot_pcb();
 
   Log("Initializing processes...");
