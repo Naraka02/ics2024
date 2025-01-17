@@ -58,8 +58,17 @@ void fg_pcb_switch(int keycode) {
   }
 }
 
+int count = 0;
+#define FREQ 5
+
 Context *schedule(Context *prev) {
   current->cp = prev;
-  current = (current == &pcb[0] ? fg_pcb : &pcb[0]);
+  if (count >= FREQ) {
+    current = &pcb[0];
+    count = 0;
+  } else {
+    current = fg_pcb;
+  }
+  count++;
   return current->cp;
 }
